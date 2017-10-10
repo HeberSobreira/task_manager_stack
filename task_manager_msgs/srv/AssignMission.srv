@@ -1,7 +1,5 @@
 string                missionId
 string   robotId
-KittingOrder[]        kittingOrderList
 string[] goals
 ---
 ActionAcceptedRefused actionAcceptedRefused
-

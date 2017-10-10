@@ -51,39 +51,15 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
   FILES
   ActionAcceptedRefused.msg
-  BoundingVolume.msg
-  KittingOrder.msg
   Mission.msg
-  Node.msg
-  NodeProperty.msg
-  OriginLocation.msg
-  OriginOrientation.msg
-  PartToPick.msg
-  Point.msg
-  RobotSkills.msg
-  Skill.msg
   TaskStatus.msg
-  TaskPlan.msg
-  NodeList.msg
 )
 
 ## Generate services in the 'srv' folder
 add_service_files(
   FILES
-  LogisticPlanner_DispatchMissions.srv
-  LogisticPlanner_ProvideWorldModel.srv
-  LogisticPlanner_DispatchPlan.srv
-  MissionPlanner_ConsumeSkills.srv
-  MissionPlanner_ConsumeWorldModel.srv
-  MissionPlanner_PlanKittingOrders.srv
-  MissionPlanner_ParkRobots.srv
-  MissionPlanner_TaskPlanMission.srv
   AssignMission.srv
-  ProvideSkills.srv
   ProvideTaskStatus.srv
-  ProvideTaskPlan.srv
-  ProvideWorldModelNode.srv
-  UpdateWorldModelNodeFromPointCloud.srv
 )
 
 ## Generate actions in the 'action' folder
