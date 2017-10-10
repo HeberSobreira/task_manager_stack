@@ -56,10 +56,9 @@ class MissionAssigner(object):
             return '[MissionAssigner] [' + str(self.robotId) + '] [' + str(self.missionId) + '] Mission status unknown!'
 
     def assign_mission(self, assignMissionServiceName):
-        rospy.loginfo("[MissionAssigner] [%s] [%s] Constructing goalList and kittingOrderList...", str(self.robotId), str(self.missionId))
+        rospy.loginfo("[MissionAssigner] [%s] [%s] Constructing goalList...", str(self.robotId), str(self.missionId))
 
         goalsList = self.goal_list_constructor(self.tasks, self.skills)
-        kittingOrderList = MSGConstructor.KittingOrderListConstructor()
 
         rospy.loginfo("[MissionAssigner] [%s] [%s] Waiting for AssignMission Service at %s", str(self.robotId), str(self.missionId), str(assignMissionServiceName))
 
@@ -68,7 +67,7 @@ class MissionAssigner(object):
         rospy.loginfo("[MissionAssigner] [%s] [%s] Service Found! Sending Request...", str(self.robotId), str(self.missionId))
 
         AssignMissionServiceProxy = rospy.ServiceProxy(assignMissionServiceName, AssignMission)
-        AssignMissionServiceResponse = AssignMissionServiceProxy(self.missionId, self.robotId, kittingOrderList, goalsList)
+        AssignMissionServiceResponse = AssignMissionServiceProxy(self.missionId, self.robotId, goalsList)
 
         rospy.loginfo(self.service_response_printer(AssignMissionServiceResponse.actionAcceptedRefused))
 
