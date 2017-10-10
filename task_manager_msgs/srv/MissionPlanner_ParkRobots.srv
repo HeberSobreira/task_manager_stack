@@ -1,0 +1,4 @@
+string[] robot_ids
+Node[] nodeList
+---
+ActionAcceptedRefused actionAcceptedRefused

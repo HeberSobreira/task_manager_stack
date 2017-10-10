@@ -1,0 +1,13 @@
+tasks:
+- {skillName: example-skill, exampleSkillProperty0: exampleSkillValue0, exampleSkillProperty1: exampleSkillValue1}
+- {skillName: example-skill, exampleSkillProperty0: exampleSkillValue0, exampleSkillProperty1: exampleSkillValue1}
+- {skillName: example-skill, exampleSkillProperty0: exampleSkillValue0, exampleSkillProperty1: exampleSkillValue1}
+- {skillName: example-skill, exampleSkillProperty0: exampleSkillValue0, exampleSkillProperty1: exampleSkillValue1}
+- {skillName: example-skill, exampleSkillProperty0: exampleSkillValue0, exampleSkillProperty1: exampleSkillValue1}
+- {skillName: example-skill, exampleSkillProperty0: exampleSkillValue0, exampleSkillProperty1: exampleSkillValue1}
+# - {skillName: actuate-arm, direction: UP}
+# - {skillName: example-skill, exampleSkillProperty0: exampleSkillValue0, exampleSkillProperty1: exampleSkillValue1}
+# - {skillName: example-skill, exampleSkillProperty0: exampleSkillValue0, exampleSkillProperty1: exampleSkillValue1}
+# - {skillName: example-skill, exampleSkillProperty0: exampleSkillValue0, exampleSkillProperty1: exampleSkillValue1}
+# - {skillName: drive-edges, mode: DIFFERENTIAL, edges: [3,4]}
+# - {skillName: dock-pose, frameId: map, px: 0, py: 0, pz: 0, qx: 0, qy: 0, qz: 0, qw: 1}

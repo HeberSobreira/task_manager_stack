@@ -1,0 +1,5 @@
+KittingOrder[] kittingOrders
+Node[] nodeList
+Mission mission
+---
+ActionAcceptedRefused actionAcceptedRefused

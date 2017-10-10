@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- Unit Tests -->
+    <test test-name="test_skill_class" pkg="task_manager_common" type="test_skill_class.py" />
+    <test test-name="test_skill_factory_class" pkg="task_manager_common" type="test_skill_factory_class.py" />
+    <test test-name="test_msg_constructor" pkg="task_manager_common" type="test_msg_constructor.py" />
+    <test test-name="test_ros_interface" pkg="task_manager_common" type="test_ros_interface.py" />
+
+</launch>

@@ -1,0 +1,5 @@
+string robotId
+Skill[] skillList
+
+
+

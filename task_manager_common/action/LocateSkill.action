@@ -1,0 +1,12 @@
+#goal definition
+string ObjectId
+geometry_msgs/PoseStamped PickPoint
+---
+#result definition
+int32 percentage
+geometry_msgs/PoseStamped PartPosition
+string skillStatus
+---
+#feedback
+int32 percentage
+string skillStatus

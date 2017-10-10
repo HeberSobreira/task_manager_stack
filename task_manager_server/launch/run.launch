@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- Arguments -->
+    <arg name="robot_id" default="igor"/>
+    <arg name="skills_file" default="skills.yaml" />
+    <arg name="skills_path" default="$(find task_manager_common)/skills"/>
+
+    <!-- Skills Loader -->
+    <include file="$(find task_manager_common)/launch/load_skills.launch">
+        <arg name="robot_id" value="$(arg robot_id)"/>
+        <arg name="skills_path" value="$(arg skills_path)"/>
+        <arg name="skills_file" value="$(arg skills_file)" />
+    </include>
+
+    <!-- Task Manager -->
+    <node name="task_manager" pkg="task_manager_server" type="task_manager.py" output="screen">
+        <param name='robotId' value='$(arg robot_id)' />
+    </node>
+
+</launch>

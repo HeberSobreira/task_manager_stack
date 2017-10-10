@@ -1,0 +1,11 @@
+#goal definition
+string exampleSkillProperty0
+string exampleSkillProperty1
+---
+#result definition
+int32 percentage
+string skillStatus
+---
+#feedback
+int32 percentage
+string skillStatus

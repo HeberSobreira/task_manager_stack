@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- Unit Tests -->
+    <test test-name="test_mission_assigner" pkg="mission_assigner" type="test_mission_assigner.py" />
+
+</launch>

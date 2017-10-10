@@ -1,0 +1,10 @@
+#goal definition
+int32 waitTime
+---
+#result definition
+int32 percentage
+string skillStatus
+---
+#feedback
+int32 percentage
+string skillStatus

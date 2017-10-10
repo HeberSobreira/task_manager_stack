@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- Arguments -->
+    <arg name="robot_id" default="testRobotId"/>
+    <arg name="mission_id" default="testMissionId"/>
+    <arg name="mission_file" default="test_mission.yaml" />
+    <arg name="mission_path" default="$(find mission_assigner)/test/missions"/>
+    <arg name="skills_file" default="test_skills.yaml" />
+    <arg name="skills_path" default="$(find task_manager_common)/test/skills"/>
+
+    <!-- Test Mission Loader -->
+    <include file="$(find mission_assigner)/launch/load_mission.launch">
+        <arg name="robot_id" value="$(arg robot_id)"/>
+        <arg name="mission_path" value="$(arg mission_path)"/>
+        <arg name="mission_file" value="$(arg mission_file)" />
+    </include>
+
+    <!-- Task Manager (to provide AssignMission Service) -->
+    <include file="$(find task_manager_server)/launch/run.launch">
+        <arg name="robot_id" value="$(arg robot_id)"/>
+        <arg name="skills_path" value="$(arg skills_path)"/>
+        <arg name="skills_file" value="$(arg skills_file)" />
+    </include>
+
+    <!-- Integration Test -->
+    <test test-name="integration_tests" pkg="mission_assigner" type="integration_tests.py" />
+
+</launch>

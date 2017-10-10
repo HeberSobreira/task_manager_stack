@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- Arguments -->
+    <arg name="robot_id" default="igor"/>
+    <arg name="skills_file" default="skills.yaml" />
+    <arg name="skills_path" default="$(find task_manager_common)/skills"/>
+
+    <group ns="$(arg robot_id)">
+
+        <rosparam command="load" file="$(arg skills_path)/$(arg skills_file)"/>
+
+    </group>
+
+</launch>
