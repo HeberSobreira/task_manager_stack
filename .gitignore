@@ -42,7 +42,7 @@ bin/
 build/
 msg_gen/
 srv_gen/
-**/src/*/
+#**/src/*/
 
 ##ignore ros java
 **/.gradle/
@@ -72,10 +72,7 @@ ignore log files someone is creating
 *.pcd
 
 #ignore Python Compiled Code
-*.pyc
+#*.pyc
 
 #ignore pdfs
 #*.pdf
-
-# You should add here more stuff, for example people that use the kwrite or
-# gedit should ignore these programs backups. Miguel Oliveira
