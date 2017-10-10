@@ -72,7 +72,7 @@ ignore log files someone is creating
 *.pcd
 
 #ignore Python Compiled Code
-#*.pyc
+*.pyc
 
 #ignore pdfs
 #*.pdf
