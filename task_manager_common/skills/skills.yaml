@@ -4,7 +4,7 @@ skills:
 - {skillName: crob-drive, skillType: DriveSkill, skillClass: DriveSkill, skillProperties: [toObjectId, toObjectType]}
 # ObjectInteractionSkill
 - {skillName: locate, skillType: LocateSkill, skillClass: ObjectInteractionSkill, skillProperties: [objectId, objectType, containerObjectId, containerObjectType]}
-- {skillName: crob-locate, skillType: LocateSkill, skillProperties: [objectId, objectType, containerObjectId, containerObjectType]}
+- {skillName: crob-locate, skillType: LocateSkill, skillClass: ObjectInteractionSkill, skillProperties: [objectId, objectType, containerObjectId, containerObjectType]}
 - {skillName: pick, skillType: PickSkill, skillClass: ObjectInteractionSkill, skillProperties: [objectId, objectType, containerObjectId, containerObjectType]}
 - {skillName: crob-pick, skillType: PickSkill, skillClass: ObjectInteractionSkill, skillProperties: [objectId, objectType, containerObjectId, containerObjectType]}
 - {skillName: place, skillType: PlaceSkill, skillClass: ObjectInteractionSkill, skillProperties: [objectId, objectType, containerObjectId, containerObjectType]}

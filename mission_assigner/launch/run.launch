@@ -4,29 +4,23 @@
     <!-- Arguments -->
     <arg name="robot_id" default="igor"/>
     <arg name="mission_id" default="testMissionId"/>
-    <arg name="mission_file" default="test_generic_skill.yaml" />
-    <arg name="mission_path" default="$(find mission_assigner)/missions"/>
     <arg name="skills_file" default="skills.yaml" />
     <arg name="skills_path" default="$(find task_manager_common)/skills"/>
-
-    <!-- Mission Loader -->
-    <include file="$(find mission_assigner)/launch/load_mission.launch">
-        <arg name="robot_id" value="$(arg robot_id)"/>
-        <arg name="mission_path" value="$(arg mission_path)"/>
-        <arg name="mission_file" value="$(arg mission_file)" />
-    </include>
+    <arg name="mission_file" default="test_generic_skill.yaml" />
+    <arg name="mission_path" default="$(find mission_assigner)/missions"/>
+    <arg name="assign_mission_service_name" default="task_manager/AssignMission" />
 
     <!-- Skills Loader -->
-    <include file="$(find task_manager_common)/launch/load_skills.launch">
-        <arg name="robot_id" value="$(arg robot_id)"/>
-        <arg name="skills_path" value="$(arg skills_path)"/>
-        <arg name="skills_file" value="$(arg skills_file)" />
-    </include>
+    <rosparam command="load" file="$(arg skills_path)/$(arg skills_file)" ns="mission_assigner"/>
+
+    <!-- Mission Loader -->
+    <rosparam command="load" file="$(arg mission_path)/$(arg mission_file)" ns="mission_assigner"/>
 
     <!-- Mission Assigner -->
     <node name="mission_assigner" pkg="mission_assigner" type="mission_assigner.py" output="screen">
         <param name='robotId' value='$(arg robot_id)' />
         <param name='missionId' value='$(arg mission_id)' />
+        <param name='assign_mission_service_name' value='$(arg assign_mission_service_name)' />
     </node>
 
 </launch>

@@ -21,7 +21,7 @@ NAME = 'integration_tests'
 # Base Class for performin Task Manager Integration Tests
 class IntegrationTestsBase(unittest.TestCase):
 
-    skillsParamName = "/testRobotId/skills"
+    skillsParamName = "task_manager/skills"
 
     def testStatusTopicCallback(self):
         pass

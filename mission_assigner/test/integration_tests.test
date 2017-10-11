@@ -10,11 +10,10 @@
     <arg name="skills_path" default="$(find task_manager_common)/test/skills"/>
 
     <!-- Test Mission Loader -->
-    <include file="$(find mission_assigner)/launch/load_mission.launch">
-        <arg name="robot_id" value="$(arg robot_id)"/>
-        <arg name="mission_path" value="$(arg mission_path)"/>
-        <arg name="mission_file" value="$(arg mission_file)" />
-    </include>
+    <rosparam command="load" file="$(arg mission_path)/$(arg mission_file)" ns="mission_assigner"/>
+
+    <!-- Test Skills Loader -->
+    <rosparam command="load" file="$(arg skills_path)/$(arg skills_file)" ns="mission_assigner"/>
 
     <!-- Task Manager (to provide AssignMission Service) -->
     <include file="$(find task_manager_server)/launch/run.launch">

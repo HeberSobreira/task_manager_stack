@@ -16,9 +16,9 @@ NAME = 'integration_tests'
 # Base Class for performin Mission Assigner Integration Tests
 class IntegrationTestsBase(unittest.TestCase):
 
-    tasksParamName = "/testRobotId/mission_assigner/tasks"
-    skillsParamName = "/testRobotId/skills"
-    assignMissionServiceName = '/stamina_msgs/testRobotId/AssignMission'
+    tasksParamName = "mission_assigner/tasks"
+    skillsParamName = "mission_assigner/skills"
+    assignMissionServiceName = 'task_manager/AssignMission'
 
     @classmethod
     def skill_generator(self, skillName = 'example-skill', skillType = 'GenericSkill', skillClass = 'GenericSkill', skillProperties = ['exampleSkillProperty0', 'exampleSkillProperty1']):
