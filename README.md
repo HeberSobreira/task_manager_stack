@@ -24,4 +24,20 @@ The **Task Manager** is responsible for receiving mission assignments and for th
 
 ## <a name="usage"></a> Usage
 
-TODO!
+To initiate the Task Manager, perform:
+
+```bash
+roslaunch task_manager_server run.launch
+```
+
+In order to test it, a Fake Skill system can be deployed:
+
+```bash
+roslaunch task_manager_server fake_skills.launch
+```
+
+To assign a mission, perform:
+
+```bash
+roslaunch mission_assigner run.launch
+```
