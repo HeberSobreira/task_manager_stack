@@ -5,7 +5,7 @@ import rospy
 import actionlib
 import sys
 
-from task_manager_common.msg import *
+from task_manager_msgs.msg import *
 from geometry_msgs.msg import PoseStamped
 
 ####################
@@ -20,14 +20,14 @@ robotId = "igor"
 
 class DriveSkillAction(object):
 	# create messages that are used to publish feedback/result
-	_feedback = task_manager_common.msg.DriveSkillFeedback()
-	_result   = task_manager_common.msg.DriveSkillResult()
+	_feedback = task_manager_msgs.msg.DriveSkillFeedback()
+	_result   = task_manager_msgs.msg.DriveSkillResult()
 
 	global robotId
 
 	def __init__(self, name):
 		self._action_name = name
-		self._as = actionlib.SimpleActionServer(self._action_name, task_manager_common.msg.DriveSkillAction, execute_cb=self.execute_cb, auto_start = False)
+		self._as = actionlib.SimpleActionServer(self._action_name, task_manager_msgs.msg.DriveSkillAction, execute_cb=self.execute_cb, auto_start = False)
 		self._as.start()
 
 	def execute_cb(self, goal):
@@ -69,14 +69,14 @@ class DriveSkillAction(object):
 
 class LocateSkillAction(object):
 	# create messages that are used to publish feedback/result
-	_feedback = task_manager_common.msg.LocateSkillFeedback()
-	_result   = task_manager_common.msg.LocateSkillResult()
+	_feedback = task_manager_msgs.msg.LocateSkillFeedback()
+	_result   = task_manager_msgs.msg.LocateSkillResult()
 
 	global robotId
 
 	def __init__(self, name):
 		self._action_name = name
-		self._as = actionlib.SimpleActionServer(self._action_name, task_manager_common.msg.LocateSkillAction, execute_cb=self.execute_cb, auto_start = False)
+		self._as = actionlib.SimpleActionServer(self._action_name, task_manager_msgs.msg.LocateSkillAction, execute_cb=self.execute_cb, auto_start = False)
 		self._as.start()
 
 	def PoseStamped_message_creation(self, frame_id, x, y, z):
@@ -139,12 +139,12 @@ class LocateSkillAction(object):
 
 class PickSkillAction(object):
 	# create messages that are used to publish feedback/result
-	_feedback = task_manager_common.msg.PickSkillFeedback()
-	_result   = task_manager_common.msg.PickSkillResult()
+	_feedback = task_manager_msgs.msg.PickSkillFeedback()
+	_result   = task_manager_msgs.msg.PickSkillResult()
 
 	def __init__(self, name):
 		self._action_name = name
-		self._as = actionlib.SimpleActionServer(self._action_name, task_manager_common.msg.PickSkillAction, execute_cb=self.execute_cb, auto_start = False)
+		self._as = actionlib.SimpleActionServer(self._action_name, task_manager_msgs.msg.PickSkillAction, execute_cb=self.execute_cb, auto_start = False)
 		self._as.start()
 
 	def execute_cb(self, goal):
@@ -187,12 +187,12 @@ class PickSkillAction(object):
 
 class PlaceSkillAction(object):
 	# create messages that are used to publish feedback/result
-	_feedback = task_manager_common.msg.PlaceSkillFeedback()
-	_result   = task_manager_common.msg.PlaceSkillResult()
+	_feedback = task_manager_msgs.msg.PlaceSkillFeedback()
+	_result   = task_manager_msgs.msg.PlaceSkillResult()
 
 	def __init__(self, name):
 		self._action_name = name
-		self._as = actionlib.SimpleActionServer(self._action_name, task_manager_common.msg.PlaceSkillAction, execute_cb=self.execute_cb, auto_start = False)
+		self._as = actionlib.SimpleActionServer(self._action_name, task_manager_msgs.msg.PlaceSkillAction, execute_cb=self.execute_cb, auto_start = False)
 		self._as.start()
 
 	def execute_cb(self, goal):
@@ -235,12 +235,12 @@ class PlaceSkillAction(object):
 
 class WaitSkillAction(object):
 	# create messages that are used to publish feedback/result
-	_feedback = task_manager_common.msg.WaitSkillFeedback()
-	_result   = task_manager_common.msg.WaitSkillResult()
+	_feedback = task_manager_msgs.msg.WaitSkillFeedback()
+	_result   = task_manager_msgs.msg.WaitSkillResult()
 
 	def __init__(self, name):
 		self._action_name = name
-		self._as = actionlib.SimpleActionServer(self._action_name, task_manager_common.msg.WaitSkillAction, execute_cb=self.execute_cb, auto_start = False)
+		self._as = actionlib.SimpleActionServer(self._action_name, task_manager_msgs.msg.WaitSkillAction, execute_cb=self.execute_cb, auto_start = False)
 		self._as.start()
 
 	def execute_cb(self, goal):
@@ -285,12 +285,12 @@ class WaitSkillAction(object):
 
 class DockSkillAction(object):
 	# create messages that are used to publish feedback/result
-	_feedback = task_manager_common.msg.DockSkillFeedback()
-	_result   = task_manager_common.msg.DockSkillResult()
+	_feedback = task_manager_msgs.msg.DockSkillFeedback()
+	_result   = task_manager_msgs.msg.DockSkillResult()
 
 	def __init__(self, name):
 		self._action_name = name
-		self._as = actionlib.SimpleActionServer(self._action_name, task_manager_common.msg.DockSkillAction, execute_cb=self.execute_cb, auto_start = False)
+		self._as = actionlib.SimpleActionServer(self._action_name, task_manager_msgs.msg.DockSkillAction, execute_cb=self.execute_cb, auto_start = False)
 		self._as.start()
 
 	def execute_cb(self, goal):
@@ -333,12 +333,12 @@ class DockSkillAction(object):
 
 class ActuateArmSkillAction(object):
 	# create messages that are used to publish feedback/result
-	_feedback = task_manager_common.msg.ActuateArmSkillFeedback()
-	_result   = task_manager_common.msg.ActuateArmSkillResult()
+	_feedback = task_manager_msgs.msg.ActuateArmSkillFeedback()
+	_result   = task_manager_msgs.msg.ActuateArmSkillResult()
 
 	def __init__(self, name):
 		self._action_name = name
-		self._as = actionlib.SimpleActionServer(self._action_name, task_manager_common.msg.ActuateArmSkillAction, execute_cb=self.execute_cb, auto_start = False)
+		self._as = actionlib.SimpleActionServer(self._action_name, task_manager_msgs.msg.ActuateArmSkillAction, execute_cb=self.execute_cb, auto_start = False)
 		self._as.start()
 
 	def execute_cb(self, goal):
@@ -381,12 +381,12 @@ class ActuateArmSkillAction(object):
 
 class MoveArmSkillAction(object):
 	# create messages that are used to publish feedback/result
-	_feedback = task_manager_common.msg.MoveArmSkillFeedback()
-	_result   = task_manager_common.msg.MoveArmSkillResult()
+	_feedback = task_manager_msgs.msg.MoveArmSkillFeedback()
+	_result   = task_manager_msgs.msg.MoveArmSkillResult()
 
 	def __init__(self, name):
 		self._action_name = name
-		self._as = actionlib.SimpleActionServer(self._action_name, task_manager_common.msg.MoveArmSkillAction, execute_cb=self.execute_cb, auto_start = False)
+		self._as = actionlib.SimpleActionServer(self._action_name, task_manager_msgs.msg.MoveArmSkillAction, execute_cb=self.execute_cb, auto_start = False)
 		self._as.start()
 
 	def execute_cb(self, goal):
@@ -429,12 +429,12 @@ class MoveArmSkillAction(object):
 
 class GenericSkillAction(object):
 	# create messages that are used to publish feedback/result
-	_feedback = task_manager_common.msg.GenericSkillFeedback()
-	_result   = task_manager_common.msg.GenericSkillResult()
+	_feedback = task_manager_msgs.msg.GenericSkillFeedback()
+	_result   = task_manager_msgs.msg.GenericSkillResult()
 
 	def __init__(self, name):
 		self._action_name = name
-		self._as = actionlib.SimpleActionServer(self._action_name, task_manager_common.msg.GenericSkillAction, execute_cb=self.execute_cb, auto_start = False)
+		self._as = actionlib.SimpleActionServer(self._action_name, task_manager_msgs.msg.GenericSkillAction, execute_cb=self.execute_cb, auto_start = False)
 		self._as.start()
 
 	def execute_cb(self, goal):

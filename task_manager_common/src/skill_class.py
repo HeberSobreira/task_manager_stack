@@ -4,7 +4,7 @@ import sys
 import rospy
 import actionlib
 
-from task_manager_common.msg import *
+from task_manager_msgs.msg import *
 
 class Skill(object):
 
@@ -38,9 +38,9 @@ class Skill(object):
 
     def actionTypeConstructor(self):
         try:
-            return eval('task_manager_common.msg.' + str(self.skillType) + 'Action')
+            return eval('task_manager_msgs.msg.' + str(self.skillType) + 'Action')
         except AttributeError as e:
-            raise AttributeError('Unable to find Skill msg task_manager_common.msg.' + str(self.skillType))
+            raise AttributeError('Unable to find Skill msg task_manager_msgs.msg.' + str(self.skillType))
 
     def actionGoalConstructor(self):
         raise NotImplementedError('Subclass ' + str(self.skillType) + ' must implement abstract method!')
@@ -97,7 +97,7 @@ class GenericSkill(Skill):
                 else:
                     arguments += ', ' + str(key) + "='" + value + "'"
 
-        return eval('task_manager_common.msg.' + str(self.skillType) + 'Goal(' + arguments + ')')
+        return eval('task_manager_msgs.msg.' + str(self.skillType) + 'Goal(' + arguments + ')')
 
 class DriveSkill(Skill):
 

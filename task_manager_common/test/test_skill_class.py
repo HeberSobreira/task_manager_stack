@@ -4,7 +4,7 @@ import sys
 import unittest
 import rostest
 
-from task_manager_common.msg import *
+from task_manager_msgs.msg import *
 
 from skill_class import *
 # from skill_factory_class import SkillFactory
@@ -145,7 +145,7 @@ class TestActionTypeConstructor(TestSkillClassBase):
 
         actionType = s.actionTypeConstructor()
 
-        self.assertEquals(task_manager_common.msg.DriveSkillAction, actionType)
+        self.assertEquals(task_manager_msgs.msg.DriveSkillAction, actionType)
 
     def test_return_error(self):
         s = Skill(skillName = 'drive-skill', skillType = 'DriveSkills', allowedSkillPropertiesKeys = ['toObjectId', 'toObjectType'], skillProperties = {'toObjectId': 'exampleObjectId', 'toObjectType': 'exampleToObjectId'})

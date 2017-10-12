@@ -11,11 +11,11 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   rostest
-  std_msgs
+  # std_msgs
   task_manager_msgs
-  message_generation
-  actionlib_msgs
-  geometry_msgs
+  # message_generation
+  # actionlib_msgs
+  # geometry_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -66,17 +66,17 @@ catkin_python_setup()
 # )
 
 ## Generate actions in the 'action' folder
-add_action_files(
-  DIRECTORY action
-  FILES DriveSkill.action LocateSkill.action PickSkill.action PlaceSkill.action WaitSkill.action ActuateArmSkill.action DockSkill.action MoveArmSkill.action GenericSkill.action
-)
+# add_action_files(
+#   DIRECTORY action
+#   FILES DriveSkill.action LocateSkill.action PickSkill.action PlaceSkill.action WaitSkill.action ActuateArmSkill.action DockSkill.action MoveArmSkill.action GenericSkill.action
+# )
 ## Generate added messages and services with any dependencies listed here
-generate_messages(
-  DEPENDENCIES
-  actionlib_msgs
-  std_msgs
-  geometry_msgs
-)
+# generate_messages(
+#   DEPENDENCIES
+#   actionlib_msgs
+#   std_msgs
+#   geometry_msgs
+# )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -110,7 +110,7 @@ generate_messages(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES task_manager_common
- CATKIN_DEPENDS roscpp rospy rostest actionlib_msgs std_msgs task_manager_msgs
+ CATKIN_DEPENDS roscpp rospy rostest task_manager_msgs
 #  DEPENDS system_lib
 )
 

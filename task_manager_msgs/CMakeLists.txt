@@ -11,7 +11,9 @@ find_package(catkin REQUIRED COMPONENTS
   message_generation
   roscpp
   rospy
+  actionlib_msgs
   std_msgs
+  geometry_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -63,16 +65,17 @@ add_service_files(
 )
 
 ## Generate actions in the 'action' folder
-# add_action_files(
-#   FILES
-#   Action1.action
-#   Action2.action
-# )
+add_action_files(
+  DIRECTORY action
+  FILES DriveSkill.action LocateSkill.action PickSkill.action PlaceSkill.action WaitSkill.action ActuateArmSkill.action DockSkill.action MoveArmSkill.action GenericSkill.action
+)
 
 ## Generate added messages and services with any dependencies listed here
 generate_messages(
   DEPENDENCIES
+  actionlib_msgs
   std_msgs
+  geometry_msgs
 )
 
 ################################################
@@ -107,7 +110,7 @@ generate_messages(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES task_manager_msgs
- CATKIN_DEPENDS message_generation roscpp rospy std_msgs
+ CATKIN_DEPENDS message_generation roscpp rospy std_msgs actionlib_msgs
 #  DEPENDS system_lib
 )
 
