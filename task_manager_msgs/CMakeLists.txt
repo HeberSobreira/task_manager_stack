@@ -14,6 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
   actionlib_msgs
   std_msgs
   geometry_msgs
+  robis_nav_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -67,7 +68,17 @@ add_service_files(
 ## Generate actions in the 'action' folder
 add_action_files(
   DIRECTORY action
-  FILES DriveSkill.action LocateSkill.action PickSkill.action PlaceSkill.action WaitSkill.action ActuateArmSkill.action DockSkill.action MoveArmSkill.action GenericSkill.action
+  FILES
+  DriveSkill.action
+  LocateSkill.action
+  PickSkill.action
+  PlaceSkill.action
+  WaitSkill.action
+  ActuateArmSkill.action
+  DockSkill.action
+  MoveArmSkill.action
+  GenericSkill.action
+  DriveEdgesSkill.action
 )
 
 ## Generate added messages and services with any dependencies listed here
@@ -76,6 +87,7 @@ generate_messages(
   actionlib_msgs
   std_msgs
   geometry_msgs
+  robis_nav_msgs
 )
 
 ################################################

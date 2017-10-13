@@ -127,7 +127,7 @@ class TaskManager(object):
         rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] Starting Mission with ' + str(len(self.ongoingTasks)) + ' Tasks... ')
 
         while len(self.ongoingTasks) is not 0:
-            task = self.ongoingTasks.pop(-1) # TODO: Write a Unit Test for this!
+            task = self.ongoingTasks.pop(0) # TODO: Write a Unit Test for this!
 
             self.update_mission_status(missionId = missionId, taskId = task.skillName, statusCode = 1, statusDescription = 'Starting Task ' + str(task.skillName))
 
