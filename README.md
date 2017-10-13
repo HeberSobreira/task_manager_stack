@@ -9,13 +9,15 @@ The **Task Manager** is responsible for receiving mission assignments and for th
 
 ## <a name="installation"></a>Installation
 
-1. Download the [task_manager_stack]() repository to the src folder of your catkin workspace.
+1. Follow the Installation steps for the [robis_custom_msgs_stack](https://gitlab.inesctec.pt/heber.m.sobreira/robis_custom_msgs_stack) repository.
+
+2. Download the [task_manager_stack]() repository to the src folder of your catkin workspace.
 
     ```bash
     git clone https://gitlab.inesctec.pt/CRIIS/task_manager_stack
     ```
 
-2. Build your code. Assuming your catkin workspace is located in ~/catkin_ws:
+3. Build your code. Assuming your catkin workspace is located in ~/catkin_ws:
 
     ```bash
     cd ~/catkin_ws
