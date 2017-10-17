@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- Arguments -->
+    <arg name="robot_id" default="testRobotId"/>
+    <arg name="skills_file" default="test_skills.yaml" />
+    <arg name="skills_path" default="$(find task_manager_common)/test/skills"/>
+
+    <!-- Test Skills Loader -->
+    <rosparam command="load" file="$(arg skills_path)/$(arg skills_file)" ns="task_manager"/>
+
+    <!-- Fake Skills -->
+    <include file="$(find task_manager_server)/launch/fake_skills.launch">
+        <arg name="robotId" value="$(arg robot_id)"/>
+    </include>
+
+    <!-- Integration Test -->
+    <test test-name="integration_tests" pkg="task_manager_server" type="integration_tests.py" />
+
+</launch>

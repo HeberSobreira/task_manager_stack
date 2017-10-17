@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<launch>
+
+    <arg name="robotId" default="igor" />
+
+    <!-- Launches the skills simulation action servers -->
+    <!-- <node name="driveSkill" pkg="task_manager_server" type="skill_action_server.py" output="screen" args="driveSkill $(arg robotId)"></node> -->
+    <!-- <node name="driveEdgesSkill" pkg="task_manager_server" type="skill_action_server.py" output="screen" args="driveEdgesSkill $(arg robotId)"></node> -->
+    <!-- <node name="locateSkill" pkg="task_manager_server" type="skill_action_server.py" output="screen" args="locateSkill $(arg robotId)"></node>
+    <node name="pickSkill" pkg="task_manager_server" type="skill_action_server.py" output="screen" args="pickSkill $(arg robotId)"></node>
+    <node name="placeSkill" pkg="task_manager_server" type="skill_action_server.py" output="screen" args="placeSkill $(arg robotId)"></node>
+    <node name="waitSkill" pkg="task_manager_server" type="skill_action_server.py" output="screen" args="waitSkill $(arg robotId)"></node>
+    <node name="dockSkill" pkg="task_manager_server" type="skill_action_server.py" output="screen" args="dockSkill $(arg robotId)"></node>
+    <node name="actuateArmSkill" pkg="task_manager_server" type="skill_action_server.py" output="screen" args="actuateArmSkill $(arg robotId)"></node>
+    <node name="moveArmSkill" pkg="task_manager_server" type="skill_action_server.py" output="screen" args="moveArmSkill $(arg robotId)"></node> -->
+    <node name="GenericSkill" pkg="fake_skills" type="skill_action_server.py" output="screen" args="genericSkill $(arg robotId)"></node>
+
+</launch>

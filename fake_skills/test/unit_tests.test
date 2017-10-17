@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- Unit Tests -->
+    <test test-name="test_task_manager" pkg="task_manager_server" type="test_task_manager_class.py" />
+
+</launch>
