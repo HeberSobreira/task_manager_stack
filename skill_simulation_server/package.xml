@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package>
-  <name>fake_skills</name>
+  <name>skill_simulation_server</name>
   <version>0.0.0</version>
-  <description>The fake_skills package</description>
+  <description>The skill_simulation_server package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
@@ -19,7 +19,7 @@
   <!-- Url tags are optional, but multiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/fake_skills</url> -->
+  <!-- <url type="website">http://wiki.ros.org/skill_simulation_server</url> -->
 
 
   <!-- Author tags are optional, multiple are allowed, one per tag -->
@@ -59,6 +59,7 @@
   <run_depend>roscpp</run_depend>
   <run_depend>rospy</run_depend>
   <run_depend>std_msgs</run_depend>
+
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>

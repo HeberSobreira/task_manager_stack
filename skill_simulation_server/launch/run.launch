@@ -13,6 +13,6 @@
     <node name="dockSkill" pkg="task_manager_server" type="skill_action_server.py" output="screen" args="dockSkill $(arg robotId)"></node>
     <node name="actuateArmSkill" pkg="task_manager_server" type="skill_action_server.py" output="screen" args="actuateArmSkill $(arg robotId)"></node>
     <node name="moveArmSkill" pkg="task_manager_server" type="skill_action_server.py" output="screen" args="moveArmSkill $(arg robotId)"></node> -->
-    <node name="GenericSkill" pkg="fake_skills" type="skill_action_server.py" output="screen" args="genericSkill $(arg robotId)"></node>
+    <node name="GenericSkill" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="genericSkill $(arg robotId)"></node>
 
 </launch>
