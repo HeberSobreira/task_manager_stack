@@ -20,13 +20,9 @@ class TestSkillSimulationServerBase(unittest.TestCase):
 class TestSkillActionBase(TestSkillSimulationServerBase):
 
     def test_create_object_with_name_and_skills(self):
-        skill_action_object = SkillActionBase(name = 'testName', skillType = 'DriveSkill')
+        skill_action_object = SkillActionBase(skillName = 'testName', actionType = 'DriveSkill')
         self.assertTrue(skill_action_object._action_name == 'testName' and skill_action_object.skillType == 'DriveSkill')
 
-
-    def test_execute_cb(self):
-        skill_action_object = SkillActionBase(name = 'testName', skillType = 'DriveSkill')
-        skill_action_object.execute_cb
 
 
 class SuiteTest(unittest.TestSuite):
