@@ -12,10 +12,10 @@ class MissionAssigner(object):
 
     """docstring for MissionAssigner."""
 
-    def __init__(self, robotId = "defaultRobotId", missionId = "defaultMissionId", tasks = [], skills = []):
-        ## TODO: Re-Do the way default stuff is imported (check task manager class)
-        self.robotId = robotId
-        self.missionId = missionId
+
+    def __init__(self, robotId = None, missionId = None, tasks = None, skills = None):
+        self.robotId = robotId if robotId is not None else 'defaultRobotId'
+        self.missionId = missionId if missionId is not None else 'defaultMissionId'
         self.tasks = tasks
         self.skills = skills
 

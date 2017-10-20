@@ -32,10 +32,10 @@ To initiate the Task Manager, perform:
 roslaunch task_manager_server run.launch
 ```
 
-In order to test it, a Fake Skill system can be deployed:
+In order to test it, a Skill simulation system can be deployed:
 
 ```bash
-roslaunch task_manager_server fake_skills.launch
+roslaunch skill_simulation_server run.launch
 ```
 
 To assign a mission, perform:
