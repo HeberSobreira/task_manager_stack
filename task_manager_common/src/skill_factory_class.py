@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import sys
+import ast
 
 from skill_class import *
 
@@ -37,7 +38,11 @@ class SkillFactory(object):
             if skillPropertyKey not in allowedSkillPropertiesKeys:
                 raise KeyError('Skill property ' + str(skillPropertyKey) + ' not found in allowed Skill Properties: ' + str(allowedSkillPropertiesKeys))
 
-            skillProperties.update({skillPropertyKey: skillPropertyValue})
+            # Module to figure out which type of value is being passed (int, float, list). If it fails to do so, it lealves the skillPropertyValue as a string
+            try:
+                skillProperties.update({skillPropertyKey: ast.literal_eval(skillPropertyValue)})
+            except Exception as e:
+                skillProperties.update({skillPropertyKey: skillPropertyValue})
 
         return {'skillName': skillName, 'skillType': skillType, 'skillClass': skillClass, 'allowedSkillPropertiesKeys': allowedSkillPropertiesKeys, 'skillProperties': skillProperties}
 
