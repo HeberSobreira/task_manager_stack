@@ -5,6 +5,7 @@ import rospy
 
 from task_manager_msgs.msg import ActionAcceptedRefused
 from task_manager_msgs.msg import TaskStatus
+# from geometry_msgs.msg import PoseStamped
 
 # Class for ROS Message Construction
 class MSGConstructor(object):
@@ -35,3 +36,22 @@ class MSGConstructor(object):
 
 
     ## PoseStampedConstructor
+    # def PoseStamped_message_creation(frame_id, px, py, pz, qx, qy, qz, qw):
+    #
+    # 	# Creates a geometry_msgs/PointStamped Message
+    # 	Pose = PoseStamped()
+    #
+    # 	Pose.header.frame_id = frame_id
+    #
+    # 	# Origin coordinates
+    # 	Pose.pose.position.x = px
+    # 	Pose.pose.position.y = py
+    # 	Pose.pose.position.z = pz
+    #
+    # 	Pose.pose.orientation.x = qx
+    # 	Pose.pose.orientation.y = qy
+    # 	Pose.pose.orientation.z = qz
+    # 	Pose.pose.orientation.w = qw
+    #
+    # 	return Pose
+    #

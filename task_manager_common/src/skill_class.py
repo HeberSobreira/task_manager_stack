@@ -115,14 +115,16 @@ class PoseInteractionSkill(Skill):
 
     """docstring for PoseInteractionSkill."""
 
-    ## 1. save frameId
-    ## 2. save px, py, pz, qx, qy, qz, qw
-    ## 3. Create PoseStamped Messages < frameId, px, py, pz, qx, qy, qz, qw
-    ## 4. eveal
+    # def actionGoalConstructor(self):
 
-    # pickpoint = PoseStamped()
-    # arguments = 'ObjectId=frameId, PickPoint = pickpoint'
-    # return eval('task_manager_msgs.msg.' + str(self.skillType) + 'Goal(' + arguments + ')')
+        ## 1. save frameId
+        ## 2. save px, py, pz, qx, qy, qz, qw
+        ## 3. Create PoseStamped Messages (poseStamped) < frameId, px, py, pz, qx, qy, qz, qw
+        ## 4. eveal
+
+        # pickpoint = PoseStamped()
+        # arguments = 'ObjectId=frameId, Pose = poseStamped'
+        # return eval('task_manager_msgs.msg.' + str(self.skillType) + 'Goal(' + arguments + ')')
 
     pass
 
