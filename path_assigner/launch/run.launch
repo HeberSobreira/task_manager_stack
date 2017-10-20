@@ -2,11 +2,16 @@
 <launch>
 
     <!-- Arguments -->
-    <!-- <arg name="robot_id" default="igor"/> -->
+    <arg name="graph_file" default="test_graph.yaml" />
+    <arg name="graph_path" default="$(find path_assigner)/graph"/>
+    <arg name="get_path_service_name" default="/task_manager/GetPath" />
+
+    <!-- Graph Loader -->
+    <rosparam command="load" file="$(arg graph_path)/$(arg graph_file)" ns="path_assigner"/>
 
     <!-- Path Assigner -->
     <node name="path_assigner" pkg="path_assigner" type="path_assigner.py" output="screen">
-        <!-- <param name='robotId' value='$(arg robot_id)' /> -->
+        <param name='get_path_service_name' value='$(arg get_path_service_name)' />
     </node>
 
 </launch>

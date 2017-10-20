@@ -1,0 +1,14 @@
+Edges:
+- {CurveType: spline, Destination_ID: 2, Id: 5, Origin_ID: 1, ParamB: 2.0, ParamF: 2.0,
+  VelocityBackwards: 0.0, VelocityForward: 0.4}
+- {CurveType: spline, Destination_ID: 3, Id: 6, Origin_ID: 2, ParamB: 2.0, ParamF: 2.0,
+  VelocityBackwards: 0.0, VelocityForward: 0.4}
+- {CurveType: spline, Destination_ID: 4, Id: 7, Origin_ID: 3, ParamB: 0.8183596134185791,
+  ParamF: 0.8225753903388977, VelocityBackwards: 0.0, VelocityForward: 0.4}
+- {CurveType: spline, Destination_ID: 1, Id: 8, Origin_ID: 4, ParamB: 1.532468318939209,
+  ParamF: 0.37994420528411865, VelocityBackwards: 0.0, VelocityForward: 0.4}
+Vertices:
+- {Id: 4, Label: pass, Theta: 1.6408183143523576, X: 3.795560359954834, Y: -0.7136965394020081}
+- {Id: 3, Label: pass, Theta: -3.1372048300287716, X: 4.433111989056138, Y: -2.1064699919722116}
+- {Id: 2, Label: pass, Theta: -1.6739706641703276, X: 7.839213143958006, Y: -1.2164633015369657}
+- {Id: 1, Label: pass, Theta: 0.013998695428069075, X: 5.3468814452757485, Y: 0.05751018097811422}
