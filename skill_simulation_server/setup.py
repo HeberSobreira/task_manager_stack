@@ -5,7 +5,7 @@ from catkin_pkg.python_setup import generate_distutils_setup
 
 # fetch values from package.xml
 setup_args = generate_distutils_setup(
-    packages=['task_manager', 'task_manager_class'],
+    packages=['skill_action_server_class'],
     package_dir={'': 'src'},
 )
 
