@@ -15,7 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
   task_manager_msgs
   # message_generation
   # actionlib_msgs
-  # geometry_msgs
+  geometry_msgs
 )
 
 ## System dependencies are found with CMake's conventions

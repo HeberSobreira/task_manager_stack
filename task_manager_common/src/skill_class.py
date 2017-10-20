@@ -5,6 +5,7 @@ import rospy
 import actionlib
 
 from task_manager_msgs.msg import *
+from msg_constructor import *
 
 class Skill(object):
 
@@ -115,18 +116,31 @@ class PoseInteractionSkill(Skill):
 
     """docstring for PoseInteractionSkill."""
 
-    # def actionGoalConstructor(self):
+    def actionGoalConstructor(self):
+
 
         ## 1. save frameId
+        frameId = self.skillProperties['frameId']
+
         ## 2. save px, py, pz, qx, qy, qz, qw
+        px = self.skillProperties['px']
+        py = self.skillProperties['py']
+        pz = self.skillProperties['pz']
+        qx = self.skillProperties['qx']
+        qy = self.skillProperties['qy']
+        qz = self.skillProperties['qz']
+        qw = self.skillProperties['qw']
+
         ## 3. Create PoseStamped Messages (poseStamped) < frameId, px, py, pz, qx, qy, qz, qw
-        ## 4. eveal
+        poseStamped = MSGConstructor.PoseStampedConstructor(frameId, px, py, pz, qx, qy, qz, qw)
 
-        # pickpoint = PoseStamped()
-        # arguments = 'ObjectId=frameId, Pose = poseStamped'
-        # return eval('task_manager_msgs.msg.' + str(self.skillType) + 'Goal(' + arguments + ')')
+        ## 4. eval
+        arguments = 'ObjectId=frameId, Pose = poseStamped'
+        return eval('task_manager_msgs.msg.' + str(self.skillType) + 'Goal(' + arguments + ')')
 
-    pass
+
+        # task_manager_msgs.msg.skillTypeGoal(ObjectId=frameId, Pose = poseStamped)
+
 
 class ObjectInteractionSkill(Skill):
 

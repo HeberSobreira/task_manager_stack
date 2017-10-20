@@ -34,6 +34,20 @@ class TestActionAcceptedRefusedConstructor(TestMSGConstructorBase):
         with self.assertRaises(TypeError):
             response = MSGConstructor.ActionAcceptedRefusedConstructor()
 
+
+class TestPoseStampedConstructor(TestMSGConstructorBase):
+
+    def test_constructor_inputs(self):
+        poseStampedObject = MSGConstructor.PoseStampedConstructor('testFrameID', 1, 2, 3, 4, 5, 6, 7)
+        self.assertEqual(poseStampedObject.header.frame_id,'testFrameID')
+        self.assertEqual(poseStampedObject.pose.position.x, 1)
+        self.assertEqual(poseStampedObject.pose.position.y, 2)
+        self.assertEqual(poseStampedObject.pose.position.z, 3)
+        self.assertEqual(poseStampedObject.pose.orientation.x, 4)
+        self.assertEqual(poseStampedObject.pose.orientation.y, 5)
+        self.assertEqual(poseStampedObject.pose.orientation.z, 6)
+        self.assertEqual(poseStampedObject.pose.orientation.w, 7)
+
 # Test Suite for Mission Assigner
 class SuiteTest(unittest.TestSuite):
 
@@ -43,8 +57,10 @@ class SuiteTest(unittest.TestSuite):
         loader = unittest.TestLoader()
 
         testActionAcceptedRefusedConstructor = loader.loadTestsFromTestCase(TestActionAcceptedRefusedConstructor)
+        testPoseStampedConstructor = loader.loadTestsFromTestCase(TestPoseStampedConstructor)
 
         self.addTests(testActionAcceptedRefusedConstructor)
+        self.addTests(testPoseStampedConstructor)
 
 if __name__ == '__main__':
       rostest.rosrun(PKG, NAME, 'test_msg_constructor.SuiteTest', sys.argv)
