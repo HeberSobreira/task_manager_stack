@@ -12,7 +12,6 @@ roscpp
 rospy
 std_msgs
 rostest
-actionlib
 task_manager_msgs
 )
 
@@ -204,5 +203,4 @@ include_directories(
 if(CATKIN_ENABLE_TESTING)
   find_package(rostest REQUIRED)
   add_rostest(test/unit_tests.test)
-  add_rostest(test/integration_tests.test)
 endif()

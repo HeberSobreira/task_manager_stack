@@ -2,6 +2,6 @@
 <launch>
 
     <!-- Unit Tests -->
-    <test test-name="test_task_manager" pkg="task_manager_server" type="test_task_manager_class.py" />
+    <test test-name="test_skill_action_server_class" pkg="skill_simulation_server" type="test_skill_action_server_class.py" />
 
 </launch>
