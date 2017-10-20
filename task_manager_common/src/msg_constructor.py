@@ -32,3 +32,6 @@ class MSGConstructor(object):
         taskStatus.when = when
 
         return taskStatus
+
+
+    ## PoseStampedConstructor

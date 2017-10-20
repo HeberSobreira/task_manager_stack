@@ -115,6 +115,15 @@ class PoseInteractionSkill(Skill):
 
     """docstring for PoseInteractionSkill."""
 
+    ## 1. save frameId
+    ## 2. save px, py, pz, qx, qy, qz, qw
+    ## 3. Create PoseStamped Messages < frameId, px, py, pz, qx, qy, qz, qw
+    ## 4. eveal
+
+    # pickpoint = PoseStamped()
+    # arguments = 'ObjectId=frameId, PickPoint = pickpoint'
+    # return eval('task_manager_msgs.msg.' + str(self.skillType) + 'Goal(' + arguments + ')')
+
     pass
 
 class ObjectInteractionSkill(Skill):
