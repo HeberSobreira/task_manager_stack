@@ -119,27 +119,29 @@ class PoseInteractionSkill(Skill):
     def actionGoalConstructor(self):
 
 
-        ## 1. save frameId
-        frameId = self.skillProperties['frameId']
+        #TODO: implement a method to check if the skillProperties match with the allowedSkillPropertiesKeys
 
-        ## 2. save px, py, pz, qx, qy, qz, qw
-        px = self.skillProperties['px']
-        py = self.skillProperties['py']
-        pz = self.skillProperties['pz']
-        qx = self.skillProperties['qx']
-        qy = self.skillProperties['qy']
-        qz = self.skillProperties['qz']
-        qw = self.skillProperties['qw']
+        for key in self.skillProperties:
+            if key not in self.allowedSkillPropertiesKeys:
+                raise AttributeError('%s is not an allowed property key' %key)
 
-        ## 3. Create PoseStamped Messages (poseStamped) < frameId, px, py, pz, qx, qy, qz, qw
+        try:
+            frameId = self.skillProperties['frameId']
+            px = self.skillProperties['px']
+            py = self.skillProperties['py']
+            pz = self.skillProperties['pz']
+            qx = self.skillProperties['qx']
+            qy = self.skillProperties['qy']
+            qz = self.skillProperties['qz']
+            qw = self.skillProperties['qw']
+        except KeyError as e:
+            raise KeyError('PoseInteractionSkill missing property: ' + str(e))
+
         poseStamped = MSGConstructor.PoseStampedConstructor(frameId, px, py, pz, qx, qy, qz, qw)
 
-        ## 4. eval
         arguments = 'ObjectId=frameId, Pose = poseStamped'
-        return eval('task_manager_msgs.msg.' + str(self.skillType) + 'Goal(' + arguments + ')')
-
-
         # task_manager_msgs.msg.skillTypeGoal(ObjectId=frameId, Pose = poseStamped)
+        return eval('task_manager_msgs.msg.' + str(self.skillType) + 'Goal(' + arguments + ')')
 
 
 class ObjectInteractionSkill(Skill):

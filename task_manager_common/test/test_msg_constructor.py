@@ -48,6 +48,8 @@ class TestPoseStampedConstructor(TestMSGConstructorBase):
         self.assertEqual(poseStampedObject.pose.orientation.z, 6)
         self.assertEqual(poseStampedObject.pose.orientation.w, 7)
 
+        #TODO: fazer mais testes para esta class
+
 # Test Suite for Mission Assigner
 class SuiteTest(unittest.TestSuite):
 
