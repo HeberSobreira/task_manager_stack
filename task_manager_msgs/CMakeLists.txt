@@ -63,6 +63,7 @@ add_service_files(
   FILES
   AssignMission.srv
   ProvideTaskStatus.srv
+  GetPath.srv
 )
 
 ## Generate actions in the 'action' folder
