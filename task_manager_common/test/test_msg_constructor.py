@@ -35,6 +35,33 @@ class TestActionAcceptedRefusedConstructor(TestMSGConstructorBase):
             response = MSGConstructor.ActionAcceptedRefusedConstructor()
 
 
+class TestTaskStatusConstructor(TestMSGConstructorBase):
+    def test_TaskStatusConstructor_empty_input(self):
+        taskStatus = MSGConstructor.TaskStatusConstructor()
+        self.assertIsInstance(taskStatus, TaskStatus)
+
+    def test_TaskStatusConstructor_empty_input_values(self):
+        taskStatus = MSGConstructor.TaskStatusConstructor()
+        self.assertEquals(taskStatus.missionId, 'defaultMissionId')
+        self.assertEquals(taskStatus.taskId, 'defaultTaskId')
+        self.assertEquals(taskStatus.statusCode, 0)
+        self.assertEquals(taskStatus.statusDescription, 'defaultStatusDescription')
+        self.assertEquals(taskStatus.when, None)
+
+    def test_TaskStatusConstructor_input_values(self):
+        taskStatus = MSGConstructor.TaskStatusConstructor('testMissionId','testTaskId', 1, 'testStatusDescription', rospy.Time(10))
+        self.assertEquals(taskStatus.missionId, 'testMissionId')
+        self.assertEquals(taskStatus.taskId, 'testTaskId')
+        self.assertEquals(taskStatus.statusCode, 1)
+        self.assertEquals(taskStatus.statusDescription, 'testStatusDescription')
+        self.assertEquals(taskStatus.when.secs, 10)
+
+    def test_TaskStatusConstructor_extra_arguments(self):
+        with self.assertRaises(TypeError):
+            taskStatus = MSGConstructor.TaskStatusConstructor('testMissionId','testTaskId', 1, 'testStatusDescription', rospy.Time(10), 'testArgument')
+
+
+
 class TestPoseStampedConstructor(TestMSGConstructorBase):
 
     def test_PoseStampedConstructor_inputs(self):
@@ -70,9 +97,11 @@ class SuiteTest(unittest.TestSuite):
 
         testActionAcceptedRefusedConstructor = loader.loadTestsFromTestCase(TestActionAcceptedRefusedConstructor)
         testPoseStampedConstructor = loader.loadTestsFromTestCase(TestPoseStampedConstructor)
+        testTaskStatusConstructor = loader.loadTestsFromTestCase(TestTaskStatusConstructor)
 
         self.addTests(testActionAcceptedRefusedConstructor)
         self.addTests(testPoseStampedConstructor)
+        self.addTests(testTaskStatusConstructor)
 
 if __name__ == '__main__':
       rostest.rosrun(PKG, NAME, 'test_msg_constructor.SuiteTest', sys.argv)
