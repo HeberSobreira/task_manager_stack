@@ -37,7 +37,7 @@ class TestActionAcceptedRefusedConstructor(TestMSGConstructorBase):
 
 class TestPoseStampedConstructor(TestMSGConstructorBase):
 
-    def test_constructor_inputs(self):
+    def test_PoseStampedConstructor_inputs(self):
         poseStampedObject = MSGConstructor.PoseStampedConstructor('testFrameID', 1, 2, 3, 4, 5, 6, 7)
         self.assertEqual(poseStampedObject.header.frame_id,'testFrameID')
         self.assertEqual(poseStampedObject.pose.position.x, 1)
@@ -48,7 +48,17 @@ class TestPoseStampedConstructor(TestMSGConstructorBase):
         self.assertEqual(poseStampedObject.pose.orientation.z, 6)
         self.assertEqual(poseStampedObject.pose.orientation.w, 7)
 
-        #TODO: fazer mais testes para esta class
+    def test_PoseStampedConstructor_empty_input(self):
+        with self.assertRaises(TypeError):
+            poseStampedObject = MSGConstructor.PoseStampedConstructor()
+
+    def test_PoseStampedConstructor_missing_arguments(self):
+        with self.assertRaises(TypeError):
+            poseStampedObject = MSGConstructor.PoseStampedConstructor('testFrameID', 1, 2)
+
+    def test_PoseStampedConstructor_extra_arguments(self):
+        with self.assertRaises(TypeError):
+            poseStampedObject = MSGConstructor.PoseStampedConstructor('testFrameID', 1, 2, 3, 4, 5, 6, 7, 8)
 
 # Test Suite for Mission Assigner
 class SuiteTest(unittest.TestSuite):
