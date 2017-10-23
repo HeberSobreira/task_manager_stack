@@ -356,6 +356,11 @@ class TestPoseInteractionSkill(TestSkillClassBase):
             actionGoal = dockSkill.actionGoalConstructor()
 
 
+class TestDriveEdgesSkill(TestSkillClassBase):
+    def test_DriveEdgesSkill_create(self):
+        self.assertTrue(True)
+        
+
 
 # Test Suite for Skill Class
 class SuiteTest(unittest.TestSuite):
@@ -373,6 +378,7 @@ class SuiteTest(unittest.TestSuite):
         testActionClient = loader.loadTestsFromTestCase(TestActionClient)
         testGenericSkill = loader.loadTestsFromTestCase(TestGenericSkill)
         testPoseInteractionSkill = loader.loadTestsFromTestCase(TestPoseInteractionSkill)
+        testDriveEdgesSkill = loader.loadTestsFromTestCase(TestDriveEdgesSkill)
 
         self.addTests(testSkillClass)
         self.addTests(testSkillPropertiesConstructor)
@@ -382,6 +388,7 @@ class SuiteTest(unittest.TestSuite):
         self.addTests(testActionClient)
         self.addTests(testGenericSkill)
         self.addTests(testPoseInteractionSkill)
+        self.addTests(testDriveEdgesSkill)
 
 if __name__ == '__main__':
       rostest.rosrun(PKG, NAME, 'test_skill_class.SuiteTest', sys.argv)

@@ -110,7 +110,8 @@ class DriveEdgesSkill(Skill):
 
     """docstring for DriveEdgesSkill."""
 
-    pass
+    def actionGoalConstructor(self):
+        pass
 
 class PoseInteractionSkill(Skill):
 
@@ -119,8 +120,8 @@ class PoseInteractionSkill(Skill):
     def actionGoalConstructor(self):
 
 
-        #TODO: implement a method to check if the skillProperties match with the allowedSkillPropertiesKeys
-
+        #TODO:check if the skillProperties match with the allowedSkillPropertiesKeys
+        #Does it make sense?
         for key in self.skillProperties:
             if key not in self.allowedSkillPropertiesKeys:
                 raise AttributeError('%s is not an allowed property key' %key)
