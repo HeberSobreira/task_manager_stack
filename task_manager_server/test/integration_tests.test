@@ -12,7 +12,9 @@
     <!-- Fake Skills -->
     <!-- TODO: verificar se isto funciona -->
     <include file="$(find skill_simulation_server)/launch/run.launch">
-        <arg name="robotId" value="$(arg robot_id)"/>
+        <!-- <arg name="robotId" value="$(arg robot_id)"/> -->
+    </include>
+    <include file="$(find path_assigner)/launch/run.launch">
     </include>
 
     <!-- Integration Test -->

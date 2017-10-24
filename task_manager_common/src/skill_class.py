@@ -5,6 +5,7 @@ import rospy
 import actionlib
 
 from task_manager_msgs.msg import *
+from task_manager_msgs.srv import GetPath
 from msg_constructor import *
 
 class Skill(object):
@@ -111,7 +112,20 @@ class DriveEdgesSkill(Skill):
     """docstring for DriveEdgesSkill."""
 
     def actionGoalConstructor(self):
-        pass
+
+        try:
+            mode = self.skillProperties['mode']
+            edges = self.skillProperties['edges']
+        except KeyError as e:
+            raise KeyError('DriveEdgesSkill missing property: ' + str(e))
+
+        rospy.wait_for_service('/task_manager/GetPath', timeout=3) #TODO: Shouldnt be hard coded
+        getPath = rospy.ServiceProxy('/task_manager/GetPath', GetPath)
+        response = getPath(edges)
+        pathSet = response.PathSet
+
+        arguments = 'ControllerMode=mode, PathSet = pathSet'
+        return eval('task_manager_msgs.msg.' + str(self.skillType) + 'Goal(' + arguments + ')')
 
 class PoseInteractionSkill(Skill):
 
@@ -140,7 +154,7 @@ class PoseInteractionSkill(Skill):
 
         poseStamped = MSGConstructor.PoseStampedConstructor(frameId, px, py, pz, qx, qy, qz, qw)
 
-        arguments = 'ObjectId=frameId, Pose = poseStamped'
+        arguments = 'ObjectId = frameId, Pose = poseStamped'
         # task_manager_msgs.msg.skillTypeGoal(ObjectId=frameId, Pose = poseStamped)
         return eval('task_manager_msgs.msg.' + str(self.skillType) + 'Goal(' + arguments + ')')
 
