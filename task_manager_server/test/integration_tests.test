@@ -10,8 +10,11 @@
     <rosparam command="load" file="$(arg skills_path)/$(arg skills_file)" ns="task_manager"/>
 
     <!-- Fake Skills -->
-    <include file="$(find task_manager_server)/launch/fake_skills.launch">
-        <arg name="robotId" value="$(arg robot_id)"/>
+    <!-- TODO: verificar se isto funciona -->
+    <include file="$(find skill_simulation_server)/launch/run.launch">
+        <!-- <arg name="robotId" value="$(arg robot_id)"/> -->
+    </include>
+    <include file="$(find path_assigner)/launch/run.launch">
     </include>
 
     <!-- Integration Test -->

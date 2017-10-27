@@ -1,3 +1,3 @@
-uint8[] edges
+uint16[] edges
 ---
 robis_nav_msgs/ParametricPathSet PathSet

@@ -1,6 +1,6 @@
 #goal definition
 string ObjectId
-geometry_msgs/PoseStamped DockPose
+geometry_msgs/PoseStamped Pose
 ---
 #result definition
 int32 percentage

@@ -17,7 +17,13 @@ The **Task Manager** is responsible for receiving mission assignments and for th
     git clone https://gitlab.inesctec.pt/CRIIS/task_manager_stack
     ```
 
-3. Build your code. Assuming your catkin workspace is located in ~/catkin_ws:
+3. Install [pytest-mock](https://github.com/pytest-dev/pytest-mock), used for testing:
+
+    ```bash
+    pip install pytest-mock
+    ```
+
+4. Build your code. Assuming your catkin workspace is located in ~/catkin_ws:
 
     ```bash
     cd ~/catkin_ws

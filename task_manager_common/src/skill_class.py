@@ -5,6 +5,8 @@ import rospy
 import actionlib
 
 from task_manager_msgs.msg import *
+from task_manager_msgs.srv import GetPath
+from msg_constructor import *
 
 class Skill(object):
 
@@ -109,24 +111,53 @@ class DriveEdgesSkill(Skill):
 
     """docstring for DriveEdgesSkill."""
 
-    pass
+    def actionGoalConstructor(self):
+
+        try:
+            mode = self.skillProperties['mode']
+            edges = self.skillProperties['edges']
+        except KeyError as e:
+            raise KeyError('DriveEdgesSkill missing property: ' + str(e))
+
+        rospy.wait_for_service('/task_manager/GetPath', timeout=3) #TODO: Shouldnt be hard coded
+        getPath = rospy.ServiceProxy('/task_manager/GetPath', GetPath)
+        response = getPath(edges)
+        pathSet = response.PathSet
+
+        arguments = 'ControllerMode=mode, PathSet = pathSet'
+        return eval('task_manager_msgs.msg.' + str(self.skillType) + 'Goal(' + arguments + ')')
 
 class PoseInteractionSkill(Skill):
 
     """docstring for PoseInteractionSkill."""
 
-    # def actionGoalConstructor(self):
+    def actionGoalConstructor(self):
 
-        ## 1. save frameId
-        ## 2. save px, py, pz, qx, qy, qz, qw
-        ## 3. Create PoseStamped Messages (poseStamped) < frameId, px, py, pz, qx, qy, qz, qw
-        ## 4. eveal
 
-        # pickpoint = PoseStamped()
-        # arguments = 'ObjectId=frameId, Pose = poseStamped'
-        # return eval('task_manager_msgs.msg.' + str(self.skillType) + 'Goal(' + arguments + ')')
+        #TODO:check if the skillProperties match with the allowedSkillPropertiesKeys
+        #Does it make sense?
+        for key in self.skillProperties:
+            if key not in self.allowedSkillPropertiesKeys:
+                raise AttributeError('%s is not an allowed property key' %key)
 
-    pass
+        try:
+            frameId = self.skillProperties['frameId']
+            px = self.skillProperties['px']
+            py = self.skillProperties['py']
+            pz = self.skillProperties['pz']
+            qx = self.skillProperties['qx']
+            qy = self.skillProperties['qy']
+            qz = self.skillProperties['qz']
+            qw = self.skillProperties['qw']
+        except KeyError as e:
+            raise KeyError('PoseInteractionSkill missing property: ' + str(e))
+
+        poseStamped = MSGConstructor.PoseStampedConstructor(frameId, px, py, pz, qx, qy, qz, qw)
+
+        arguments = 'ObjectId = frameId, Pose = poseStamped'
+        # task_manager_msgs.msg.skillTypeGoal(ObjectId=frameId, Pose = poseStamped)
+        return eval('task_manager_msgs.msg.' + str(self.skillType) + 'Goal(' + arguments + ')')
+
 
 class ObjectInteractionSkill(Skill):
 

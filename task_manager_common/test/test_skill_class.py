@@ -218,6 +218,148 @@ class TestGenericSkill(TestSkillClassBase):
     #     self.assertEquals(actionGoal.exampleSkillProperty0, 'exampleSkillValue0')
         # self.assertEquals(actionGoal.exampleSkillProperty1, 10)
 
+class TestPoseInteractionSkill(TestSkillClassBase):
+    def test_DockSkill_successful_creation(self):
+        dockSkill = PoseInteractionSkill(skillName = 'dock-pose',
+                                         skillType = 'DockSkill',
+                                         skillClass = 'PoseInteractionSkill',
+                                         allowedSkillPropertiesKeys = ['frameId', 'px', 'py', 'pz', 'qx', 'qy', 'qz', 'qw'],
+                                         skillProperties = {'frameId': 'exampleFrameID', 'px': 10, 'py': 20, 'pz': 30, 'qx':11, 'qy':12, 'qz':13, 'qw':14 })
+        actionGoal = dockSkill.actionGoalConstructor()
+        self.assertEquals(type(actionGoal), DockSkillGoal)
+        self.assertEquals(actionGoal.Pose.header.frame_id, 'exampleFrameID')
+        self.assertEquals(actionGoal.Pose.pose.position.x, 10)
+        self.assertEquals(actionGoal.Pose.pose.position.y, 20)
+        self.assertEquals(actionGoal.Pose.pose.position.z, 30)
+        self.assertEquals(actionGoal.Pose.pose.orientation.x, 11)
+        self.assertEquals(actionGoal.Pose.pose.orientation.y, 12)
+        self.assertEquals(actionGoal.Pose.pose.orientation.z, 13)
+        self.assertEquals(actionGoal.Pose.pose.orientation.w, 14)
+
+    def test_Dockskill__missing_property(self):
+        dockSkill = PoseInteractionSkill(skillName = 'dock-pose',
+                                         skillType = 'DockSkill',
+                                         skillClass = 'PoseInteractionSkill',
+                                         allowedSkillPropertiesKeys = ['frameId', 'px', 'py', 'pz', 'qx', 'qy', 'qz', 'qw'],
+                                         skillProperties = {'frameId': 'exampleFrameID', 'px': 10, 'py': 20, 'pz': 30})
+
+        with self.assertRaises(KeyError):
+            actionGoal = dockSkill.actionGoalConstructor()
+
+    def test_DockSkillc_skill_extra_property(self):
+        dockSkill = PoseInteractionSkill(skillName = 'dock-pose',
+                                         skillType = 'DockSkill',
+                                         skillClass = 'PoseInteractionSkill',
+                                         allowedSkillPropertiesKeys = ['frameId', 'px', 'py', 'pz', 'qx', 'qy', 'qz', 'qw'],
+                                         skillProperties = {'frameId': 'exampleFrameID', 'px': 10, 'py': 20, 'pz': 30, 'qx':11, 'qy':12, 'qz':13, 'qw':14, 'qq':15})
+        with self.assertRaises(AttributeError):
+            actionGoal = dockSkill.actionGoalConstructor()
+
+    def test_DockSkill_wrong_properties(self):
+        dockSkill = PoseInteractionSkill(skillName = 'pick-pose',
+                                         skillType = 'PickSkill',
+                                         skillClass = 'PoseInteractionSkill',
+                                         allowedSkillPropertiesKeys = ['frameId', 'px', 'py', 'pz', 'qx', 'qy', 'qz', 'qw'],
+                                         skillProperties = {'abc': 'exampleFrameID', 'def': 10, 'cd': 20, 'sd': 30, 'fg':11, 'hj':12, 'er':13, 'rt':14})
+        with self.assertRaises(AttributeError):
+            actionGoal = dockSkill.actionGoalConstructor()
+
+
+    def test_PickSkill_successful_creation(self):
+        pickSkill = PoseInteractionSkill(skillName = 'pick-pose',
+                                         skillType = 'PickSkill',
+                                         skillClass = 'PoseInteractionSkill',
+                                         allowedSkillPropertiesKeys = ['frameId', 'px', 'py', 'pz', 'qx', 'qy', 'qz', 'qw'],
+                                         skillProperties = {'frameId': 'exampleFrameID', 'px': 10, 'py': 20, 'pz': 30, 'qx':11, 'qy':12, 'qz':13, 'qw':14})
+        actionGoal = pickSkill.actionGoalConstructor()
+        self.assertEquals(type(actionGoal), PickSkillGoal)
+        self.assertEquals(actionGoal.Pose.header.frame_id, 'exampleFrameID')
+        self.assertEquals(actionGoal.Pose.pose.position.x, 10)
+        self.assertEquals(actionGoal.Pose.pose.position.y, 20)
+        self.assertEquals(actionGoal.Pose.pose.position.z, 30)
+        self.assertEquals(actionGoal.Pose.pose.orientation.x, 11)
+        self.assertEquals(actionGoal.Pose.pose.orientation.y, 12)
+        self.assertEquals(actionGoal.Pose.pose.orientation.z, 13)
+        self.assertEquals(actionGoal.Pose.pose.orientation.w, 14)
+
+    def test_Pickskill__missing_property(self):
+        dockSkill = PoseInteractionSkill(skillName = 'pick-pose',
+                                         skillType = 'PickSkill',
+                                         skillClass = 'PoseInteractionSkill',
+                                         allowedSkillPropertiesKeys = ['frameId', 'px', 'py', 'pz', 'qx', 'qy', 'qz', 'qw'],
+                                         skillProperties = {'frameId': 'exampleFrameID', 'px': 10, 'py': 20, 'pz': 30})
+
+        with self.assertRaises(KeyError):
+            actionGoal = dockSkill.actionGoalConstructor()
+
+    def test_Pickskill__extra_property(self):
+        dockSkill = PoseInteractionSkill(skillName = 'pick-pose',
+                                         skillType = 'PickSkill',
+                                         skillClass = 'PoseInteractionSkill',
+                                         allowedSkillPropertiesKeys = ['frameId', 'px', 'py', 'pz', 'qx', 'qy', 'qz', 'qw'],
+                                         skillProperties = {'frameId': 'exampleFrameID', 'px': 10, 'py': 20, 'pz': 30, 'qx':11, 'qy':12, 'qz':13, 'qw':14, 'qq':15})
+        with self.assertRaises(AttributeError):
+            actionGoal = dockSkill.actionGoalConstructor()
+
+    def test_PickSkill_wrong_properties(self):
+        dockSkill = PoseInteractionSkill(skillName = 'pick-pose',
+                                         skillType = 'PickSkill',
+                                         skillClass = 'PoseInteractionSkill',
+                                         allowedSkillPropertiesKeys = ['frameId', 'px', 'py', 'pz', 'qx', 'qy', 'qz', 'qw'],
+                                         skillProperties = {'abc': 'exampleFrameID', 'def': 10, 'cd': 20, 'sd': 30, 'fg':11, 'hj':12, 'er':13, 'rt':14})
+        with self.assertRaises(AttributeError):
+            actionGoal = dockSkill.actionGoalConstructor()
+
+    def test_PlaceSkill_successful_creation(self):
+        placeSkill = PoseInteractionSkill(skillName = 'place-pose',
+                                          skillType = 'PlaceSkill',
+                                          skillClass = 'PoseInteractionSkill',
+                                          allowedSkillPropertiesKeys = ['frameId', 'px', 'py', 'pz', 'qx', 'qy', 'qz', 'qw'],
+                                          skillProperties = {'frameId': 'exampleFrameID', 'px': 0.1, 'py': 1.2,  'pz': 30, 'qx':11, 'qy':12, 'qz':13, 'qw':14 })
+        actionGoal = placeSkill.actionGoalConstructor()
+        self.assertEquals(type(actionGoal), PlaceSkillGoal)
+        self.assertEquals(actionGoal.Pose.header.frame_id, 'exampleFrameID')
+        self.assertEquals(actionGoal.Pose.pose.position.x, 0.1)
+        self.assertEquals(actionGoal.Pose.pose.position.y, 1.2)
+        self.assertEquals(actionGoal.Pose.pose.position.z, 30)
+        self.assertEquals(actionGoal.Pose.pose.orientation.x, 11)
+        self.assertEquals(actionGoal.Pose.pose.orientation.y, 12)
+        self.assertEquals(actionGoal.Pose.pose.orientation.z, 13)
+        self.assertEquals(actionGoal.Pose.pose.orientation.w, 14)
+
+    def test_PlaceSkill_missing_property(self):
+        dockSkill = PoseInteractionSkill(skillName = 'place-pose',
+                                         skillType = 'PlaceSkill',
+                                         skillClass = 'PoseInteractionSkill',
+                                         allowedSkillPropertiesKeys = ['frameId', 'px', 'py', 'pz', 'qx', 'qy', 'qz', 'qw'],
+                                         skillProperties = {'frameId': 'exampleFrameID', 'px': 10, 'py': 20, 'pz': 30})
+
+        with self.assertRaises(KeyError):
+            actionGoal = dockSkill.actionGoalConstructor()
+
+    def test_PlaceSkill_extra_property(self):
+        dockSkill = PoseInteractionSkill(skillName = 'place-pose',
+                                         skillType = 'PlaceSkill',
+                                         skillClass = 'PoseInteractionSkill',
+                                         allowedSkillPropertiesKeys = ['frameId', 'px', 'py', 'pz', 'qx', 'qy', 'qz', 'qw'],
+                                         skillProperties = {'frameId': 'exampleFrameID', 'px': 10, 'py': 20, 'pz': 30, 'qx':11, 'qy':12, 'qz':13, 'qw':14, 'qq':15})
+        with self.assertRaises(AttributeError):
+            actionGoal = dockSkill.actionGoalConstructor()
+
+    def test_PlaceSkill_wrong_properties(self):
+        dockSkill = PoseInteractionSkill(skillName = 'place-pose',
+                                         skillType = 'PlaceSkill',
+                                         skillClass = 'PoseInteractionSkill',
+                                         allowedSkillPropertiesKeys = ['frameId', 'px', 'py', 'pz', 'qx', 'qy', 'qz', 'qw'],
+                                         skillProperties = {'abc': 'exampleFrameID', 'def': 10, 'cd': 20, 'sd': 30, 'fg':11, 'hj':12, 'er':13, 'rt':14})
+        with self.assertRaises(AttributeError):
+            actionGoal = dockSkill.actionGoalConstructor()
+
+
+class TestDriveEdgesSkill(TestSkillClassBase):
+    def test_DriveEdgesSkill_create(self):
+        self.assertTrue(True)
+        
 
 
 # Test Suite for Skill Class
@@ -235,6 +377,8 @@ class SuiteTest(unittest.TestSuite):
         testActionGoalConstructor = loader.loadTestsFromTestCase(TestActionGoalConstructor)
         testActionClient = loader.loadTestsFromTestCase(TestActionClient)
         testGenericSkill = loader.loadTestsFromTestCase(TestGenericSkill)
+        testPoseInteractionSkill = loader.loadTestsFromTestCase(TestPoseInteractionSkill)
+        testDriveEdgesSkill = loader.loadTestsFromTestCase(TestDriveEdgesSkill)
 
         self.addTests(testSkillClass)
         self.addTests(testSkillPropertiesConstructor)
@@ -243,6 +387,8 @@ class SuiteTest(unittest.TestSuite):
         self.addTests(testActionGoalConstructor)
         self.addTests(testActionClient)
         self.addTests(testGenericSkill)
+        self.addTests(testPoseInteractionSkill)
+        self.addTests(testDriveEdgesSkill)
 
 if __name__ == '__main__':
       rostest.rosrun(PKG, NAME, 'test_skill_class.SuiteTest', sys.argv)

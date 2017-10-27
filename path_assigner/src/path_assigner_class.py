@@ -28,7 +28,7 @@ class PathAssigner(object):
 
     ## NOTE: ROS specific
     def get_path_request_parser(self, req):
-        return self.get_path_service_handler(edges = req.edges)
+        return self.get_path_service_handler(edges = list(req.edges))
 
         ## DEBUG!!!!
         # return self.get_path_service_handler(edges = [6, 7])
@@ -97,6 +97,8 @@ class PathAssigner(object):
                     parametricPathMessage.Fy = Fy
 
                     parametricPathList.append(parametricPathMessage)
+
+
 
         parametricPathSetMessage = ParametricPathSet()
 
