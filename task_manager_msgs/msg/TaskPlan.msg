@@ -1,3 +1,0 @@
-string missionId 
-string[] plan
-

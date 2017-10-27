@@ -21,7 +21,7 @@ NAME = 'integration_tests'
 # Base Class for performin Task Manager Integration Tests
 class IntegrationTestsBase(unittest.TestCase):
 
-    skillsParamName = "/testRobotId/skills"
+    skillsParamName = "task_manager/skills"
 
     def testStatusTopicCallback(self):
         pass
@@ -68,6 +68,7 @@ class IntegrationTests(IntegrationTestsBase):
         self.assertEquals(tm.missions[0]['statusCode'], 11)
         self.assertEquals(tm.missions[0]['taskId'], 'example-skill')
 
+    #TODO: ver o que se passa com este teste
     def test_wait_skill_execution_timeout_while_waiting_for_server(self):
         skills = ROSInterface.get_ROS_param(self.skillsParamName)
         task1 = GenericSkill(skillName = 'crob-wait', skillType = 'WaitSkill', skillClass = 'GenericSkill', allowedSkillPropertiesKeys = ['waitTime'], skillProperties = {'waitTime': 5})
@@ -106,6 +107,7 @@ class IntegrationTests(IntegrationTestsBase):
         self.assertEquals(tm.missions[0]['statusCode'], 11)
         self.assertEquals(tm.missions[0]['taskId'], 'example-skill')
 
+    #TODO: ver o que se passa com este teste
     def test_mix_between_correct_and_incorrect_skills(self):
         skills = ROSInterface.get_ROS_param(self.skillsParamName)
         task1 = GenericSkill(skillName = 'example-skill', skillType = 'GenericSkill', skillClass = 'GenericSkill', allowedSkillPropertiesKeys = ['exampleSkillProperty0', 'exampleSkillProperty0'], skillProperties = {'exampleSkillProperty0': 'exampleSkillValue0', 'exampleSkillProperty1': 'exampleSkillValue1'})
@@ -136,6 +138,35 @@ class IntegrationTests(IntegrationTestsBase):
         rospy.Subscriber('/stamina_msgs/TaskStatus', TaskStatus, self.testStatusTopicCallback)
 
 
+class DriveEdgesSkillIntegrationTests(IntegrationTestsBase):
+    @classmethod
+    def setUpClass(cls):
+        rospy.init_node('task_manager')
+
+    def test_DriveEdgesSkill_contructor(self):
+        driveEdgesSkillObject = DriveEdgesSkill(skillName = 'drive-edges',
+                                                skillType = 'DriveEdgesSkill',
+                                                skillClass = 'DriveEdgesSkill',
+                                                allowedSkillPropertiesKeys = ['mode', 'edges'],
+                                                skillProperties = {'mode': 'DIFFERENTIAL', 'edges': [5,6]})
+
+        self.assertEquals(driveEdgesSkillObject.skillName, 'drive-edges')
+        self.assertEquals(driveEdgesSkillObject.skillType, 'DriveEdgesSkill')
+        self.assertEquals(driveEdgesSkillObject.skillClass, 'DriveEdgesSkill')
+        self.assertEquals(driveEdgesSkillObject.allowedSkillPropertiesKeys, ['mode', 'edges'])
+        self.assertEquals(driveEdgesSkillObject.skillProperties['mode'], 'DIFFERENTIAL')
+        self.assertEquals(driveEdgesSkillObject.skillProperties['edges'], [5,6])
+
+    def test_DriveEdgesSkill_actionGoalConstructor(self):
+        driveEdgesSkillObject = DriveEdgesSkill(skillName = 'drive-edges',
+                                                skillType = 'DriveEdgesSkill',
+                                                skillClass = 'DriveEdgesSkill',
+                                                allowedSkillPropertiesKeys = ['mode', 'edges'],
+                                                skillProperties = {'mode': 'DIFFERENTIAL', 'edges': [5,6]})
+
+        driveEdgesSkillObject.actionGoalConstructor()
+
+
 # Test Suite for Mission Assigner
 class SuiteTest(unittest.TestSuite):
 
@@ -145,8 +176,10 @@ class SuiteTest(unittest.TestSuite):
         loader = unittest.TestLoader()
 
         integrationTests = loader.loadTestsFromTestCase(IntegrationTests)
+        driveEdgesSkillIntegrationTests = loader.loadTestsFromTestCase(DriveEdgesSkillIntegrationTests)
 
         self.addTests(integrationTests)
+        self.addTests(driveEdgesSkillIntegrationTests)
 
 if __name__ == '__main__':
       rostest.rosrun(PKG, NAME, 'integration_tests.SuiteTest', sys.argv)

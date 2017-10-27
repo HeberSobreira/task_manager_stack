@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- Unit Tests -->
+    <test test-name="test_skill_action_server_class" pkg="skill_simulation_server" type="test_skill_action_server_class.py" />
+
+</launch>

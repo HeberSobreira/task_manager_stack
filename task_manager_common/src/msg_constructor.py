@@ -4,10 +4,8 @@ import sys
 import rospy
 
 from task_manager_msgs.msg import ActionAcceptedRefused
-from task_manager_msgs.msg import PartToPick
-from task_manager_msgs.msg import KittingOrder
 from task_manager_msgs.msg import TaskStatus
-
+from geometry_msgs.msg import PoseStamped
 
 # Class for ROS Message Construction
 class MSGConstructor(object):
@@ -23,44 +21,6 @@ class MSGConstructor(object):
 
         return response
 
-    @classmethod
-    def PartToPickConstructor(self, cellId = 'defaultCellId', partId = 'defaultPartId', quantity = 1):
-        partToPick = PartToPick()
-
-        partToPick.cellId = str(cellId)
-        partToPick.partId = str(partId)
-        partToPick.quantity = int(quantity)
-
-        return partToPick
-
-    @classmethod
-    def KittingOrderConstructor(self, kittingOrderId = 'defaultId', carSeqNumber = 'defaultCarSeqNumber', kitId = 'defaultKitId', partsToPick = None):
-        kittingOrder = KittingOrder()
-
-        kittingOrder.id = str(kittingOrderId)
-        kittingOrder.carSeqNumber = str(carSeqNumber)
-        kittingOrder.kitId = str(kitId)
-
-        if partsToPick is None:
-            part = MSGConstructor.PartToPickConstructor()
-            kittingOrder.partsToPick.append(part)
-        else:
-            kittingOrder.partsToPick = partsToPick
-
-        return kittingOrder
-
-    @classmethod
-    def KittingOrderListConstructor(self, kittingOrders = None):
-        kittingOrderList = []
-
-        if kittingOrders is None:
-            kittingOrder = MSGConstructor.KittingOrderConstructor()
-            kittingOrderList.append(kittingOrder)
-        else:
-            kittingOrderList = kittingOrders
-
-        return kittingOrderList
-
     ## TODO: Missing Unit Test
     @classmethod
     def TaskStatusConstructor(self, missionId = 'defaultMissionId', taskId = 'defaultTaskId', statusCode = 0, statusDescription = 'defaultStatusDescription', when = None):
@@ -74,10 +34,22 @@ class MSGConstructor(object):
 
         return taskStatus
 
-        # partToPick = PartToPick()
-        #
-        # partToPick.cellId = str(cellId)
-        # partToPick.partId = str(partId)
-        # partToPick.quantity = int(quantity)
-        #
-        # return partToPick
+
+    @classmethod
+    def PoseStampedConstructor(self, frame_id, px, py, pz, qx, qy, qz, qw):
+
+    	Pose = PoseStamped()
+
+    	Pose.header.frame_id = frame_id
+
+    	# Origin coordinates
+    	Pose.pose.position.x = px
+    	Pose.pose.position.y = py
+    	Pose.pose.position.z = pz
+
+    	Pose.pose.orientation.x = qx
+    	Pose.pose.orientation.y = qy
+    	Pose.pose.orientation.z = qz
+    	Pose.pose.orientation.w = qw
+
+    	return Pose

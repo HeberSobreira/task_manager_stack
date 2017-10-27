@@ -5,17 +5,21 @@
     <arg name="robot_id" default="igor"/>
     <arg name="skills_file" default="skills.yaml" />
     <arg name="skills_path" default="$(find task_manager_common)/skills"/>
+    <arg name="assign_mission_service_name" default="/task_manager/AssignMission" />
+    <arg name="provide_task_status_service_name" default="/task_manager/ProvideTaskStatus" />
+    <arg name="wait_for_server_timeout" default="10" />
+    <arg name="wait_for_action_client_timeout" default="300" />
 
     <!-- Skills Loader -->
-    <include file="$(find task_manager_common)/launch/load_skills.launch">
-        <arg name="robot_id" value="$(arg robot_id)"/>
-        <arg name="skills_path" value="$(arg skills_path)"/>
-        <arg name="skills_file" value="$(arg skills_file)" />
-    </include>
+    <rosparam command="load" file="$(arg skills_path)/$(arg skills_file)" ns="task_manager"/>
 
     <!-- Task Manager -->
     <node name="task_manager" pkg="task_manager_server" type="task_manager.py" output="screen">
-        <param name='robotId' value='$(arg robot_id)' />
+        <param name='robot_id' value='$(arg robot_id)' />
+        <param name='assign_mission_service_name' value='$(arg assign_mission_service_name)' />
+        <param name='provide_task_status_service_name' value='$(arg provide_task_status_service_name)' />
+        <param name='wait_for_server_timeout' value='$(arg wait_for_server_timeout)' />
+        <param name='wait_for_action_client_timeout' value='$(arg wait_for_action_client_timeout)' />
     </node>
 
 </launch>

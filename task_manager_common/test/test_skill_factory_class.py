@@ -4,7 +4,7 @@ import sys
 import unittest
 import rostest
 
-from task_manager_common.msg import *
+from task_manager_msgs.msg import *
 
 from skill_class import *
 from skill_factory_class import SkillFactory
@@ -109,6 +109,40 @@ class TestSkillFactoryGoalDecoder(TestSkillFactoryClassBase):
         self.assertEquals(decodedGoal['skillClass'], 'GenericSkill')
         self.assertEquals(decodedGoal['allowedSkillPropertiesKeys'], ['exampleSkillProperty0'])
         self.assertEquals(decodedGoal['skillProperties'], {'exampleSkillProperty0': 'exampleSkillValue0'})
+
+    def test_decode_goal_with_int_property_values(self):
+        goal = 'example-skill;exampleSkillProperty0=1;exampleSkillProperty1=10'
+        skills = [self.skill_generator(skillProperties = ['exampleSkillProperty0', 'exampleSkillProperty1'])]
+
+        sf = SkillFactory(goal, skills)
+        decodedGoal = sf.goal_decoder(goal, skills)
+
+        self.assertEquals(decodedGoal['skillProperties'], {'exampleSkillProperty0': 1, 'exampleSkillProperty1': 10})
+        self.assertTrue(isinstance(decodedGoal['skillProperties']['exampleSkillProperty0'], int))
+        self.assertTrue(isinstance(decodedGoal['skillProperties']['exampleSkillProperty1'], int))
+
+    def test_decode_goal_with_float_property_values(self):
+        goal = 'example-skill;exampleSkillProperty0=1.1;exampleSkillProperty1=10.1'
+        skills = [self.skill_generator(skillProperties = ['exampleSkillProperty0', 'exampleSkillProperty1'])]
+
+        sf = SkillFactory(goal, skills)
+        decodedGoal = sf.goal_decoder(goal, skills)
+
+        self.assertEquals(decodedGoal['skillProperties'], {'exampleSkillProperty0': 1.1, 'exampleSkillProperty1': 10.1})
+        self.assertTrue(isinstance(decodedGoal['skillProperties']['exampleSkillProperty0'], float))
+        self.assertTrue(isinstance(decodedGoal['skillProperties']['exampleSkillProperty1'], float))
+
+    def test_decode_goal_with_list_property_values(self):
+        goal = 'example-skill;exampleSkillProperty0=[1, 2, 3];exampleSkillProperty1=[4, 5, 6]'
+        skills = [self.skill_generator(skillProperties = ['exampleSkillProperty0', 'exampleSkillProperty1'])]
+
+        sf = SkillFactory(goal, skills)
+        decodedGoal = sf.goal_decoder(goal, skills)
+
+        self.assertEquals(decodedGoal['skillProperties'], {'exampleSkillProperty0': [1, 2, 3], 'exampleSkillProperty1': [4, 5, 6]})
+        self.assertTrue(isinstance(decodedGoal['skillProperties']['exampleSkillProperty0'], list))
+        self.assertTrue(isinstance(decodedGoal['skillProperties']['exampleSkillProperty1'], list))
+
 
 # Unit Test for Skill Factory Class
 class TestSkillFactoryClass(TestSkillFactoryClassBase):

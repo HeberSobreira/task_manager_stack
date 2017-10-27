@@ -4,7 +4,9 @@ import sys
 import rospy
 import actionlib
 
-from task_manager_common.msg import *
+from task_manager_msgs.msg import *
+from task_manager_msgs.srv import GetPath
+from msg_constructor import *
 
 class Skill(object):
 
@@ -38,9 +40,9 @@ class Skill(object):
 
     def actionTypeConstructor(self):
         try:
-            return eval('task_manager_common.msg.' + str(self.skillType) + 'Action')
+            return eval('task_manager_msgs.msg.' + str(self.skillType) + 'Action')
         except AttributeError as e:
-            raise AttributeError('Unable to find Skill msg task_manager_common.msg.' + str(self.skillType))
+            raise AttributeError('Unable to find Skill msg task_manager_msgs.msg.' + str(self.skillType))
 
     def actionGoalConstructor(self):
         raise NotImplementedError('Subclass ' + str(self.skillType) + ' must implement abstract method!')
@@ -97,7 +99,7 @@ class GenericSkill(Skill):
                 else:
                     arguments += ', ' + str(key) + "='" + value + "'"
 
-        return eval('task_manager_common.msg.' + str(self.skillType) + 'Goal(' + arguments + ')')
+        return eval('task_manager_msgs.msg.' + str(self.skillType) + 'Goal(' + arguments + ')')
 
 class DriveSkill(Skill):
 
@@ -109,13 +111,53 @@ class DriveEdgesSkill(Skill):
 
     """docstring for DriveEdgesSkill."""
 
-    pass
+    def actionGoalConstructor(self):
+
+        try:
+            mode = self.skillProperties['mode']
+            edges = self.skillProperties['edges']
+        except KeyError as e:
+            raise KeyError('DriveEdgesSkill missing property: ' + str(e))
+
+        rospy.wait_for_service('/task_manager/GetPath', timeout=3) #TODO: Shouldnt be hard coded
+        getPath = rospy.ServiceProxy('/task_manager/GetPath', GetPath)
+        response = getPath(edges)
+        pathSet = response.PathSet
+
+        arguments = 'ControllerMode=mode, PathSet = pathSet'
+        return eval('task_manager_msgs.msg.' + str(self.skillType) + 'Goal(' + arguments + ')')
 
 class PoseInteractionSkill(Skill):
 
     """docstring for PoseInteractionSkill."""
 
-    pass
+    def actionGoalConstructor(self):
+
+
+        #TODO:check if the skillProperties match with the allowedSkillPropertiesKeys
+        #Does it make sense?
+        for key in self.skillProperties:
+            if key not in self.allowedSkillPropertiesKeys:
+                raise AttributeError('%s is not an allowed property key' %key)
+
+        try:
+            frameId = self.skillProperties['frameId']
+            px = self.skillProperties['px']
+            py = self.skillProperties['py']
+            pz = self.skillProperties['pz']
+            qx = self.skillProperties['qx']
+            qy = self.skillProperties['qy']
+            qz = self.skillProperties['qz']
+            qw = self.skillProperties['qw']
+        except KeyError as e:
+            raise KeyError('PoseInteractionSkill missing property: ' + str(e))
+
+        poseStamped = MSGConstructor.PoseStampedConstructor(frameId, px, py, pz, qx, qy, qz, qw)
+
+        arguments = 'ObjectId = frameId, Pose = poseStamped'
+        # task_manager_msgs.msg.skillTypeGoal(ObjectId=frameId, Pose = poseStamped)
+        return eval('task_manager_msgs.msg.' + str(self.skillType) + 'Goal(' + arguments + ')')
+
 
 class ObjectInteractionSkill(Skill):
 

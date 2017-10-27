@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- Unit Tests -->
+    <test test-name="test_path_assigner_class" pkg="path_assigner" type="test_path_assigner_class.py" />
+
+</launch>

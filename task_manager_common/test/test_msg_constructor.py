@@ -8,7 +8,6 @@ from mock import patch
 
 from msg_constructor import *
 
-
 PKG = 'task_manager_common'
 NAME = 'test_msg_constructor'
 
@@ -35,85 +34,58 @@ class TestActionAcceptedRefusedConstructor(TestMSGConstructorBase):
         with self.assertRaises(TypeError):
             response = MSGConstructor.ActionAcceptedRefusedConstructor()
 
-# Unit Tests for Part To Pick Constructor
-class TestPartToPickConstructor(TestMSGConstructorBase):
 
-    @patch('msg_constructor.MSGConstructor.PartToPickConstructor')
-    def test_part_to_pick_constructor_selection(self, mock):
-        partToPick = MSGConstructor.PartToPickConstructor()
-        self.assertTrue(mock.called)
+class TestTaskStatusConstructor(TestMSGConstructorBase):
+    def test_TaskStatusConstructor_empty_input(self):
+        taskStatus = MSGConstructor.TaskStatusConstructor()
+        self.assertIsInstance(taskStatus, TaskStatus)
 
-    def test_validate_default_part_to_pick_constructor(self):
-        partToPick = MSGConstructor.PartToPickConstructor()
+    def test_TaskStatusConstructor_empty_input_values(self):
+        taskStatus = MSGConstructor.TaskStatusConstructor()
+        self.assertEquals(taskStatus.missionId, 'defaultMissionId')
+        self.assertEquals(taskStatus.taskId, 'defaultTaskId')
+        self.assertEquals(taskStatus.statusCode, 0)
+        self.assertEquals(taskStatus.statusDescription, 'defaultStatusDescription')
+        self.assertEquals(taskStatus.when, None)
 
-        self.assertEquals(partToPick.cellId, 'defaultCellId')
-        self.assertEquals(partToPick.partId, 'defaultPartId')
-        self.assertEquals(partToPick.quantity, 1)
+    def test_TaskStatusConstructor_input_values(self):
+        taskStatus = MSGConstructor.TaskStatusConstructor('testMissionId','testTaskId', 1, 'testStatusDescription', rospy.Time(10))
+        self.assertEquals(taskStatus.missionId, 'testMissionId')
+        self.assertEquals(taskStatus.taskId, 'testTaskId')
+        self.assertEquals(taskStatus.statusCode, 1)
+        self.assertEquals(taskStatus.statusDescription, 'testStatusDescription')
+        self.assertEquals(taskStatus.when.secs, 10)
 
-    def test_custom_part_to_pick_constructor(self):
-        partToPick = MSGConstructor.PartToPickConstructor('exampleCellId', 'examplePartId', 2)
+    def test_TaskStatusConstructor_extra_arguments(self):
+        with self.assertRaises(TypeError):
+            taskStatus = MSGConstructor.TaskStatusConstructor('testMissionId','testTaskId', 1, 'testStatusDescription', rospy.Time(10), 'testArgument')
 
-        self.assertEquals(partToPick.cellId, 'exampleCellId')
-        self.assertEquals(partToPick.partId, 'examplePartId')
-        self.assertEquals(partToPick.quantity, 2)
 
-# Unit Tests for Kitting Order Constructor
-class TestKittingOrderConstructor(TestMSGConstructorBase):
 
-    @patch('msg_constructor.MSGConstructor.KittingOrderConstructor')
-    def test_kitting_order_constructor(self, mock):
-        kittingOrder = MSGConstructor.KittingOrderConstructor()
-        self.assertTrue(mock.called)
+class TestPoseStampedConstructor(TestMSGConstructorBase):
 
-    def test_validate_default_kitting_order_constructor(self):
-        kittingOrder = MSGConstructor.KittingOrderConstructor()
+    def test_PoseStampedConstructor_inputs(self):
+        poseStampedObject = MSGConstructor.PoseStampedConstructor('testFrameID', 1, 2, 3, 4, 5, 6, 7)
+        self.assertEqual(poseStampedObject.header.frame_id,'testFrameID')
+        self.assertEqual(poseStampedObject.pose.position.x, 1)
+        self.assertEqual(poseStampedObject.pose.position.y, 2)
+        self.assertEqual(poseStampedObject.pose.position.z, 3)
+        self.assertEqual(poseStampedObject.pose.orientation.x, 4)
+        self.assertEqual(poseStampedObject.pose.orientation.y, 5)
+        self.assertEqual(poseStampedObject.pose.orientation.z, 6)
+        self.assertEqual(poseStampedObject.pose.orientation.w, 7)
 
-        self.assertEquals(kittingOrder.id, 'defaultId')
-        self.assertEquals(kittingOrder.carSeqNumber, 'defaultCarSeqNumber')
-        self.assertEquals(kittingOrder.kitId, 'defaultKitId')
-        self.assertEquals(len(kittingOrder.partsToPick), 1)
+    def test_PoseStampedConstructor_empty_input(self):
+        with self.assertRaises(TypeError):
+            poseStampedObject = MSGConstructor.PoseStampedConstructor()
 
-    def test_custom_kitting_order_constructor(self):
-        part1 = MSGConstructor.PartToPickConstructor('exampleCellId1', 'examplePartId1', 1)
-        part2 = MSGConstructor.PartToPickConstructor('exampleCellId2', 'examplePartId2', 2)
-        part3 = MSGConstructor.PartToPickConstructor('exampleCellId3', 'examplePartId3', 3)
+    def test_PoseStampedConstructor_missing_arguments(self):
+        with self.assertRaises(TypeError):
+            poseStampedObject = MSGConstructor.PoseStampedConstructor('testFrameID', 1, 2)
 
-        parts = []
-        parts.append(part1)
-        parts.append(part2)
-        parts.append(part3)
-
-        kittingOrder = MSGConstructor.KittingOrderConstructor('exampleId', 'exampleCarSeqNumber', 'exampleKitId', parts)
-
-        self.assertEquals(kittingOrder.id, 'exampleId')
-        self.assertEquals(kittingOrder.carSeqNumber, 'exampleCarSeqNumber')
-        self.assertEquals(kittingOrder.kitId, 'exampleKitId')
-        self.assertEquals(len(kittingOrder.partsToPick), 3)
-
-# Unit Tests for Kitting Order List Constructor
-class TestKittingOrderListConstructor(TestMSGConstructorBase):
-
-    @patch('msg_constructor.MSGConstructor.KittingOrderListConstructor')
-    def test_kitting_order_list_constructor_selection(self, mock):
-        kittingOrderList = MSGConstructor.KittingOrderListConstructor()
-        self.assertTrue(mock.called)
-
-    def test_validate_default_kitting_order_list_constructor(self):
-        kittingOrderList = MSGConstructor.KittingOrderListConstructor()
-
-        self.assertEquals(len(kittingOrderList), 1)
-
-    def test_custom_kitting_order_list_constructor(self):
-        kittingOrder = MSGConstructor.KittingOrderConstructor()
-
-        kittingOrders = []
-        kittingOrders.append(kittingOrder)
-        kittingOrders.append(kittingOrder)
-
-        kittingOrderList = MSGConstructor.KittingOrderListConstructor(kittingOrders)
-
-        self.assertEquals(len(kittingOrderList), 2)
-
+    def test_PoseStampedConstructor_extra_arguments(self):
+        with self.assertRaises(TypeError):
+            poseStampedObject = MSGConstructor.PoseStampedConstructor('testFrameID', 1, 2, 3, 4, 5, 6, 7, 8)
 
 # Test Suite for Mission Assigner
 class SuiteTest(unittest.TestSuite):
@@ -124,14 +96,12 @@ class SuiteTest(unittest.TestSuite):
         loader = unittest.TestLoader()
 
         testActionAcceptedRefusedConstructor = loader.loadTestsFromTestCase(TestActionAcceptedRefusedConstructor)
-        testPartToPickConstructor = loader.loadTestsFromTestCase(TestPartToPickConstructor)
-        testKittingOrderConstructor = loader.loadTestsFromTestCase(TestKittingOrderConstructor)
-        testKittingOrderListConstructor = loader.loadTestsFromTestCase(TestKittingOrderListConstructor)
+        testPoseStampedConstructor = loader.loadTestsFromTestCase(TestPoseStampedConstructor)
+        testTaskStatusConstructor = loader.loadTestsFromTestCase(TestTaskStatusConstructor)
 
         self.addTests(testActionAcceptedRefusedConstructor)
-        self.addTests(testPartToPickConstructor)
-        self.addTests(testKittingOrderConstructor)
-        self.addTests(testKittingOrderListConstructor)
+        self.addTests(testPoseStampedConstructor)
+        self.addTests(testTaskStatusConstructor)
 
 if __name__ == '__main__':
       rostest.rosrun(PKG, NAME, 'test_msg_constructor.SuiteTest', sys.argv)

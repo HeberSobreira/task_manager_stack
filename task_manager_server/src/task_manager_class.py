@@ -43,7 +43,7 @@ class TaskManager(object):
 
     ## NOTE: ROS specific
     def assign_mission_request_parser(self, req):
-        return self.assign_mission_service_handler(missionId = req.missionId, robotId = req.robotId, kittingOrderList = req.kittingOrderList, goals = req.goals, executeMission = True)
+        return self.assign_mission_service_handler(missionId = req.missionId, robotId = req.robotId, goals = req.goals, executeMission = True)
 
     ## NOTE: ROS specific
     def provide_task_status_request_parser(self, req):
@@ -63,7 +63,7 @@ class TaskManager(object):
         return taskStatus
 
     ## NOTE: ROS specific
-    def assign_mission_service_handler(self, missionId = 'defaultMissionId', robotId = 'defaultRobotId', kittingOrderList = [], goals = [], executeMission = False):
+    def assign_mission_service_handler(self, missionId = 'defaultMissionId', robotId = 'defaultRobotId', goals = [], executeMission = False):
         tasksAux = []
 
         if robotId != self.robotId:
@@ -75,11 +75,6 @@ class TaskManager(object):
         if len(self.ongoingTasks) != 0:
             rospy.logwarn('[TaskManager] [' + str(self.robotId) + '] Mission ' + str(missionId) + ' refused: Robot is currently busy with ' + str(len(self.ongoingTasks)) + ' tasks: ' + str([t.skillName for t in self.ongoingTasks]))
             return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'False', reasonOfRefusal = 'Robot is currently busy with ' + str(len(self.ongoingTasks)) + ' tasks: ' + str([t.skillName for t in self.ongoingTasks]))
-
-        ## TODO: Does this make sense? Maybe we should get rid of kittingOrderList...
-        elif len(kittingOrderList) == 0:
-            rospy.logwarn('[TaskManager] [' + str(self.robotId) + '] Mission ' + str(missionId) + ' refused: Empty kittingOrderList!')
-            return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'False', reasonOfRefusal = 'Empty kittingOrderList!')
 
         elif len(goals) == 0:
             rospy.logwarn('[TaskManager] [' + str(self.robotId) + '] Mission ' + str(missionId) + ' refused: Empty goals!')
@@ -132,7 +127,7 @@ class TaskManager(object):
         rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] Starting Mission with ' + str(len(self.ongoingTasks)) + ' Tasks... ')
 
         while len(self.ongoingTasks) is not 0:
-            task = self.ongoingTasks.pop(-1) # TODO: Write a Unit Test for this!
+            task = self.ongoingTasks.pop(0) # TODO: Write a Unit Test for this!
 
             self.update_mission_status(missionId = missionId, taskId = task.skillName, statusCode = 1, statusDescription = 'Starting Task ' + str(task.skillName))
 

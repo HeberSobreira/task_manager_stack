@@ -70,19 +70,10 @@ class TestAssignMissionServiceHandler(TestTaskManagerClassBase):
         self.assertEquals(response, refusedResponse)
         self.assertEquals(len(tm.ongoingTasks), 0)
 
-    def test_refused_because_empty_kittingOrderList(self):
-        tm = TaskManager(skills = [self.skill_generator()])
-
-        response = tm.assign_mission_service_handler(kittingOrderList = [], goals = [self.test_goal_generator()])
-        refusedResponse = MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'False', reasonOfRefusal = 'Empty kittingOrderList!')
-
-        self.assertEquals(response, refusedResponse)
-        self.assertEquals(len(tm.ongoingTasks), 0)
-
     def test_refused_because_empty_goals(self):
         tm = TaskManager(skills = [self.skill_generator()])
 
-        response = tm.assign_mission_service_handler(goals = [], kittingOrderList = ['fakeKittingOrder'])
+        response = tm.assign_mission_service_handler(goals = [])
         refusedResponse = MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'False', reasonOfRefusal = 'Empty goals!')
 
         self.assertEquals(response, refusedResponse)
@@ -91,7 +82,7 @@ class TestAssignMissionServiceHandler(TestTaskManagerClassBase):
     def test_refused_bad_syntax_goal(self):
         tm = TaskManager(skills = [self.skill_generator()])
 
-        response = tm.assign_mission_service_handler(kittingOrderList = ['fakeKittingOrder'], goals = ['example-skill;exampleSkillProperty0'])
+        response = tm.assign_mission_service_handler(goals = ['example-skill;exampleSkillProperty0'])
         refusedResponse = MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'False', reasonOfRefusal = 'Badly formatted goal (example-skill;exampleSkillProperty0): need more than 1 value to unpack')
 
         self.assertEquals(response, refusedResponse)
@@ -100,7 +91,7 @@ class TestAssignMissionServiceHandler(TestTaskManagerClassBase):
     def test_accepted_simple_mission(self):
         tm = TaskManager(skills = [self.skill_generator()])
 
-        response = tm.assign_mission_service_handler(kittingOrderList = ['fakeKittingOrder'], goals = [self.test_goal_generator()])
+        response = tm.assign_mission_service_handler(goals = [self.test_goal_generator()])
         acceptedResponse = MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'True', reasonOfRefusal = 'None')
 
         self.assertEquals(response, acceptedResponse)
@@ -109,7 +100,7 @@ class TestAssignMissionServiceHandler(TestTaskManagerClassBase):
     def test_accepted_complex_mission(self):
         tm = TaskManager(skills = [self.skill_generator(), self.skill_generator(skillName = 'drive', skillType = 'DriveSkill', skillClass = 'DriveSkill', skillProperties = ['toObjectId', 'toObjectType'])])
 
-        response = tm.assign_mission_service_handler(kittingOrderList = ['fakeKittingOrder'], goals = [self.test_goal_generator(), 'drive;toObjectId=testToObjectId;toObjectType=testToObjectType'])
+        response = tm.assign_mission_service_handler(goals = [self.test_goal_generator(), 'drive;toObjectId=testToObjectId;toObjectType=testToObjectType'])
         acceptedResponse = MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'True', reasonOfRefusal = 'None')
 
         self.assertEquals(response, acceptedResponse)
@@ -118,7 +109,7 @@ class TestAssignMissionServiceHandler(TestTaskManagerClassBase):
     def test_append_multiple_tasks_to_tasks_list(self):
         tm = TaskManager(skills = [self.skill_generator()])
 
-        response = tm.assign_mission_service_handler(kittingOrderList = ['fakeKittingOrder'], goals = [self.test_goal_generator(), self.test_goal_generator(), self.test_goal_generator()])
+        response = tm.assign_mission_service_handler(goals = [self.test_goal_generator(), self.test_goal_generator(), self.test_goal_generator()])
         acceptedResponse = MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'True', reasonOfRefusal = 'None')
 
         self.assertEquals(response, acceptedResponse)
@@ -127,13 +118,13 @@ class TestAssignMissionServiceHandler(TestTaskManagerClassBase):
     def test_refuse_mission_then_accept_mission(self):
         tm = TaskManager(skills = [self.skill_generator()])
 
-        response = tm.assign_mission_service_handler(kittingOrderList = ['fakeKittingOrder'], goals = ['example-skill;exampleSkillProperty0'])
+        response = tm.assign_mission_service_handler(goals = ['example-skill;exampleSkillProperty0'])
         refusedResponse = MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'False', reasonOfRefusal = 'Badly formatted goal (example-skill;exampleSkillProperty0): need more than 1 value to unpack')
 
         self.assertEquals(response, refusedResponse)
         self.assertEquals(len(tm.ongoingTasks), 0)
 
-        response = tm.assign_mission_service_handler(kittingOrderList = ['fakeKittingOrder'], goals = [self.test_goal_generator(), self.test_goal_generator(), self.test_goal_generator()])
+        response = tm.assign_mission_service_handler(goals = [self.test_goal_generator(), self.test_goal_generator(), self.test_goal_generator()])
         acceptedResponse = MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'True', reasonOfRefusal = 'None')
 
         self.assertEquals(response, acceptedResponse)
@@ -142,13 +133,13 @@ class TestAssignMissionServiceHandler(TestTaskManagerClassBase):
     def test_refuse_mission_because_robot_is_busy(self):
         tm = TaskManager(skills = [self.skill_generator()])
 
-        response = tm.assign_mission_service_handler(kittingOrderList = ['fakeKittingOrder'], goals = [self.test_goal_generator(), self.test_goal_generator(), self.test_goal_generator()])
+        response = tm.assign_mission_service_handler(goals = [self.test_goal_generator(), self.test_goal_generator(), self.test_goal_generator()])
         acceptedResponse = MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'True', reasonOfRefusal = 'None')
 
         self.assertEquals(response, acceptedResponse)
         self.assertEquals(len(tm.ongoingTasks), 3)
 
-        response = tm.assign_mission_service_handler(kittingOrderList = ['fakeKittingOrder'], goals = [self.test_goal_generator(), self.test_goal_generator(), self.test_goal_generator()])
+        response = tm.assign_mission_service_handler(goals = [self.test_goal_generator(), self.test_goal_generator(), self.test_goal_generator()])
         refusedResponse = MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'False', reasonOfRefusal = "Robot is currently busy with 3 tasks: ['example-skill', 'example-skill', 'example-skill']")
 
         self.assertEquals(response, refusedResponse)
@@ -158,7 +149,7 @@ class TestAssignMissionServiceHandler(TestTaskManagerClassBase):
     def test_execute_mission_called_for_simple_mission(self, mock):
         tm = TaskManager(skills = [self.skill_generator()])
 
-        response = tm.assign_mission_service_handler(kittingOrderList = ['fakeKittingOrder'], goals = [self.test_goal_generator(), self.test_goal_generator(), self.test_goal_generator()], executeMission = True)
+        response = tm.assign_mission_service_handler(goals = [self.test_goal_generator(), self.test_goal_generator(), self.test_goal_generator()], executeMission = True)
         acceptedResponse = MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'True', reasonOfRefusal = 'None')
 
         self.assertEquals(response, acceptedResponse)

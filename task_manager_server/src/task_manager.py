@@ -13,25 +13,26 @@ if __name__ == "__main__":
 
     rospy.init_node('task_manager')
 
-    robotId = ROSInterface.get_ROS_param('~robotId')
+    try:
+        ## Parameters
+        robotId = ROSInterface.get_ROS_param('~robot_id')
+        skills = ROSInterface.get_ROS_param('~skills')
+        waitForServerTimeOut = ROSInterface.get_ROS_param('~wait_for_server_timeout')
+        waitForActionClientTimeOut = ROSInterface.get_ROS_param('~wait_for_action_client_timeout')
 
-    # TODO: This should not be hardcoded... Shold be passeable from the launch file!
-    skills = ROSInterface.get_ROS_param(str(robotId) + '/skills')
+        ## Services
+        assignMissionServiceName = ROSInterface.get_ROS_param('~assign_mission_service_name')
+        provideTaskStatusServiceName = ROSInterface.get_ROS_param('~provide_task_status_service_name')
 
-    # TODO: This should not be hardcoded... Shold be passeable from the launch file!
-    assignMissionServiceName = '/stamina_msgs/' + str(robotId) + '/AssignMission'
+        ## Topics
+        taskStatusTopic = '~TaskStatus'
 
-    # TODO: This should not be hardcoded... Shold be passeable from the launch file!
-    provideTaskStatusServiceName = '/stamina_msgs/' + str(robotId) + '/ProvideTaskStatus'
+    except KeyError as e:
+        rospy.logerr('[TaskManager] Error: %s', str(e))
+        rospy.logdebug(traceback.format_exc())
 
-    # TODO: This should not be hardcoded... Shold be passeable from the launch file!
-    taskStatusTopic = '/stamina_msgs/TaskStatus'
+        quit()
 
-    # TODO: This should not be hardcoded... Shold be passeable from the launch file!
-    waitForServerTimeOut = 10
-
-    # TODO: This should not be hardcoded... Shold be passeable from the launch file!
-    waitForActionClientTimeOut = 300
 
     try:
         tm = TaskManager(robotId = robotId, skills = skills, assignMissionServiceName = assignMissionServiceName, provideTaskStatusServiceName = provideTaskStatusServiceName, taskStatusTopic = taskStatusTopic, waitForServerTimeOut = waitForServerTimeOut, waitForActionClientTimeOut = waitForActionClientTimeOut)

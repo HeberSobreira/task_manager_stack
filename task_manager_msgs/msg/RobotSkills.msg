@@ -1,5 +1,0 @@
-string robotId
-Skill[] skillList
-
-
-

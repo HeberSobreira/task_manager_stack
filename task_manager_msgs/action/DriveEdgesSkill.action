@@ -1,0 +1,11 @@
+#goal definition
+robis_nav_msgs/ParametricPathSet PathSet
+string ControllerMode # "DIFFERENTIAL" / "TRICYCLE" / "OMNI"
+---
+#result definition
+int32 percentage
+string skillStatus
+---
+#feedback
+int32 percentage
+string skillStatus
