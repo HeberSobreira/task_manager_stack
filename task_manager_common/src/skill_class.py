@@ -38,6 +38,10 @@ class Skill(object):
 
         return goal
 
+    ## TODO: Missing Unit Test
+    def actionNameConstructor(self):
+        return self.skillType
+
     def actionTypeConstructor(self):
         try:
             return eval('task_manager_msgs.msg.' + str(self.skillType) + 'Action')
@@ -49,35 +53,36 @@ class Skill(object):
 
     # ROS specific
     def action_client(self, waitForServerTimeOut = 10, waitForActionClientTimeOut = 300):
+        actionName = self.actionNameConstructor() ## TODO: Missing Unit Test
         actionType = self.actionTypeConstructor()
         actionGoal = self.actionGoalConstructor()
 
         # Creates a ROS Action Client, passing the type of the action to the constructor.
-        client = actionlib.SimpleActionClient(self.skillType, actionType)
+        client = actionlib.SimpleActionClient(actionName, actionType)
 
         ## IDEA: Maybe execute here some PRE-CONDITIONS defined within the Skill Subclass (Have a method that MUST/COULD be defined)
         ## BETTER IDEA: Encapsulate the 'action_client' method inside a 'skill_client()' method that performs such check
 
-        rospy.logdebug('[' + str(self.skillClass) + '] Waiting for ' + str(self.skillType) + ' Server...')
+        rospy.logdebug('[' + str(self.skillClass) + '] Waiting for ' + str(actionName) + ' Server...')
 
         # TODO: Try to find a better Exception Type to handle this
         if not client.wait_for_server(rospy.Duration(waitForServerTimeOut)):
-            raise Exception('Skill Action Client Error: Timed out (' + str(waitForServerTimeOut) + 's) while trying to find Action Server ' + str(self.skillType))
+            raise Exception('Skill Action Client Error: Timed out (' + str(waitForServerTimeOut) + 's) while trying to find Action Server ' + str(actionName))
 
         # Sends the goal to the action server.
-        rospy.logdebug('[' + str(self.skillClass) + '] Sending goal to ' + str(self.skillType) + ' Server...')
+        rospy.logdebug('[' + str(self.skillClass) + '] Sending goal to ' + str(actionName) + ' Server...')
         client.send_goal(actionGoal)
 
-        rospy.logdebug('[' + str(self.skillClass) + '] Waiting response from ' + str(self.skillType) + ' Server...')
+        rospy.logdebug('[' + str(self.skillClass) + '] Waiting response from ' + str(actionName) + ' Server...')
 
         if not client.wait_for_result(rospy.Duration(waitForActionClientTimeOut)):
-            raise Exception('Skill Action Client Error: Timed out (' + str(waitForActionClientTimeOut) + 's) while waiting for ' + str(self.skillType) + ' Action Server result')
+            raise Exception('Skill Action Client Error: Timed out (' + str(waitForActionClientTimeOut) + 's) while waiting for ' + str(actionName) + ' Action Server result')
 
         ## IDEA: Maybe execute here some POST-CONDITIONS defined within the Skill Subclass (Have a method that MUST/COULD be defined)
         ## BETTER IDEA: Encapsulate the 'action_client' method inside a 'skill_client()' method that performs such check
 
         # Return the result of executing the action
-        rospy.logdebug('[' + str(self.skillClass) + '] Received result from ' + str(self.skillType) + ' Server!')
+        rospy.logdebug('[' + str(self.skillClass) + '] Received result from ' + str(actionName) + ' Server!')
         return client.get_result()
 
 class GenericSkill(Skill):
@@ -110,6 +115,30 @@ class DriveSkill(Skill):
 class DriveEdgesSkill(Skill):
 
     """docstring for DriveEdgesSkill."""
+
+    ## TODO: Missing Unit Test
+    def actionNameConstructor(self):
+
+        # Should be Object / Class variable
+        supportedTractionModes = ['DIFFERENTIAL', 'TRICYCLE', 'OMNI']
+
+        try:
+            mode = self.skillProperties['mode']
+        except KeyError as e:
+            raise KeyError('DriveEdgesSkill missing property: ' + str(e))
+
+        if mode in supportedTractionModes:
+            if mode == 'DIFFERENTIAL':
+                return 'DriveEdgesSkillDifferential'
+
+            elif mode == 'TRICYCLE':
+                return 'DriveEdgesSkillTricycle'
+
+            elif mode == 'OMNI':
+                return 'DriveEdgesSkillOmni'
+
+        else:
+            raise AttributeError('Unsupported traction mode :' + str(mode) + '. Supported traction modes are: ' + str(supportedTractionModes))
 
     def actionGoalConstructor(self):
 
