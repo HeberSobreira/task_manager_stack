@@ -51,17 +51,6 @@ class IntegrationTests(IntegrationTestsBase):
     def test_found_AssignMission_service(self):
         rospy.wait_for_service(self.assignMissionServiceName)
 
-    def test_example_AssignMission_service_request(self):
-        rospy.wait_for_service(self.assignMissionServiceName)
-
-        tasks = [self.task_generator()]
-        skills = [self.skill_generator()]
-
-        ma = MissionAssigner(robotId = "testRobotId", missionId = "testMissionId", tasks = tasks, skills = skills)
-        AssignMissionServiceResponse = ma.assign_mission(self.assignMissionServiceName)
-
-        self.assertEquals(AssignMissionServiceResponse.actionAcceptedRefused.accepted, 'True')
-
     def test_assign_an_empty_mission(self):
         rospy.wait_for_service(self.assignMissionServiceName)
 
@@ -85,6 +74,16 @@ class IntegrationTests(IntegrationTestsBase):
         self.assertEquals(AssignMissionServiceResponse.actionAcceptedRefused.reason_of_refusal, 'None')
         self.assertEquals(AssignMissionServiceResponse.actionAcceptedRefused.accepted, 'True')
 
+    def test_assign_mission_while_robot_is_busy(self):
+        rospy.wait_for_service(self.assignMissionServiceName)
+
+        tasks = [self.task_generator()]
+        skills = [self.skill_generator()]
+
+        ma = MissionAssigner(robotId = "testRobotId", missionId = "testMissionId", tasks = tasks, skills = skills)
+        AssignMissionServiceResponse = ma.assign_mission(self.assignMissionServiceName)
+
+        self.assertEquals(AssignMissionServiceResponse.actionAcceptedRefused.accepted, 'False')
 
 # Test Suite for Mission Assigner
 class SuiteTest(unittest.TestSuite):

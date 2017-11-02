@@ -1,5 +1,5 @@
 tasks:
-# - {skillName: example-skill, exampleSkillProperty0: exampleSkillValue0, exampleSkillProperty1: exampleSkillValue1}
+- {skillName: example-skill, exampleSkillProperty0: exampleSkillValue0, exampleSkillProperty1: exampleSkillValue1}
 # - {skillName: example-skill, exampleSkillProperty0: exampleSkillValue0, exampleSkillProperty1: exampleSkillValue1}
 # - {skillName: example-skill, exampleSkillProperty0: exampleSkillValue0, exampleSkillProperty1: exampleSkillValue1}
 # - {skillName: example-skill, exampleSkillProperty0: exampleSkillValue0, exampleSkillProperty1: exampleSkillValue1}
@@ -11,5 +11,7 @@ tasks:
 # - {skillName: example-skill, exampleSkillProperty0: exampleSkillValue0, exampleSkillProperty1: exampleSkillValue1}
 # - {skillName: example-skill, exampleSkillProperty0: exampleSkillValue0, exampleSkillProperty1: exampleSkillValue1}
 # - {skillName: example-skill, exampleSkillProperty0: exampleSkillValue0, exampleSkillProperty1: exampleSkillValue1}
-- {skillName: drive-edges, mode: DIFFERENTIAL, edges: [5,6]}
+- {skillName: drive-edges, mode: DIFFERENTIAL, edges: [3,4]}
+- {skillName: drive-edges, mode: TRICYCLE, edges: [3,4]}
+- {skillName: drive-edges, mode: OMNI, edges: [3,4]}
 # - {skillName: dock-pose, frameId: map, px: 0, py: 0, pz: 0, qx: 0, qy: 0, qz: 0, qw: 1}

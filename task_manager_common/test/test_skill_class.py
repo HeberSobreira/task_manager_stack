@@ -137,6 +137,8 @@ class TestGoalEncoder(TestSkillClassBase):
 
         self.assertEquals(goal, 'example-skill')
 
+# Unit Test for Action Name Constructor
+
 # Unit Test for Action Type Constructor
 class TestActionTypeConstructor(TestSkillClassBase):
 
@@ -359,7 +361,7 @@ class TestPoseInteractionSkill(TestSkillClassBase):
 class TestDriveEdgesSkill(TestSkillClassBase):
     def test_DriveEdgesSkill_create(self):
         self.assertTrue(True)
-        
+
 
 
 # Test Suite for Skill Class

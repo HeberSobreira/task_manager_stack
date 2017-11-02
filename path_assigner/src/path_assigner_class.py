@@ -15,7 +15,7 @@ class PathAssigner(object):
 
     """docstring for PathAssigner."""
 
-    def __init__(self, getPathServiceName, graphEdges, graphVertices):
+    def __init__(self, getPathServiceName = None, graphEdges = None, graphVertices = None):
         self.graphEdges = graphEdges if graphEdges is not None else []
         self.graphVertices = graphVertices if graphVertices is not None else []
 
