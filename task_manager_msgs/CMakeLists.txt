@@ -65,6 +65,7 @@ add_service_files(
   AssignMission.srv
   ProvideTaskStatus.srv
   GetPath.srv
+  GetPathFromDestinationVertex.srv
 )
 
 ## Generate actions in the 'action' folder
