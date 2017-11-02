@@ -14,7 +14,7 @@ The **Task Manager** is responsible for receiving mission assignments and for th
 2. Download the [task_manager_stack]() repository to the src folder of your catkin workspace.
 
     ```bash
-    git clone https://gitlab.inesctec.pt/CRIIS/task_manager_stack
+    git clone https://gitlab.inesctec.pt/rafael.l.arrais/task_manager_stack
     ```
 
 3. Install [pytest-mock](https://github.com/pytest-dev/pytest-mock), used for testing:
