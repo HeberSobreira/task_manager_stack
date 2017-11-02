@@ -11,9 +11,11 @@
 
     <!-- Fake Skills -->
     <!-- TODO: verificar se isto funciona -->
-    <include file="$(find skill_simulation_server)/launch/run.launch">
-        <!-- <arg name="robotId" value="$(arg robot_id)"/> -->
-    </include>
+    <!-- <include file="$(find skill_simulation_server)/launch/run.launch">
+    </include> -->
+    <node name="GenericSkill" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="GenericSkill"></node>
+
+    <!-- Path Assigner -->
     <include file="$(find path_assigner)/launch/run.launch">
     </include>
 
