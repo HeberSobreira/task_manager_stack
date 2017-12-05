@@ -19,6 +19,12 @@ class Skill(object):
         self.allowedSkillPropertiesKeys = allowedSkillPropertiesKeys
         self.skillProperties = skillProperties
 
+    def checkProperties(self):
+        for key in self.skillProperties:
+            if key not in self.allowedSkillPropertiesKeys:
+                raise AttributeError('%s is not an allowed property key' %key)
+
+
     def skillPropertiesConstructor(self, task):
         self.skillProperties = {}
 
@@ -162,12 +168,7 @@ class PoseInteractionSkill(Skill):
 
     def actionGoalConstructor(self):
 
-
-        #TODO:check if the skillProperties match with the allowedSkillPropertiesKeys
-        #Does it make sense?
-        for key in self.skillProperties:
-            if key not in self.allowedSkillPropertiesKeys:
-                raise AttributeError('%s is not an allowed property key' %key)
+        self.checkProperties() #checks if the skillProperties match with the allowedSkillPropertiesKeys
 
         try:
             frameId = self.skillProperties['frameId']
