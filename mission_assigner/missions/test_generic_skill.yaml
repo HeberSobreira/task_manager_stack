@@ -1,4 +1,8 @@
 tasks:
+
+- {skillName: elevator-interaction, mode: IN, floor: 3}
+- {skillName: change-map, NewMap: newMap}
+
 - {skillName: example-skill, exampleSkillProperty0: exampleSkillValue0, exampleSkillProperty1: exampleSkillValue1}
 # - {skillName: example-skill, exampleSkillProperty0: exampleSkillValue0, exampleSkillProperty1: exampleSkillValue1}
 # - {skillName: example-skill, exampleSkillProperty0: exampleSkillValue0, exampleSkillProperty1: exampleSkillValue1}
@@ -10,8 +14,11 @@ tasks:
 # - {skillName: move-arm, Angle: 10}
 # - {skillName: example-skill, exampleSkillProperty0: exampleSkillValue0, exampleSkillProperty1: exampleSkillValue1}
 # - {skillName: example-skill, exampleSkillProperty0: exampleSkillValue0, exampleSkillProperty1: exampleSkillValue1}
+
 # - {skillName: example-skill, exampleSkillProperty0: exampleSkillValue0, exampleSkillProperty1: exampleSkillValue1}
+
 - {skillName: drive-edges, mode: DIFFERENTIAL, edges: [3,4]}
 - {skillName: drive-edges, mode: TRICYCLE, edges: [3,4]}
 - {skillName: drive-edges, mode: OMNI, edges: [3,4]}
+
 # - {skillName: dock-pose, frameId: map, px: 0, py: 0, pz: 0, qx: 0, qy: 0, qz: 0, qw: 1}

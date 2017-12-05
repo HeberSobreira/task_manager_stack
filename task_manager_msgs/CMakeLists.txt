@@ -82,6 +82,8 @@ add_action_files(
   MoveArmSkill.action
   GenericSkill.action
   DriveEdgesSkill.action
+  ElevatorInteractionSkill.action
+  ChangeMapSkill.action
 )
 
 ## Generate added messages and services with any dependencies listed here

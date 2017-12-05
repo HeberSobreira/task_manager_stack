@@ -16,6 +16,8 @@ skills:
 - {skillName: crob-wait, skillType: WaitSkill, skillClass: GenericSkill, skillProperties: [waitTime]}
 - {skillName: move-arm, skillType: MoveArmSkill, skillClass: GenericSkill, skillProperties: [Angle]}
 - {skillName: example-skill, skillType: GenericSkill, skillClass: GenericSkill, skillProperties: [exampleSkillProperty0, exampleSkillProperty1]}
+- {skillName: elevator-interaction, skillType: ElevatorInteractionSkill, skillClass: GenericSkill, skillProperties: [mode, floor]}
+- {skillName: change-map, skillType: ChangeMapSkill, skillClass: GenericSkill, skillProperties: [NewMap]}
 # PoseInteractionSkill
 - {skillName: dock-pose, skillType: DockSkill, skillClass: PoseInteractionSkill, skillProperties: [frameId, px, py, pz, qx, qy, qz, qw]}
 - {skillName: pick-pose, skillType: PickSkill, skillClass: PoseInteractionSkill, skillProperties: [frameId, px, py, pz, qx, qy, qz, qw]}

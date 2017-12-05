@@ -76,3 +76,5 @@ ignore log files someone is creating
 
 #ignore pdfs
 #*.pdf
+
+.idea/

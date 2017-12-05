@@ -1,0 +1,11 @@
+#goal definition
+string mode # "IN" or "OUT"
+int32 floor
+---
+#result definition
+int32 percentage
+string skillStatus
+---
+#feedback
+int32 percentage
+string skillStatus
