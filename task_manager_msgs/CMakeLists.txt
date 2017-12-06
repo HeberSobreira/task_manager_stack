@@ -73,9 +73,6 @@ add_action_files(
   DIRECTORY action
   FILES
   DriveSkill.action
-  LocateSkill.action
-  PickSkill.action
-  PlaceSkill.action
   WaitSkill.action
   ActuateArmSkill.action
   DockSkill.action

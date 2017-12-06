@@ -185,7 +185,7 @@ class PoseInteractionSkill(Skill):
         poseStamped = MSGConstructor.PoseStampedConstructor(frameId, px, py, pz, qx, qy, qz, qw)
 
         arguments = 'ObjectId = frameId, Pose = poseStamped'
-        return eval('task_manager_msgs.msg.' + str(self.skillType) + 'Goal(' + arguments + ')')
+        return eval('task_manager_msgs.msg.PoseInteractionSkill' + 'Goal(' + arguments + ')')
 
 
 class ObjectInteractionSkill(Skill):
