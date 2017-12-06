@@ -3,12 +3,12 @@ skills:
 - {skillName: drive, skillType: DriveSkill, skillClass: DriveSkill, skillProperties: [toObjectId, toObjectType]}
 - {skillName: crob-drive, skillType: DriveSkill, skillClass: DriveSkill, skillProperties: [toObjectId, toObjectType]}
 # ObjectInteractionSkill
-- {skillName: locate, skillType: LocateSkill, skillClass: ObjectInteractionSkill, skillProperties: [objectId, objectType, containerObjectId, containerObjectType]}
-- {skillName: crob-locate, skillType: LocateSkill, skillClass: ObjectInteractionSkill, skillProperties: [objectId, objectType, containerObjectId, containerObjectType]}
-- {skillName: pick, skillType: PickSkill, skillClass: ObjectInteractionSkill, skillProperties: [objectId, objectType, containerObjectId, containerObjectType]}
-- {skillName: crob-pick, skillType: PickSkill, skillClass: ObjectInteractionSkill, skillProperties: [objectId, objectType, containerObjectId, containerObjectType]}
-- {skillName: place, skillType: PlaceSkill, skillClass: ObjectInteractionSkill, skillProperties: [objectId, objectType, containerObjectId, containerObjectType]}
-- {skillName: crob-place, skillType: PlaceSkill, skillClass: ObjectInteractionSkill, skillProperties: [objectId, objectType, containerObjectId, containerObjectType]}
+- {skillName: locate, skillType: PoseInteractionSkill, skillClass: ObjectInteractionSkill, skillProperties: [objectId, objectType, containerObjectId, containerObjectType]}
+- {skillName: crob-locate, skillType: PoseInteractionSkill, skillClass: ObjectInteractionSkill, skillProperties: [objectId, objectType, containerObjectId, containerObjectType]}
+- {skillName: pick, skillType: PoseInteractionSkill, skillClass: ObjectInteractionSkill, skillProperties: [objectId, objectType, containerObjectId, containerObjectType]}
+- {skillName: crob-pick, skillType: PoseInteractionSkill, skillClass: ObjectInteractionSkill, skillProperties: [objectId, objectType, containerObjectId, containerObjectType]}
+- {skillName: place, skillType: PoseInteractionSkill, skillClass: ObjectInteractionSkill, skillProperties: [objectId, objectType, containerObjectId, containerObjectType]}
+- {skillName: crob-place, skillType: PoseInteractionSkill, skillClass: ObjectInteractionSkill, skillProperties: [objectId, objectType, containerObjectId, containerObjectType]}
 # DriveEdgesSkill
 - {skillName: drive-edges, skillType: DriveEdgesSkill, skillClass: DriveEdgesSkill, skillProperties: [mode, edges]} ## NOTE: This cannot be of type Generic
 # GenericSkill
@@ -19,6 +19,8 @@ skills:
 - {skillName: elevator-interaction, skillType: ElevatorInteractionSkill, skillClass: GenericSkill, skillProperties: [mode, floor]}
 - {skillName: change-map, skillType: ChangeMapSkill, skillClass: GenericSkill, skillProperties: [NewMap]}
 # PoseInteractionSkill
-- {skillName: dock-pose, skillType: DockSkill, skillClass: PoseInteractionSkill, skillProperties: [frameId, px, py, pz, qx, qy, qz, qw]}
-- {skillName: pick-pose, skillType: PickSkill, skillClass: PoseInteractionSkill, skillProperties: [frameId, px, py, pz, qx, qy, qz, qw]}
-- {skillName: place-pose, skillType: PlaceSkill, skillClass: PoseInteractionSkill, skillProperties: [frameId, px, py, pz, qx, qy, qz, qw]}
+- {skillName: pick-pose, skillType: PoseInteractionSkill, skillClass: PoseInteractionSkill, skillProperties: [frameId, px, py, pz, qx, qy, qz, qw]}
+- {skillName: place-pose, skillType: PoseInteractionSkill, skillClass: PoseInteractionSkill, skillProperties: [frameId, px, py, pz, qx, qy, qz, qw]}
+
+#DockSkill
+- {skillName: dock-pose, skillType: DockSkill, skillClass: DockSkill, skillProperties: [mode, frameId, px, py, pz, qx, qy, qz, qw]}

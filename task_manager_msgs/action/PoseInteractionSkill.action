@@ -1,5 +1,5 @@
 #goal definition
-string Mode # "DOCK" or "UNDOCK"
+string ObjectId
 geometry_msgs/PoseStamped Pose
 ---
 #result definition

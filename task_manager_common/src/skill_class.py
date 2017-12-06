@@ -185,7 +185,6 @@ class PoseInteractionSkill(Skill):
         poseStamped = MSGConstructor.PoseStampedConstructor(frameId, px, py, pz, qx, qy, qz, qw)
 
         arguments = 'ObjectId = frameId, Pose = poseStamped'
-        # task_manager_msgs.msg.skillTypeGoal(ObjectId=frameId, Pose = poseStamped)
         return eval('task_manager_msgs.msg.' + str(self.skillType) + 'Goal(' + arguments + ')')
 
 
@@ -194,3 +193,44 @@ class ObjectInteractionSkill(Skill):
     """docstring for ObjectInteractionSkill."""
 
     pass
+
+
+class DockSkill(Skill):
+    """docstring for DockSkill."""
+
+    def actionNameConstructor(self):
+        supportedDockingModes = ['DOCK', 'UNDOCK']
+
+        try:
+            mode = self.skillProperties['mode']
+        except KeyError as e:
+            raise KeyError('DriveEdgesSkill missing property: ' + str(e))
+
+        if mode in supportedDockingModes:
+            if mode == 'DOCK':
+                return 'DockSkill'
+
+            elif mode == 'UNDOCK':
+                return 'UndockSkill'
+        else:
+            raise AttributeError('Unsupported Docking mode :' + str(mode) + '. Supported Docking modes are: ' + str(supportedDockingModes))
+
+    def actionGoalConstructor(self):
+
+        try:
+            mode = self.skillProperties['mode']
+            frameId = self.skillProperties['frameId']
+            px = self.skillProperties['px']
+            py = self.skillProperties['py']
+            pz = self.skillProperties['pz']
+            qx = self.skillProperties['qx']
+            qy = self.skillProperties['qy']
+            qz = self.skillProperties['qz']
+            qw = self.skillProperties['qw']
+        except KeyError as e:
+            raise KeyError('PoseInteractionSkill missing property: ' + str(e))
+
+        poseStamped = MSGConstructor.PoseStampedConstructor(frameId, px, py, pz, qx, qy, qz, qw)
+
+        arguments = 'Mode = mode, Pose = poseStamped'
+        return eval('task_manager_msgs.msg.' + str(self.skillType) + 'Goal(' + arguments + ')')

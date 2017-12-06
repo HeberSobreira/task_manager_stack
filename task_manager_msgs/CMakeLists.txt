@@ -79,6 +79,7 @@ add_action_files(
   WaitSkill.action
   ActuateArmSkill.action
   DockSkill.action
+  PoseInteractionSkill.action
   MoveArmSkill.action
   GenericSkill.action
   DriveEdgesSkill.action

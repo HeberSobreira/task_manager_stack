@@ -21,4 +21,5 @@ tasks:
 - {skillName: drive-edges, mode: TRICYCLE, edges: [3,4]}
 - {skillName: drive-edges, mode: OMNI, edges: [3,4]}
 
-# - {skillName: dock-pose, frameId: map, px: 0, py: 0, pz: 0, qx: 0, qy: 0, qz: 0, qw: 1}
+- {skillName: dock-pose, mode: DOCK, frameId: map, px: 0, py: 0, pz: 0, qx: 0, qy: 0, qz: 0, qw: 1}
+- {skillName: dock-pose, mode: UNDOCK, frameId: map, px: 0, py: 0, pz: 0, qx: 0, qy: 0, qz: 0, qw: 1}
