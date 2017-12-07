@@ -7,6 +7,8 @@ import actionlib
 from task_manager_msgs.msg import *
 from task_manager_msgs.srv import GetPath
 from msg_constructor import *
+from teastar_msgs.srv import GetPathFromDestinationVertex
+from teastar_msgs.msg import UpdateRobotPath
 
 class Skill(object):
 
@@ -161,6 +163,69 @@ class DriveEdgesSkill(Skill):
 
         arguments = 'ControllerMode=mode, PathSet = pathSet'
         return eval('task_manager_msgs.msg.' + str(self.skillType) + 'Goal(' + arguments + ')')
+
+class DriveToVertexSkill(Skill):
+
+    """docstring for DriveEdgesSkill."""
+
+    ## TODO: Missing Unit Test
+    def actionNameConstructor(self):
+
+        # Should be Object / Class variable
+        supportedTractionModes = ['DIFFERENTIAL', 'TRICYCLE', 'OMNI']
+
+        try:
+            mode = self.skillProperties['mode']
+        except KeyError as e:
+            raise KeyError('DriveEdgesSkill missing property: ' + str(e))
+
+        if mode in supportedTractionModes:
+            if mode == 'DIFFERENTIAL':
+                return 'DriveEdgesSkillDifferential'
+
+            elif mode == 'TRICYCLE':
+                return 'DriveEdgesSkillTricycle'
+
+            elif mode == 'OMNI':
+                return 'DriveEdgesSkillOmni'
+
+        else:
+            raise AttributeError('Unsupported traction mode :' + str(mode) + '. Supported traction modes are: ' + str(supportedTractionModes))
+
+
+        update = self.pathUpdater()
+
+    def actionTypeConstructor(self):
+        return eval('task_manager_msgs.msg.DriveEdgesSkillAction')
+
+
+    def actionGoalConstructor(self):
+
+        try:
+            robot = self.skillProperties['robot']
+            mode = self.skillProperties['mode']
+            vertex = self.skillProperties['vertex']
+        except KeyError as e:
+            raise KeyError('DriveEdgesSkill missing property: ' + str(e))
+
+        rospy.wait_for_service('/GetPathVertex', timeout=3) #TODO: Shouldnt be hard coded
+        getPath = rospy.ServiceProxy('/GetPathVertex', GetPathFromDestinationVertex)
+        response = getPath(robot, vertex)
+        pathSet = response.PathSet
+
+        arguments = 'ControllerMode=mode, PathSet = pathSet'
+        return eval('task_manager_msgs.msg.DriveEdgesSkillGoal(' + arguments + ')')
+
+    def newPath(updatedPath):
+        mode = self.skillProperties['mode']
+        pathSet = updatedPath.PathSet
+        arguments = 'ControllerMode=mode, PathSet = pathSet'
+        return eval('task_manager_msgs.msg.DriveEdgesSkillGoal(' + arguments + ')')
+
+    def pathUpdater(self):
+        rospy.Subscriber(self.skillProperties['robot'] + '/UpdatePath', UpdateRobotPath, self.newPath)
+        rospy.spin()
+
 
 class PoseInteractionSkill(Skill):
 

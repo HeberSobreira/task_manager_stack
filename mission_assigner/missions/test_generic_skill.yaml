@@ -1,5 +1,8 @@
 tasks:
 
+- {skillName: drive-vertex, robot: Edgar, mode: DIFFERENTIAL, vertex: 1}
+# - {skillName: drive-vertex, robot: Igor, mode: DIFFERENTIAL, vertex: 5}
+
 - {skillName: dock, objectType: Elevator, mode: DOCK, frameId: map, px: 0, py: 0, pz: 0, qx: 0, qy: 0, qz: 0, qw: 1}
 - {skillName: elevator-interaction, mode: IN, floor: 3}
 - {skillName: elevator-interaction, mode: OUT, floor: 2}

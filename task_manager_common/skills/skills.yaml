@@ -1,5 +1,6 @@
 skills:
 # DriveSkill
+- {skillName: drive-vertex, skillType: DriveToVertexSkill, skillClass: DriveToVertexSkill, skillProperties: [robot, mode, vertex]}
 - {skillName: drive, skillType: DriveSkill, skillClass: DriveSkill, skillProperties: [toObjectId, toObjectType]}
 - {skillName: crob-drive, skillType: DriveSkill, skillClass: DriveSkill, skillProperties: [toObjectId, toObjectType]}
 # ObjectInteractionSkill
