@@ -1,4 +1,5 @@
 #goal definition
+string ObjectType
 string Mode # "DOCK" or "UNDOCK"
 geometry_msgs/PoseStamped Pose
 ---

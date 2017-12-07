@@ -199,26 +199,29 @@ class DockSkill(Skill):
     """docstring for DockSkill."""
 
     def actionNameConstructor(self):
+
+        try:
+            objectType = self.skillProperties['objectType']
+        except KeyError as e:
+            raise KeyError('DockSkill missing property: ' + str(e))
+
+        return 'DockSkill' + objectType
+
+
+    def actionGoalConstructor(self):
+
         supportedDockingModes = ['DOCK', 'UNDOCK']
 
         try:
             mode = self.skillProperties['mode']
         except KeyError as e:
-            raise KeyError('DriveEdgesSkill missing property: ' + str(e))
+            raise KeyError('DockSkill missing property: ' + str(e))
 
-        if mode in supportedDockingModes:
-            if mode == 'DOCK':
-                return 'DockSkill'
-
-            elif mode == 'UNDOCK':
-                return 'UndockSkill'
-        else:
+        if mode not in supportedDockingModes:
             raise AttributeError('Unsupported Docking mode :' + str(mode) + '. Supported Docking modes are: ' + str(supportedDockingModes))
 
-    def actionGoalConstructor(self):
-
         try:
-            mode = self.skillProperties['mode']
+            objectType = self.skillProperties['objectType']
             frameId = self.skillProperties['frameId']
             px = self.skillProperties['px']
             py = self.skillProperties['py']
@@ -232,5 +235,5 @@ class DockSkill(Skill):
 
         poseStamped = MSGConstructor.PoseStampedConstructor(frameId, px, py, pz, qx, qy, qz, qw)
 
-        arguments = 'Mode = mode, Pose = poseStamped'
+        arguments = 'ObjectType = objectType, Mode = mode, Pose = poseStamped'
         return eval('task_manager_msgs.msg.' + str(self.skillType) + 'Goal(' + arguments + ')')

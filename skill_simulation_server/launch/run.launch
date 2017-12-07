@@ -2,6 +2,7 @@
 <launch>
 
     <!-- Launches the skills simulation action servers -->
+
     <node name="DriveSkill" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="DriveSkill"></node>
     <node name="DriveEdgesSkillDifferential" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="DriveEdgesSkill"></node>
     <node name="DriveEdgesSkillTricycle" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="DriveEdgesSkill"></node>
@@ -15,12 +16,16 @@
     <node name="GenericSkill" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="GenericSkill"></node>
     <node name="ElevatorInteractionSkill" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="ElevatorInteractionSkill"></node>
     <node name="ChangeMapSkill" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="ChangeMapSkill"></node>
-    <node name="DockSkill" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="DockSkill"></node>
-    <node name="UndockSkill" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="DockSkill"></node>
+    <!-- <node name="DockSkill" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="DockSkill"></node> -->
     <node name="PoseInteractionSkill" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="PoseInteractionSkill"></node>
 
     <node name="LocateSkill" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="PoseInteractionSkill"></node>
     <node name="PickSkill" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="PoseInteractionSkill"></node>
     <node name="PlaceSkill" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="PoseInteractionSkill"></node>
+
+    <node name="DockSkillElevator" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="DockSkill"></node>
+
+
+
 
 </launch>

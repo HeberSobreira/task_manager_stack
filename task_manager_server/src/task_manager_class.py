@@ -70,7 +70,12 @@ class TaskManager(object):
             rospy.logwarn('[TaskManager] [' + str(self.robotId) + '] Mission ' + str(missionId) + ' refused: Different robotId!')
             return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'False', reasonOfRefusal = 'Different robotId!')
 
-        # TODO: Refuse a mission with a previous stored missionId
+
+        for mission in self.missions:
+            if missionId == mission['missionId']:
+                rospy.logwarn('[TaskManager] [' + str(self.robotId) + '] Mission ' + str(missionId) + ' refused: Mission already stored!')
+                return MSGConstructor.ActionAcceptedRefusedConstructor(accepted='False', reasonOfRefusal='Mission already stored!')
+
 
         if len(self.ongoingTasks) != 0:
             rospy.logwarn('[TaskManager] [' + str(self.robotId) + '] Mission ' + str(missionId) + ' refused: Robot is currently busy with ' + str(len(self.ongoingTasks)) + ' tasks: ' + str([t.skillName for t in self.ongoingTasks]))

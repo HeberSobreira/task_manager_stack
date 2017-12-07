@@ -24,4 +24,5 @@ skills:
 - {skillName: locate-pose, skillType: PoseInteractionSkill, skillClass: PoseInteractionSkill, skillProperties: [frameId, px, py, pz, qx, qy, qz, qw]}
 
 #DockSkill
-- {skillName: dock-pose, skillType: DockSkill, skillClass: DockSkill, skillProperties: [mode, frameId, px, py, pz, qx, qy, qz, qw]}
+# - {skillName: dock-pose, skillType: DockSkill, skillClass: DockSkill, skillProperties: [mode, frameId, px, py, pz, qx, qy, qz, qw]}
+- {skillName: dock, skillType: DockSkill, skillClass: DockSkill, skillProperties: [objectType, mode, frameId, px, py, pz, qx, qy, qz, qw]}
