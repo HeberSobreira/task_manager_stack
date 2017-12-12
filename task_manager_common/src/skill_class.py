@@ -10,6 +10,8 @@ from msg_constructor import *
 from teastar_msgs.srv import GetPathFromDestinationVertex
 from teastar_msgs.msg import UpdateRobotPath
 
+import thread
+
 class Skill(object):
 
     """docstring for Skill."""
@@ -24,7 +26,7 @@ class Skill(object):
     def checkProperties(self):
         for key in self.skillProperties:
             if key not in self.allowedSkillPropertiesKeys:
-                raise AttributeError('%s is not an allowed property key' %key)
+                raise AttributeError('%s is not ActionName allowed property key' %key)
 
 
     def skillPropertiesConstructor(self, task):
@@ -60,13 +62,13 @@ class Skill(object):
         raise NotImplementedError('Subclass ' + str(self.skillType) + ' must implement abstract method!')
 
     # ROS specific
-    def action_client(self, waitForServerTimeOut = 10, waitForActionClientTimeOut = 300):
-        actionName = self.actionNameConstructor() ## TODO: Missing Unit Test
-        actionType = self.actionTypeConstructor()
-        actionGoal = self.actionGoalConstructor()
+    def action_client(self, waitForServerTimeOut = 10, waitForActionClientTimeOut = 300, ActionName = None, ActionType = None, ActionGoal = None):
+        actionName = ActionName if ActionName is not None else self.actionNameConstructor() ## TODO: Missing Unit Test
+        actionGoal = ActionGoal if ActionGoal is not None else self.actionGoalConstructor()
+        actionType = ActionType if ActionType is not None else self.actionTypeConstructor()
 
         # Creates a ROS Action Client, passing the type of the action to the constructor.
-        client = actionlib.SimpleActionClient(actionName, actionType)
+        self.client = actionlib.SimpleActionClient(actionName, actionType)
 
         ## IDEA: Maybe execute here some PRE-CONDITIONS defined within the Skill Subclass (Have a method that MUST/COULD be defined)
         ## BETTER IDEA: Encapsulate the 'action_client' method inside a 'skill_client()' method that performs such check
@@ -74,16 +76,16 @@ class Skill(object):
         rospy.logdebug('[' + str(self.skillClass) + '] Waiting for ' + str(actionName) + ' Server...')
 
         # TODO: Try to find a better Exception Type to handle this
-        if not client.wait_for_server(rospy.Duration(waitForServerTimeOut)):
+        if not self.client.wait_for_server(rospy.Duration(waitForServerTimeOut)):
             raise Exception('Skill Action Client Error: Timed out (' + str(waitForServerTimeOut) + 's) while trying to find Action Server ' + str(actionName))
 
         # Sends the goal to the action server.
         rospy.logdebug('[' + str(self.skillClass) + '] Sending goal to ' + str(actionName) + ' Server...')
-        client.send_goal(actionGoal)
+        self.client.send_goal(actionGoal)
 
         rospy.logdebug('[' + str(self.skillClass) + '] Waiting response from ' + str(actionName) + ' Server...')
 
-        if not client.wait_for_result(rospy.Duration(waitForActionClientTimeOut)):
+        if not self.client.wait_for_result(rospy.Duration(waitForActionClientTimeOut)):
             raise Exception('Skill Action Client Error: Timed out (' + str(waitForActionClientTimeOut) + 's) while waiting for ' + str(actionName) + ' Action Server result')
 
         ## IDEA: Maybe execute here some POST-CONDITIONS defined within the Skill Subclass (Have a method that MUST/COULD be defined)
@@ -91,7 +93,7 @@ class Skill(object):
 
         # Return the result of executing the action
         rospy.logdebug('[' + str(self.skillClass) + '] Received result from ' + str(actionName) + ' Server!')
-        return client.get_result()
+        return self.client.get_result()
 
 class GenericSkill(Skill):
 
@@ -192,9 +194,6 @@ class DriveToVertexSkill(Skill):
         else:
             raise AttributeError('Unsupported traction mode :' + str(mode) + '. Supported traction modes are: ' + str(supportedTractionModes))
 
-
-        update = self.pathUpdater()
-
     def actionTypeConstructor(self):
         return eval('task_manager_msgs.msg.DriveEdgesSkillAction')
 
@@ -213,18 +212,19 @@ class DriveToVertexSkill(Skill):
         response = getPath(robot, vertex)
         pathSet = response.PathSet
 
+        rospy.Subscriber(self.skillProperties['robot'] + '/UpdatePath', UpdateRobotPath, self.newPathCallBack)
+
         arguments = 'ControllerMode=mode, PathSet = pathSet'
         return eval('task_manager_msgs.msg.DriveEdgesSkillGoal(' + arguments + ')')
 
-    def newPath(updatedPath):
+    def newPathCallBack(self, updatedPath):
+
         mode = self.skillProperties['mode']
         pathSet = updatedPath.PathSet
-        arguments = 'ControllerMode=mode, PathSet = pathSet'
-        return eval('task_manager_msgs.msg.DriveEdgesSkillGoal(' + arguments + ')')
+        arguments = 'ControllerMode = mode, PathSet = pathSet'
+        actionGoal = eval('task_manager_msgs.msg.DriveEdgesSkillGoal(' + arguments + ')')
 
-    def pathUpdater(self):
-        rospy.Subscriber(self.skillProperties['robot'] + '/UpdatePath', UpdateRobotPath, self.newPath)
-        rospy.spin()
+        self.action_client(ActionGoal = actionGoal)
 
 
 class PoseInteractionSkill(Skill):
