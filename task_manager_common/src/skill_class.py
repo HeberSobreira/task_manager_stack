@@ -63,6 +63,9 @@ class Skill(object):
 
     # ROS specific
     def action_client(self, waitForServerTimeOut = 10, waitForActionClientTimeOut = 300, ActionName = None, ActionType = None, ActionGoal = None):
+
+        self.actionStatusFinished = False
+
         actionName = ActionName if ActionName is not None else self.actionNameConstructor() ## TODO: Missing Unit Test
         actionGoal = ActionGoal if ActionGoal is not None else self.actionGoalConstructor()
         actionType = ActionType if ActionType is not None else self.actionTypeConstructor()
@@ -90,6 +93,8 @@ class Skill(object):
 
         ## IDEA: Maybe execute here some POST-CONDITIONS defined within the Skill Subclass (Have a method that MUST/COULD be defined)
         ## BETTER IDEA: Encapsulate the 'action_client' method inside a 'skill_client()' method that performs such check
+
+        self.actionStatusFinished = True
 
         # Return the result of executing the action
         rospy.logdebug('[' + str(self.skillClass) + '] Received result from ' + str(actionName) + ' Server!')
@@ -212,19 +217,21 @@ class DriveToVertexSkill(Skill):
         response = getPath(robot, vertex)
         pathSet = response.PathSet
 
-        rospy.Subscriber(self.skillProperties['robot'] + '/UpdatePath', UpdateRobotPath, self.newPathCallBack)
+        self.sub = rospy.Subscriber(self.skillProperties['robot'] + '/UpdatePath', UpdateRobotPath, self.newPathCallBack)
 
         arguments = 'ControllerMode=mode, PathSet = pathSet'
         return eval('task_manager_msgs.msg.DriveEdgesSkillGoal(' + arguments + ')')
 
     def newPathCallBack(self, updatedPath):
 
-        mode = self.skillProperties['mode']
-        pathSet = updatedPath.PathSet
-        arguments = 'ControllerMode = mode, PathSet = pathSet'
-        actionGoal = eval('task_manager_msgs.msg.DriveEdgesSkillGoal(' + arguments + ')')
-
-        self.action_client(ActionGoal = actionGoal)
+        if self.actionStatusFinished:
+            self.sub.unregister()
+        else:
+            mode = self.skillProperties['mode']
+            pathSet = updatedPath.PathSet
+            arguments = 'ControllerMode = mode, PathSet = pathSet'
+            actionGoal = eval('task_manager_msgs.msg.DriveEdgesSkillGoal(' + arguments + ')')
+            self.action_client(ActionGoal = actionGoal)
 
 
 class PoseInteractionSkill(Skill):
