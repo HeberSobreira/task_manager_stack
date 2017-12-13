@@ -94,18 +94,17 @@ class Skill(object):
 
         # Return the result of executing the action
         rospy.logdebug('[' + str(self.skillClass) + '] Received result from ' + str(actionName) + ' Server!')
+
         return self.client.get_result()
 
-
-
     def action_feedback_cb(self, feedback):
-        pass
+        rospy.logdebug('[' + str(self.skillClass) + '] Received feedback from ' + str(self.skillType) + ' Server: ' + str(feedback.percentage) + '%')
 
     def action_done_cb(self, status, result):
-        pass
+        rospy.loginfo('[' + str(self.skillClass) + '] Action ' + str(self.skillType) + ' Done.')
 
     def action_active_cb(self):
-        pass
+        rospy.logdebug('[' + str(self.skillClass) + '] Goal sent to the ' + str(self.skillType) + ' Server...')
 
 class GenericSkill(Skill):
 
@@ -209,7 +208,6 @@ class DriveToVertexSkill(Skill):
     def actionTypeConstructor(self):
         return eval('task_manager_msgs.msg.DriveEdgesSkillAction')
 
-
     def actionGoalConstructor(self):
 
         try:
@@ -219,6 +217,7 @@ class DriveToVertexSkill(Skill):
         except KeyError as e:
             raise KeyError('DriveEdgesSkill missing property: ' + str(e))
 
+        ## TODO: Catch the wait for service timeout and consider that the skill failed
         rospy.wait_for_service('/GetPathVertex', timeout=3) #TODO: Shouldnt be hard coded
         getPath = rospy.ServiceProxy('/GetPathVertex', GetPathFromDestinationVertex)
         response = getPath(robot, vertex)
@@ -235,9 +234,13 @@ class DriveToVertexSkill(Skill):
         pathSet = updatedPath.PathSet
         arguments = 'ControllerMode = mode, PathSet = pathSet'
         actionGoal = eval('task_manager_msgs.msg.DriveEdgesSkillGoal(' + arguments + ')')
-        self.action_client(ActionGoal = actionGoal)
+
+        # Sends a new goal and thus the previous goal is ignored
+        self.client.send_goal(actionGoal, feedback_cb=self.action_feedback_cb, done_cb=self.action_done_cb, active_cb=self.action_active_cb)
 
     def action_done_cb(self, status, result):
+        rospy.loginfo('[' + str(self.skillClass) + '] Action ' + str(self.skillType) + ' Done.')
+
         self.sub.unregister()
 
 class PoseInteractionSkill(Skill):
