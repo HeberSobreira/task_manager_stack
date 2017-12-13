@@ -1,3 +1,8 @@
 tasks:
 #- {skillName: drive-vertex, robot: Igor, mode: DIFFERENTIAL, vertex: 36}
 - {skillName: drive-vertex, robot: Edgar, mode: DIFFERENTIAL, vertex: 43}
+- {skillName: drive-vertex, robot: Edgar, mode: DIFFERENTIAL, vertex: 36}
+
+
+
+

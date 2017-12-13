@@ -64,8 +64,6 @@ class Skill(object):
     # ROS specific
     def action_client(self, waitForServerTimeOut = 10, waitForActionClientTimeOut = 300, ActionName = None, ActionType = None, ActionGoal = None):
 
-        self.actionStatusFinished = False
-
         actionName = ActionName if ActionName is not None else self.actionNameConstructor() ## TODO: Missing Unit Test
         actionGoal = ActionGoal if ActionGoal is not None else self.actionGoalConstructor()
         actionType = ActionType if ActionType is not None else self.actionTypeConstructor()
@@ -84,7 +82,7 @@ class Skill(object):
 
         # Sends the goal to the action server.
         rospy.logdebug('[' + str(self.skillClass) + '] Sending goal to ' + str(actionName) + ' Server...')
-        self.client.send_goal(actionGoal)
+        self.client.send_goal(actionGoal, feedback_cb=self.action_feedback_cb, done_cb=self.action_done_cb, active_cb=self.action_active_cb)
 
         rospy.logdebug('[' + str(self.skillClass) + '] Waiting response from ' + str(actionName) + ' Server...')
 
@@ -94,11 +92,20 @@ class Skill(object):
         ## IDEA: Maybe execute here some POST-CONDITIONS defined within the Skill Subclass (Have a method that MUST/COULD be defined)
         ## BETTER IDEA: Encapsulate the 'action_client' method inside a 'skill_client()' method that performs such check
 
-        self.actionStatusFinished = True
-
         # Return the result of executing the action
         rospy.logdebug('[' + str(self.skillClass) + '] Received result from ' + str(actionName) + ' Server!')
         return self.client.get_result()
+
+
+
+    def action_feedback_cb(self, feedback):
+        pass
+
+    def action_done_cb(self, status, result):
+        pass
+
+    def action_active_cb(self):
+        pass
 
 class GenericSkill(Skill):
 
@@ -224,15 +231,14 @@ class DriveToVertexSkill(Skill):
 
     def newPathCallBack(self, updatedPath):
 
-        if self.actionStatusFinished:
-            self.sub.unregister()
-        else:
-            mode = self.skillProperties['mode']
-            pathSet = updatedPath.PathSet
-            arguments = 'ControllerMode = mode, PathSet = pathSet'
-            actionGoal = eval('task_manager_msgs.msg.DriveEdgesSkillGoal(' + arguments + ')')
-            self.action_client(ActionGoal = actionGoal)
+        mode = self.skillProperties['mode']
+        pathSet = updatedPath.PathSet
+        arguments = 'ControllerMode = mode, PathSet = pathSet'
+        actionGoal = eval('task_manager_msgs.msg.DriveEdgesSkillGoal(' + arguments + ')')
+        self.action_client(ActionGoal = actionGoal)
 
+    def action_done_cb(self, status, result):
+        self.sub.unregister()
 
 class PoseInteractionSkill(Skill):
 
