@@ -2,7 +2,7 @@
 <launch>
 
     <!-- Arguments -->
-    <arg name="robot_id" default="igor"/>
+    <arg name="robot_id" default="Edgar"/>
     <arg name="skills_file" default="skills.yaml" />
     <arg name="skills_path" default="$(find task_manager_common)/skills"/>
     <arg name="assign_mission_service_name" default="/task_manager/AssignMission" />

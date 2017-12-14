@@ -217,8 +217,11 @@ class DriveToVertexSkill(Skill):
         except KeyError as e:
             raise KeyError('DriveEdgesSkill missing property: ' + str(e))
 
-        ## TODO: Catch the wait for service timeout and consider that the skill failed
-        rospy.wait_for_service('/GetPathVertex', timeout=3) #TODO: Shouldnt be hard coded
+        try:
+            rospy.wait_for_service('/GetPathVertex', timeout=3) #TODO: Shouldnt be hard coded
+        except:
+            raise Exception('GetPathVertex Server not found')
+
         getPath = rospy.ServiceProxy('/GetPathVertex', GetPathFromDestinationVertex)
         response = getPath(robot, vertex)
         pathSet = response.PathSet
