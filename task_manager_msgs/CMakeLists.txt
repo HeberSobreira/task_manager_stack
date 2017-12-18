@@ -64,7 +64,7 @@ add_service_files(
   FILES
   AssignMission.srv
   ProvideTaskStatus.srv
-  GetPath.srv
+  GetPathEdges.srv
   GetPathFromDestinationVertex.srv
 )
 

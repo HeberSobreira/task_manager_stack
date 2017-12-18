@@ -20,7 +20,7 @@ class PathAssigner(object):
         self.graphVertices = graphVertices if graphVertices is not None else []
 
         if getPathServiceName is not None:
-            rospy.Service(getPathServiceName, GetPath, self.get_path_request_parser)
+            rospy.Service(getPathServiceName, GetPathEdges, self.get_path_request_parser)
             rospy.loginfo('[PathAssigner] Ready to send Paths at ' + str(getPathServiceName))
 
         # TODO: Raise Exception for empty edges || or should we send an empty path?

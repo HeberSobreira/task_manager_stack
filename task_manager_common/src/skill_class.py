@@ -5,7 +5,7 @@ import rospy
 import actionlib
 
 from task_manager_msgs.msg import *
-from task_manager_msgs.srv import GetPath
+from task_manager_msgs.srv import GetPathEdges
 from msg_constructor import *
 from teastar_msgs.srv import GetPathFromDestinationVertex
 from teastar_msgs.msg import UpdateRobotPath
@@ -169,8 +169,8 @@ class DriveEdgesSkill(Skill):
         except KeyError as e:
             raise KeyError('DriveEdgesSkill missing property: ' + str(e))
 
-        rospy.wait_for_service('/task_manager/GetPath', timeout=3) #TODO: Shouldnt be hard coded
-        getPath = rospy.ServiceProxy('/task_manager/GetPath', GetPath)
+        rospy.wait_for_service('/task_manager/GetPathEdges', timeout=3) #TODO: Shouldnt be hard coded
+        getPath = rospy.ServiceProxy('/task_manager/GetPathEdges', GetPathEdges)
         response = getPath(edges)
         pathSet = response.PathSet
 

@@ -1,4 +1,8 @@
 tasks:
+#
+# - {skillName: drive-vertex, robot: Edgar, mode: DIFFERENTIAL, vertex: 43}
+# - {skillName: drive-vertex, robot: Edgar, mode: DIFFERENTIAL, vertex: 21}
 
-- {skillName: drive-vertex, robot: Edgar, mode: DIFFERENTIAL, vertex: 43}
-- {skillName: drive-vertex, robot: Edgar, mode: DIFFERENTIAL, vertex: 21}
+- {skillName: drive-edges, mode: DIFFERENTIAL, edges: [3,4]}
+- {skillName: drive-edges, mode: TRICYCLE, edges: [3,4]}
+- {skillName: drive-edges, mode: OMNI, edges: [3,4]}
