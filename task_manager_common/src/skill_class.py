@@ -299,7 +299,22 @@ class DockSkill(Skill):
         except KeyError as e:
             raise KeyError('DockSkill missing property: ' + str(e))
 
-        return 'DockSkill' + objectType + tractionMode
+        try:
+            tractionMode = self.skillProperties['tractionMode']
+        except:
+            return 'DockSkill' + objectType
+
+        supportedTractionModes = ['DIFFERENTIAL', 'TRICYCLE', 'OMNI']
+
+        if tractionMode in supportedTractionModes:
+            if tractionMode == 'DIFFERENTIAL':
+                return 'DockSkill' + str(objectType) + 'Differential'
+            elif tractionMode == 'TRICYCLE':
+                return 'DockSkill' + str(objectType) + 'Tricycle'
+            elif tractionMode == 'OMNI':
+                return 'DockSkill' + str(objectType) + 'Omni'
+        else:
+            raise AttributeError('Unsupported traction mode :' + str(tractionMode) + '. Supported traction modes are: ' + str(supportedTractionModes))
 
 
     def actionGoalConstructor(self):

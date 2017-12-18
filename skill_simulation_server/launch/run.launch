@@ -24,6 +24,9 @@
     <node name="PlaceSkill" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="PoseInteractionSkill"></node>
 
     <node name="DockSkillElevator" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="DockSkill"></node>
+    <node name="DockSkillElevatorDifferential" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="DockSkill"></node>
+    <node name="DockSkillElevatorTricycle" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="DockSkill"></node>
+    <node name="DockSkillElevatorOmni" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="DockSkill"></node>
 
 
 

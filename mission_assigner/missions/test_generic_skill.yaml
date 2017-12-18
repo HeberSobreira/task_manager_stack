@@ -6,7 +6,7 @@ tasks:
 - {skillName: dock, objectType: Elevator, mode: DOCK, frameId: map, px: 0, py: 0, pz: 0, qx: 0, qy: 0, qz: 0, qw: 1}
 - {skillName: elevator-interaction, mode: IN, floor: 3}
 - {skillName: elevator-interaction, mode: OUT, floor: 2}
-- {skillName: dock, objectType: Elevator, mode: UNDOCK, frameId: map, px: 4, py: 5, pz: 6, qx: 7, qy: 8, qz: 9, qw: 1}
+- {skillName: dock, objectType: Elevator, mode: UNDOCK, tractionMode: DIFFERENTIAL, frameId: map, px: 4, py: 5, pz: 6, qx: 7, qy: 8, qz: 9, qw: 1}
 - {skillName: change-map, NewMap: newMap}
 
 - {skillName: pick-pose, frameId: map, px: 0, py: 0, pz: 0, qx: 0, qy: 0, qz: 0, qw: 1}
@@ -32,5 +32,5 @@ tasks:
 - {skillName: drive-edges, tractionMode: TRICYCLE, edges: [3,4]}
 - {skillName: drive-edges, tractionMode: OMNI, edges: [3,4]}
 
-# - {skillName: dock-pose, mode: DOCK, frameId: map, px: 0, py: 0, pz: 0, qx: 0, qy: 0, qz: 0, qw: 1}
-# - {skillName: dock-pose, mode: UNDOCK, frameId: map, px: 0, py: 0, pz: 0, qx: 0, qy: 0, qz: 0, qw: 1}
+# - {skillName: dock-pose, mode: DOCK, tractionMode: TRICYCLE, frameId: map, px: 0, py: 0, pz: 0, qx: 0, qy: 0, qz: 0, qw: 1}
+# - {skillName: dock-pose, mode: UNDOCK, tractionMode: DIFFERENTIAL, frameId: map, px: 0, py: 0, pz: 0, qx: 0, qy: 0, qz: 0, qw: 1}
