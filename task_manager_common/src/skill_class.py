@@ -144,27 +144,27 @@ class DriveEdgesSkill(Skill):
         supportedTractionModes = ['DIFFERENTIAL', 'TRICYCLE', 'OMNI']
 
         try:
-            mode = self.skillProperties['mode']
+            tractionMode = self.skillProperties['tractionMode']
         except KeyError as e:
             raise KeyError('DriveEdgesSkill missing property: ' + str(e))
 
-        if mode in supportedTractionModes:
-            if mode == 'DIFFERENTIAL':
+        if tractionMode in supportedTractionModes:
+            if tractionMode == 'DIFFERENTIAL':
                 return 'DriveEdgesSkillDifferential'
 
-            elif mode == 'TRICYCLE':
+        elif tractionMode == 'TRICYCLE':
                 return 'DriveEdgesSkillTricycle'
 
-            elif mode == 'OMNI':
+        elif tractionMode == 'OMNI':
                 return 'DriveEdgesSkillOmni'
 
         else:
-            raise AttributeError('Unsupported traction mode :' + str(mode) + '. Supported traction modes are: ' + str(supportedTractionModes))
+            raise AttributeError('Unsupported traction tractionMode :' + str(tractionMode) + '. Supported traction modes are: ' + str(supportedTractionModes))
 
     def actionGoalConstructor(self):
 
         try:
-            mode = self.skillProperties['mode']
+            tractionMode = self.skillProperties['tractionMode']
             edges = self.skillProperties['edges']
         except KeyError as e:
             raise KeyError('DriveEdgesSkill missing property: ' + str(e))
@@ -179,7 +179,7 @@ class DriveEdgesSkill(Skill):
         response = getPath(edges)
         pathSet = response.PathSet
 
-        arguments = 'ControllerMode=mode, PathSet = pathSet'
+        arguments = 'ControllerMode=tractionMode, PathSet = pathSet'
         return eval('task_manager_msgs.msg.' + str(self.skillType) + 'Goal(' + arguments + ')')
 
 class DriveToVertexSkill(Skill):
@@ -193,22 +193,22 @@ class DriveToVertexSkill(Skill):
         supportedTractionModes = ['DIFFERENTIAL', 'TRICYCLE', 'OMNI']
 
         try:
-            mode = self.skillProperties['mode']
+            tractionMode = self.skillProperties['tractionMode']
         except KeyError as e:
             raise KeyError('DriveEdgesSkill missing property: ' + str(e))
 
-        if mode in supportedTractionModes:
-            if mode == 'DIFFERENTIAL':
+        if tractionMode in supportedTractionModes:
+            if tractionMode == 'DIFFERENTIAL':
                 return 'DriveEdgesSkillDifferential'
 
-            elif mode == 'TRICYCLE':
+        elif tractionMode == 'TRICYCLE':
                 return 'DriveEdgesSkillTricycle'
 
-            elif mode == 'OMNI':
+        elif tractionMode == 'OMNI':
                 return 'DriveEdgesSkillOmni'
 
         else:
-            raise AttributeError('Unsupported traction mode :' + str(mode) + '. Supported traction modes are: ' + str(supportedTractionModes))
+            raise AttributeError('Unsupported traction mode :' + str(tractionMode) + '. Supported traction modes are: ' + str(supportedTractionModes))
 
     def actionTypeConstructor(self):
         return eval('task_manager_msgs.msg.DriveEdgesSkillAction')
@@ -217,7 +217,7 @@ class DriveToVertexSkill(Skill):
 
         try:
             robot = self.skillProperties['robot']
-            mode = self.skillProperties['mode']
+            tractionMode = self.skillProperties['tractionMode']
             vertex = self.skillProperties['vertex']
         except KeyError as e:
             raise KeyError('DriveEdgesSkill missing property: ' + str(e))
@@ -238,14 +238,14 @@ class DriveToVertexSkill(Skill):
 
         self.sub = rospy.Subscriber(self.skillProperties['robot'] + '/UpdatePath', UpdateRobotPath, self.newPathCallBack)
 
-        arguments = 'ControllerMode=mode, PathSet = pathSet'
+        arguments = 'ControllerMode=tractionMode, PathSet = pathSet'
         return eval('task_manager_msgs.msg.DriveEdgesSkillGoal(' + arguments + ')')
 
     def newPathCallBack(self, updatedPath):
 
-        mode = self.skillProperties['mode']
+        tractionMode = self.skillProperties['tractionMode']
         pathSet = updatedPath.PathSet
-        arguments = 'ControllerMode = mode, PathSet = pathSet'
+        arguments = 'ControllerMode = tractionMode, PathSet = pathSet'
         actionGoal = eval('task_manager_msgs.msg.DriveEdgesSkillGoal(' + arguments + ')')
 
         # Sends a new goal and thus the previous goal is ignored
@@ -299,7 +299,7 @@ class DockSkill(Skill):
         except KeyError as e:
             raise KeyError('DockSkill missing property: ' + str(e))
 
-        return 'DockSkill' + objectType
+        return 'DockSkill' + objectType + tractionMode
 
 
     def actionGoalConstructor(self):

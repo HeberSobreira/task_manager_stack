@@ -1,6 +1,6 @@
 skills:
 # DriveSkill
-- {skillName: drive-vertex, skillType: DriveToVertexSkill, skillClass: DriveToVertexSkill, skillProperties: [robot, mode, vertex, timeout]}
+- {skillName: drive-vertex, skillType: DriveToVertexSkill, skillClass: DriveToVertexSkill, skillProperties: [robot, tractionMode, vertex, timeout]}
 - {skillName: drive, skillType: DriveSkill, skillClass: DriveSkill, skillProperties: [toObjectId, toObjectType]}
 - {skillName: crob-drive, skillType: DriveSkill, skillClass: DriveSkill, skillProperties: [toObjectId, toObjectType]}
 # ObjectInteractionSkill
@@ -11,7 +11,7 @@ skills:
 - {skillName: place, skillType: PoseInteractionSkill, skillClass: ObjectInteractionSkill, skillProperties: [objectId, objectType, containerObjectId, containerObjectType]}
 - {skillName: crob-place, skillType: PoseInteractionSkill, skillClass: ObjectInteractionSkill, skillProperties: [objectId, objectType, containerObjectId, containerObjectType]}
 # DriveEdgesSkill
-- {skillName: drive-edges, skillType: DriveEdgesSkill, skillClass: DriveEdgesSkill, skillProperties: [mode, edges, timeout]} ## NOTE: This cannot be of type Generic
+- {skillName: drive-edges, skillType: DriveEdgesSkill, skillClass: DriveEdgesSkill, skillProperties: [tractionMode, edges, timeout]} ## NOTE: This cannot be of type Generic
 # GenericSkill
 - {skillName: actuate-arm, skillType: ActuateArmSkill, skillClass: GenericSkill, skillProperties: [Direction]}
 - {skillName: crob-wait, skillType: WaitSkill, skillClass: GenericSkill, skillProperties: [waitTime]}
@@ -26,4 +26,4 @@ skills:
 
 #DockSkill
 # - {skillName: dock-pose, skillType: DockSkill, skillClass: DockSkill, skillProperties: [mode, frameId, px, py, pz, qx, qy, qz, qw]}
-- {skillName: dock, skillType: DockSkill, skillClass: DockSkill, skillProperties: [objectType, mode, frameId, px, py, pz, qx, qy, qz, qw]}
+- {skillName: dock, skillType: DockSkill, skillClass: DockSkill, skillProperties: [objectType, mode, tractionMode, frameId, px, py, pz, qx, qy, qz, qw]}

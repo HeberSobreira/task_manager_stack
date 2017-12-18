@@ -3,8 +3,8 @@
 
     <!-- Launches the skills simulation action servers -->
 
-    <node name="DriveSkill" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="DriveSkill"></node>
-    <node name="DriveEdgesSkillDifferential" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="DriveEdgesSkill"></node>
+    <!-- <node name="DriveSkill" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="DriveSkill"></node> -->
+    <!-- <node name="DriveEdgesSkillDifferential" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="DriveEdgesSkill"></node> -->
     <node name="DriveEdgesSkillTricycle" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="DriveEdgesSkill"></node>
     <node name="DriveEdgesSkillOmni" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="DriveEdgesSkill"></node>
     <!-- <node name="LocateSkill" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="LocateSkill"></node>
