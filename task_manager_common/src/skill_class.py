@@ -179,7 +179,7 @@ class DriveEdgesSkill(Skill):
         response = getPath(edges)
         pathSet = response.PathSet
 
-        arguments = 'ControllerMode=tractionMode, PathSet = pathSet'
+        arguments = 'PathSet = pathSet'
         return eval('task_manager_msgs.msg.' + str(self.skillType) + 'Goal(' + arguments + ')')
 
 class DriveToVertexSkill(Skill):
@@ -238,14 +238,14 @@ class DriveToVertexSkill(Skill):
 
         self.sub = rospy.Subscriber(self.skillProperties['robot'] + '/UpdatePath', UpdateRobotPath, self.newPathCallBack)
 
-        arguments = 'ControllerMode=tractionMode, PathSet = pathSet'
+        arguments = 'PathSet = pathSet'
         return eval('task_manager_msgs.msg.DriveEdgesSkillGoal(' + arguments + ')')
 
     def newPathCallBack(self, updatedPath):
 
         tractionMode = self.skillProperties['tractionMode']
         pathSet = updatedPath.PathSet
-        arguments = 'ControllerMode = tractionMode, PathSet = pathSet'
+        arguments = 'PathSet = pathSet'
         actionGoal = eval('task_manager_msgs.msg.DriveEdgesSkillGoal(' + arguments + ')')
 
         # Sends a new goal and thus the previous goal is ignored
