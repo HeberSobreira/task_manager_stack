@@ -232,7 +232,7 @@ class DriveToVertexSkill(Skill):
             raise Exception('GetPathToDestinationVertex Server not found')
 
         getPath = rospy.ServiceProxy('GetPathToDestinationVertex', GetPathToDestinationVertex)
-        response = getPath(robot, vertex)
+        response = getPath(vertex)
         pathSet = response.PathSet
 
         self.sub = rospy.Subscriber('UpdatePath', UpdateRobotPath, self.newPathCallBack)
