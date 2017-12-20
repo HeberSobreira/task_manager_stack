@@ -7,7 +7,7 @@ import actionlib
 from task_manager_msgs.msg import *
 from task_manager_msgs.srv import GetPathEdges
 from msg_constructor import *
-from teastar_msgs.srv import GetPathFromDestinationVertex
+from teastar_msgs.srv import GetPathToDestinationVertex
 from teastar_msgs.msg import UpdateRobotPath
 
 import thread
@@ -216,7 +216,6 @@ class DriveToVertexSkill(Skill):
     def actionGoalConstructor(self):
 
         try:
-            robot = self.skillProperties['robot']
             tractionMode = self.skillProperties['tractionMode']
             vertex = self.skillProperties['vertex']
         except KeyError as e:
@@ -228,15 +227,15 @@ class DriveToVertexSkill(Skill):
             timeoutParam = 3 #default timeout
 
         try:
-            rospy.wait_for_service('/GetPathVertex', timeoutParam)
+            rospy.wait_for_service('GetPathToDestinationVertex', timeoutParam)
         except:
-            raise Exception('GetPathVertex Server not found')
+            raise Exception('GetPathToDestinationVertex Server not found')
 
-        getPath = rospy.ServiceProxy('/GetPathVertex', GetPathFromDestinationVertex)
+        getPath = rospy.ServiceProxy('GetPathToDestinationVertex', GetPathToDestinationVertex)
         response = getPath(robot, vertex)
         pathSet = response.PathSet
 
-        self.sub = rospy.Subscriber(self.skillProperties['robot'] + '/UpdatePath', UpdateRobotPath, self.newPathCallBack)
+        self.sub = rospy.Subscriber('UpdatePath', UpdateRobotPath, self.newPathCallBack)
 
         arguments = 'PathSet = pathSet'
         return eval('task_manager_msgs.msg.DriveEdgesSkillGoal(' + arguments + ')')
