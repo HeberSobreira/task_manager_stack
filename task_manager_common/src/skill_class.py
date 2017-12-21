@@ -235,7 +235,7 @@ class DriveToVertexSkill(Skill):
         response = getPath(vertex)
         pathSet = response.PathSet
 
-        self.sub = rospy.Subscriber('UpdatePath', UpdateRobotPath, self.newPathCallBack)
+        self.sub = rospy.Subscriber('/'+rospy.get_namespace()+'/UpdatePath', UpdateRobotPath, self.newPathCallBack)
 
         arguments = 'PathSet = pathSet'
         return eval('task_manager_msgs.msg.DriveEdgesSkillGoal(' + arguments + ')')
