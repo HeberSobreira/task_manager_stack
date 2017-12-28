@@ -1,4 +1,0 @@
-uint16 robot_id
-uint16 destination_vertex
----
-robis_nav_msgs/ParametricPathSet PathSet
