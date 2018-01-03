@@ -152,11 +152,11 @@ class DriveEdgesSkill(Skill):
             if tractionMode == 'DIFFERENTIAL':
                 return 'DriveEdgesSkillDifferential'
 
-        elif tractionMode == 'TRICYCLE':
-                return 'DriveEdgesSkillTricycle'
+	    elif tractionMode == 'TRICYCLE':
+		return 'DriveEdgesSkillTricycle'
 
-        elif tractionMode == 'OMNI':
-                return 'DriveEdgesSkillOmni'
+            elif tractionMode == 'OMNI':
+		return 'DriveEdgesSkillOmni'
 
         else:
             raise AttributeError('Unsupported traction tractionMode :' + str(tractionMode) + '. Supported traction modes are: ' + str(supportedTractionModes))
@@ -201,11 +201,11 @@ class DriveToVertexSkill(Skill):
             if tractionMode == 'DIFFERENTIAL':
                 return 'DriveEdgesSkillDifferential'
 
-        elif tractionMode == 'TRICYCLE':
-                return 'DriveEdgesSkillTricycle'
+	    elif tractionMode == 'TRICYCLE':
+		return 'DriveEdgesSkillTricycle'
 
-        elif tractionMode == 'OMNI':
-                return 'DriveEdgesSkillOmni'
+	    elif tractionMode == 'OMNI':
+		return 'DriveEdgesSkillOmni'
 
         else:
             raise AttributeError('Unsupported traction mode :' + str(tractionMode) + '. Supported traction modes are: ' + str(supportedTractionModes))
