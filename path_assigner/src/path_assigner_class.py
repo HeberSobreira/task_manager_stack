@@ -41,7 +41,7 @@ class PathAssigner(object):
         for edge in edges:
 
             for graphEdge in self.graphEdges:
-                if edge is graphEdge['Id']:
+                if edge == graphEdge['Id']:
 
                     if graphEdge['VelocityForward'] > 0:
                         velocity = graphEdge['VelocityForward']
@@ -55,7 +55,7 @@ class PathAssigner(object):
 
                     for graphVertex in self.graphVertices:
 
-                        if graphVertex['Id'] is graphEdge['Origin_ID']:
+                        if graphVertex['Id'] == graphEdge['Origin_ID']:
                             try:
                                 frame_id_origin = graphVertex['FrameId']
                             except:
@@ -67,7 +67,7 @@ class PathAssigner(object):
                             if velocity < 0:
                                 theta1 = theta1 - math.pi
 
-                        elif graphVertex['Id'] is graphEdge['Destination_ID']:
+                        elif graphVertex['Id'] == graphEdge['Destination_ID']:
                             try:
                                 frame_id_destination = graphVertex['FrameId']
                             except:
@@ -83,7 +83,6 @@ class PathAssigner(object):
                         frame_id = frame_id_origin
                     else:
                         rospy.logwarn('[PathAssigner] Origin and destination vertex have different Frame IDs')
-
 
                     aux_x1=x1+param1*math.cos(theta1)
                     aux_y1=y1+param1*math.sin(theta1)
