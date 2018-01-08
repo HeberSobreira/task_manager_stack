@@ -1,14 +1,59 @@
+# Edges:
+# - {CurveType: spline, Destination_ID: 2, Id: 5, Origin_ID: 1, ParamB: 2.0, ParamF: 2.0,
+#   VelocityBackwards: 0.0, VelocityForward: 0.4}
+# - {CurveType: spline, Destination_ID: 3, Id: 6, Origin_ID: 2, ParamB: 2.0, ParamF: 2.0,
+#   VelocityBackwards: 0.0, VelocityForward: 0.4}
+# - {CurveType: spline, Destination_ID: 4, Id: 7, Origin_ID: 3, ParamB: 0.8183596134185791,
+#   ParamF: 0.8225753903388977, VelocityBackwards: 0.0, VelocityForward: 0.4}
+# - {CurveType: spline, Destination_ID: 1, Id: 8, Origin_ID: 4, ParamB: 1.532468318939209,
+#   ParamF: 0.37994420528411865, VelocityBackwards: 0.0, VelocityForward: 0.4}
+# Vertices:
+# - {Id: 4, Label: pass, Theta: 1.6408183143523576, X: 3.795560359954834, Y: -0.7136965394020081}
+# - {Id: 3, Label: pass, Theta: -3.1372048300287716, X: 4.433111989056138, Y: -2.1064699919722116}
+# - {Id: 2, Label: pass, Theta: -1.6739706641703276, X: 7.839213143958006, Y: -1.2164633015369657}
+# - {Id: 1, Label: pass, Theta: 0.013998695428069075, X: 5.3468814452757485, Y: 0.05751018097811422}
+
 Edges:
-- {CurveType: spline, Destination_ID: 2, Id: 5, Origin_ID: 1, ParamB: 2.0, ParamF: 2.0,
-  VelocityBackwards: 0.0, VelocityForward: 0.4}
-- {CurveType: spline, Destination_ID: 3, Id: 6, Origin_ID: 2, ParamB: 2.0, ParamF: 2.0,
-  VelocityBackwards: 0.0, VelocityForward: 0.4}
-- {CurveType: spline, Destination_ID: 4, Id: 7, Origin_ID: 3, ParamB: 0.8183596134185791,
-  ParamF: 0.8225753903388977, VelocityBackwards: 0.0, VelocityForward: 0.4}
-- {CurveType: spline, Destination_ID: 1, Id: 8, Origin_ID: 4, ParamB: 1.532468318939209,
-  ParamF: 0.37994420528411865, VelocityBackwards: 0.0, VelocityForward: 0.4}
+- {CurveType: spline, Destination_ID: 1, Id: 4, Origin_ID: 0, ParamB: 1.8707033395767212,
+  ParamF: 2.6832380294799805, VelocityBackwards: 0.0, VelocityForward: 0.3}
+- {CurveType: spline, Destination_ID: 3, Id: 2, Origin_ID: 1, ParamB: 0.7477063536643982,
+  ParamF: 1.0710372924804688, VelocityBackwards: 0.0, VelocityForward: 0.3}
+- {CurveType: spline, Destination_ID: 7, Id: 5, Origin_ID: 3, ParamB: 1.2277878522872925,
+  ParamF: 1.693896770477295, VelocityBackwards: 0.0, VelocityForward: 0.3}
+- {CurveType: spline, Destination_ID: 8, Id: 9, Origin_ID: 6, ParamB: 2.0, ParamF: 2.0,
+  VelocityBackwards: 0.0, VelocityForward: 0.3}
+- {CurveType: spline, Destination_ID: 0, Id: 10, Origin_ID: 8, ParamB: 1.420058250427246,
+  ParamF: 2.765868663787842, VelocityBackwards: 0.0, VelocityForward: 0.3}
+- {CurveType: spline, Destination_ID: 1000, Id: 60, Origin_ID: 210, ParamB: 1.973265290260315,
+  ParamF: 2.429232597351074, VelocityBackwards: 0.0, VelocityForward: 0.3}
+- {CurveType: spline, Destination_ID: 20, Id: 70, Origin_ID: 1000, ParamB: 2.0, ParamF: 2.0,
+  VelocityBackwards: 0.0, VelocityForward: 0.3}
+- {CurveType: spline, Destination_ID: 30, Id: 80, Origin_ID: 20, ParamB: 2.0, ParamF: 2.0,
+  VelocityBackwards: 0.0, VelocityForward: 0.3}
+- {CurveType: spline, Destination_ID: 40, Id: 90, Origin_ID: 30, ParamB: 2.0, ParamF: 2.0,
+  VelocityBackwards: 0.0, VelocityForward: 0.3}
+- {CurveType: spline, Destination_ID: 50, Id: 100, Origin_ID: 40, ParamB: 1.1231179237365723,
+  ParamF: 1.3603435754776, VelocityBackwards: 0.0, VelocityForward: 0.3}
+- {CurveType: spline, Destination_ID: 110, Id: 120, Origin_ID: 50, ParamB: 2.0, ParamF: 2.0,
+  VelocityBackwards: 0.0, VelocityForward: 0.3}
 Vertices:
-- {Id: 4, Label: pass, Theta: 1.6408183143523576, X: 3.795560359954834, Y: -0.7136965394020081}
-- {Id: 3, Label: pass, Theta: -3.1372048300287716, X: 4.433111989056138, Y: -2.1064699919722116}
-- {Id: 2, Label: pass, Theta: -1.6739706641703276, X: 7.839213143958006, Y: -1.2164633015369657}
-- {Id: 1, Label: pass, Theta: 0.013998695428069075, X: 5.3468814452757485, Y: 0.05751018097811422}
+- {FrameId: map, Id: 8, Label: pass, Theta: -1.5777425611955136, X: 8.888592720031738, Y: 3.0117902755737305}
+- {FrameId: map, Id: 6, Label: pass, Theta: -3.129631241413633, X: 12.259223937988281, Y: 4.545173645019531}
+- {FrameId: map, Id: 7, Label: pass, Theta: 1.5787261934631187, X: 10.768301010131836, Y: 4.1837263107299805}
+- {FrameId: map, Id: 3, Label: pass, Theta: 1.6695905990169253, X: 13.259465217590332, Y: 2.9287734031677246}
+- {FrameId: map, Id: 1, Label: pass, Theta: 1.5941500046740396, X: 13.311577796936035, Y: 1.1480070352554321}
+- {FrameId: map, Id: 0, Label: pass, Theta: 0.0, X: 9.93967056274414, Y: -0.33912789821624756}
+- {FrameId: floor_minus_1, Id: 110, Label: pass, Theta: -1.5515472271356638, X: -0.024207979440689087,
+  Y: 1.8304271697998047}
+- {FrameId: floor_minus_1, Id: 50, Label: pass, Theta: -1.5092743983582064, X: -1.7764768600463867,
+  Y: 4.247846603393555}
+- {FrameId: floor_minus_1, Id: 40, Label: pass, Theta: -1.5515472271356658, X: -2.6583425998687744,
+  Y: 6.441269874572754}
+- {FrameId: floor_minus_1, Id: 30, Label: pass, Theta: -3.1200650095841524, X: -0.21136677265167236,
+  Y: 8.122802734375}
+- {FrameId: floor_minus_1, Id: 20, Label: pass, Theta: 1.5908051174477997, X: 1.624399185180664,
+  Y: 5.880393028259277}
+- {FrameId: floor_minus_1, Id: 1000, Label: pass, Theta: 1.5908051174477982, X: 1.1081725358963013,
+  Y: 3.0529654026031494}
+- {FrameId: floor_minus_1, Id: 210, Label: pass, Theta: 0.0022608714813365754, X: -1.4106841087341309,
+  Y: 1.0973780155181885}

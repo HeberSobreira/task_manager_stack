@@ -56,6 +56,10 @@ class PathAssigner(object):
                     for graphVertex in self.graphVertices:
 
                         if graphVertex['Id'] is graphEdge['Origin_ID']:
+                            try:
+                                frame_id_origin = graphVertex['FrameId']
+                            except:
+                                frame_id_origin = ''
                             x1 = graphVertex['X']
                             y1 = graphVertex['Y']
                             theta1 = graphVertex['Theta']
@@ -64,12 +68,21 @@ class PathAssigner(object):
                                 theta1 = theta1 - math.pi
 
                         elif graphVertex['Id'] is graphEdge['Destination_ID']:
+                            try:
+                                frame_id_destination = graphVertex['FrameId']
+                            except:
+                                frame_id_destination = ''
                             x2 = graphVertex['X']
                             y2 = graphVertex['Y']
                             theta2 = graphVertex['Theta']
 
                             if velocity < 0:
                                 theta2 = theta2 - math.pi
+
+                    if frame_id_origin == frame_id_destination:
+                        frame_id = frame_id_origin
+                    else:
+                        rospy.logwarn('[PathAssigner] Origin and destination vertex have different Frame IDs')
 
 
                     aux_x1=x1+param1*math.cos(theta1)
@@ -91,6 +104,7 @@ class PathAssigner(object):
                     # Creates a robis_nav_msgs/ParametricPath Message
                     parametricPathMessage = ParametricPath()
 
+                    ParametricPathMessage.FrameId = frame_id
                     parametricPathMessage.Velocity = velocity
                     parametricPathMessage.CurveType = curveType
                     parametricPathMessage.Fx = Fx
