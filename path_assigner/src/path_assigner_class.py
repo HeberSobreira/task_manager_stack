@@ -104,11 +104,11 @@ class PathAssigner(object):
                     # Creates a robis_nav_msgs/ParametricPath Message
                     parametricPathMessage = ParametricPath()
 
-                    ParametricPathMessage.FrameId = frame_id
                     parametricPathMessage.Velocity = velocity
                     parametricPathMessage.CurveType = curveType
                     parametricPathMessage.Fx = Fx
                     parametricPathMessage.Fy = Fy
+                    parametricPathMessage.FrameId = frame_id
 
                     parametricPathList.append(parametricPathMessage)
 
