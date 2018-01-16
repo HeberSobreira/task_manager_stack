@@ -10,3 +10,5 @@ tasks:
 - {skillName: place-pose, frameId: map, px: 0, py: 0, pz: 0, qx: 0, qy: 0, qz: 0, qw: 1}
 - {skillName: crob-wait, waitingTime: 3}
 - {skillName: move-arm, angle: 0}
+- {skillName: symbolic-pose, mode: RECALCULATE}
+- {skillName: symbolic-pose, mode: FORCE_EDGE, edgeId: 4, percentage: 50}
