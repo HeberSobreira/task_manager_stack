@@ -1,4 +1,5 @@
-string mode #RECALCULATE, FORCE_EDGE
+#goal definition
+string mode #RECALCULATE or FORCE_EDGE
 int32 edgeId
 float32 percentage
 ---
