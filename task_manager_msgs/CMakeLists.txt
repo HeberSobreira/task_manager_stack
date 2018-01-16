@@ -82,7 +82,7 @@ add_action_files(
   DriveEdgesSkill.action
   ElevatorInteractionSkill.action
   ChangeMapSkill.action
-  SymbolicPoseSkill.action
+  SymbolicPoseInteractionSkill.action
 )
 
 ## Generate added messages and services with any dependencies listed here
