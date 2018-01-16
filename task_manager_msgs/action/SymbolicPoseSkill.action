@@ -1,0 +1,11 @@
+string mode #recalculate, forceEdge
+int32 edgeId
+float32 percentage
+---
+#result definition
+int32 percentage
+string skillStatus
+---
+#feedback
+int32 percentage
+string skillStatus
