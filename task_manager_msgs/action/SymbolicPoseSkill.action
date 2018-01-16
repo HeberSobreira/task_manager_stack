@@ -1,4 +1,4 @@
-string mode #recalculate, forceEdge
+string mode #RECALCULATE, FORCE_EDGE
 int32 edgeId
 float32 percentage
 ---
