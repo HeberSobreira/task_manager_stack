@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
-
     <!-- Launches the skills simulation action servers -->
+    <node name="SymbolicPoseInteractionSkill" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="SymbolicPoseInteractionSkill"></node>
 
     <!-- <node name="DriveSkill" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="DriveSkill"></node> -->
     <!-- <node name="DriveEdgesSkillDifferential" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="DriveEdgesSkill"></node> -->
@@ -27,8 +27,6 @@
     <node name="DockSkillElevatorDifferential" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="DockSkill"></node>
     <node name="DockSkillElevatorTricycle" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="DockSkill"></node>
     <node name="DockSkillElevatorOmni" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="DockSkill"></node>
-
-
 
 
 </launch>

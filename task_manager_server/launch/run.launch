@@ -13,14 +13,13 @@
     <!-- Skills Loader -->
     <rosparam command="load" file="$(arg skills_path)/$(arg skills_file)" ns="task_manager"/>
 
-<group ns="$(arg robot_id)">
-    <!-- Task Manager -->
-    <node name="task_manager" pkg="task_manager_server" type="task_manager.py" output="screen">
-        <param name='robot_id' value='$(arg robot_id)' />
-        <param name='assign_mission_service_name' value='$(arg assign_mission_service_name)' />
-        <param name='provide_task_status_service_name' value='$(arg provide_task_status_service_name)' />
-        <param name='wait_for_server_timeout' value='$(arg wait_for_server_timeout)' />
-        <param name='wait_for_action_client_timeout' value='$(arg wait_for_action_client_timeout)' />
-    </node>
-</group>
+
+  <!-- Task Manager -->
+  <node name="task_manager" pkg="task_manager_server" type="task_manager.py" output="screen">
+      <param name='robot_id' value='$(arg robot_id)' />
+      <param name='assign_mission_service_name' value='$(arg assign_mission_service_name)' />
+      <param name='provide_task_status_service_name' value='$(arg provide_task_status_service_name)' />
+      <param name='wait_for_server_timeout' value='$(arg wait_for_server_timeout)' />
+      <param name='wait_for_action_client_timeout' value='$(arg wait_for_action_client_timeout)' />
+  </node>
 </launch>
