@@ -19,6 +19,7 @@ if __name__ == "__main__":
         skills = ROSInterface.get_ROS_param('~skills')
         waitForServerTimeOut = ROSInterface.get_ROS_param('~wait_for_server_timeout')
         waitForActionClientTimeOut = ROSInterface.get_ROS_param('~wait_for_action_client_timeout')
+        missionQueueSize = ROSInterface.get_ROS_param('~mission_queue_size')
 
         ## Services
         assignMissionServiceName = ROSInterface.get_ROS_param('~assign_mission_service_name')
@@ -35,7 +36,7 @@ if __name__ == "__main__":
 
 
     try:
-        tm = TaskManager(robotId = robotId, skills = skills, assignMissionServiceName = assignMissionServiceName, provideTaskStatusServiceName = provideTaskStatusServiceName, taskStatusTopic = taskStatusTopic, waitForServerTimeOut = waitForServerTimeOut, waitForActionClientTimeOut = waitForActionClientTimeOut)
+        tm = TaskManager(robotId = robotId, skills = skills, assignMissionServiceName = assignMissionServiceName, provideTaskStatusServiceName = provideTaskStatusServiceName, taskStatusTopic = taskStatusTopic, waitForServerTimeOut = waitForServerTimeOut, waitForActionClientTimeOut = waitForActionClientTimeOut, missionQueueSize = missionQueueSize)
 
         rospy.spin()
 

@@ -17,12 +17,13 @@ class TaskManager(object):
 
     """docstring for TaskManager."""
 
-    def __init__(self, robotId = None, skills = None, assignMissionServiceName = None, provideTaskStatusServiceName = None, taskStatusTopic = None, waitForServerTimeOut = None, waitForActionClientTimeOut = None):
+    def __init__(self, robotId = None, skills = None, assignMissionServiceName = None, provideTaskStatusServiceName = None, taskStatusTopic = None, waitForServerTimeOut = None, waitForActionClientTimeOut = None, missionQueueSize = None):
         self.robotId = robotId if robotId is not None else 'defaultRobotId'
         self.skills = skills if skills is not None else []
         self.ongoingTasks = []
         self.missions = []
-        self.mission_execution_pile = []
+        self.missionExecutionPile = []
+        self.missionQueueSize = missionQueueSize
 
         self.waitForServerTimeOut = waitForServerTimeOut if waitForServerTimeOut is not None else 10
         self.waitForActionClientTimeOut = waitForActionClientTimeOut if waitForActionClientTimeOut is not None else 300
@@ -70,6 +71,10 @@ class TaskManager(object):
             rospy.logwarn('[TaskManager] [' + str(self.robotId) + '] Mission ' + str(missionId) + ' refused: Different robotId!')
             return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'False', reasonOfRefusal = 'Different robotId!')
 
+        if self.missionQueueSize is not None or self.missionQueueSize >= 0:
+            if len(self.missionExecutionPile) > self.missionQueueSize:
+                rospy.logwarn('[TaskManager] [' + str(self.robotId) + '] Mission ' + str(missionId) + ' refused: Mission queue is already fulfilled!')
+                return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'False', reasonOfRefusal = 'Mission queue is already fulfilled!')
 
         for mission in self.missions:
             if missionId == mission['missionId']:
@@ -94,7 +99,7 @@ class TaskManager(object):
         else:
             self.missions.append({'missionId': missionId, 'taskId': '', 'statusCode':'', 'statusDescription': 'Mission Created'})
             mission_to_pile = {'missionId': missionId, 'robotId': robotId, 'goals': goals, 'executeMission': executeMission}
-            self.mission_execution_pile.append(mission_to_pile)
+            self.missionExecutionPile.append(mission_to_pile)
             if len(self.ongoingTasks) != 0:
                 rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] Mission ' + str(missionId) + ' Accepted! Waiting for execution.')
                 return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'True', reasonOfRefusal = 'None')
@@ -106,14 +111,14 @@ class TaskManager(object):
 
     def pile_execution_handler(self):
 
-        if not self.mission_execution_pile:
+        if not self.missionExecutionPile:
             rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] There are no more missions to execute.')
             return
 
-        missionId = self.mission_execution_pile[0]['missionId']
-        robotId = self.mission_execution_pile[0]['robotId']
-        goals = self.mission_execution_pile[0]['goals']
-        executeMission = self.mission_execution_pile[0]['executeMission']
+        missionId = self.missionExecutionPile[0]['missionId']
+        robotId = self.missionExecutionPile[0]['robotId']
+        goals = self.missionExecutionPile[0]['goals']
+        executeMission = self.missionExecutionPile[0]['executeMission']
 
         tasksAux = []
 
@@ -178,9 +183,9 @@ class TaskManager(object):
 
                 self.update_mission_status(missionId = missionId, taskId = task.skillName, statusCode = 4, statusDescription = 'Task ' + str(task.skillName) + ' Failed: ' + str(taskStatus))
                 self.update_mission_status(missionId = missionId, taskId = task.skillName, statusCode = 12, statusDescription = 'Mission Failed! Task ' + str(task.skillName) + ' Failed: ' + str(taskStatus))
-                self.mission_execution_pile = self.mission_execution_pile[1:]
+                self.missionExecutionPile = self.missionExecutionPile[1:]
                 return False
 
         self.update_mission_status(missionId = missionId, taskId = task.skillName, statusCode = 11, statusDescription = 'Mission Success!')
-        self.mission_execution_pile = self.mission_execution_pile[1:]
+        self.missionExecutionPile = self.missionExecutionPile[1:]
         return self.pile_execution_handler()
