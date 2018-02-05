@@ -17,12 +17,12 @@ class TaskManager(object):
 
     """docstring for TaskManager."""
 
-    def __init__(self, robotId = None, skills = None, assignMissionServiceName = None, provideTaskStatusServiceName = None, taskStatusTopic = None, waitForServerTimeOut = None, waitForActionClientTimeOut = None, missionQueueSize = None):
+    def __init__(self, robotId = None, skills = None, assignMissionServiceName = None, provideTaskStatusServiceName = None, taskStatusTopic = None, waitForServerTimeOut = None, waitForActionClientTimeOut = None, missionQueueSize = 100): #TODO: what's the best value for the default missionQueueSize?
         self.robotId = robotId if robotId is not None else 'defaultRobotId'
         self.skills = skills if skills is not None else []
         self.ongoingTasks = []
         self.missions = []
-        self.missionExecutionPile = []
+        self.taskQueue = []
         self.missionQueueSize = missionQueueSize
 
         self.waitForServerTimeOut = waitForServerTimeOut if waitForServerTimeOut is not None else 10
@@ -71,8 +71,8 @@ class TaskManager(object):
             rospy.logwarn('[TaskManager] [' + str(self.robotId) + '] Mission ' + str(missionId) + ' refused: Different robotId!')
             return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'False', reasonOfRefusal = 'Different robotId!')
 
-        if self.missionQueueSize is not None or self.missionQueueSize >= 0:
-            if len(self.missionExecutionPile) > self.missionQueueSize:
+        if self.missionQueueSize > 0:
+            if len(self.taskQueue) >= self.missionQueueSize:
                 rospy.logwarn('[TaskManager] [' + str(self.robotId) + '] Mission ' + str(missionId) + ' refused: Mission queue is already fulfilled!')
                 return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'False', reasonOfRefusal = 'Mission queue is already fulfilled!')
 
@@ -81,57 +81,48 @@ class TaskManager(object):
                 rospy.logwarn('[TaskManager] [' + str(self.robotId) + '] Mission ' + str(missionId) + ' refused: Mission already stored!')
                 return MSGConstructor.ActionAcceptedRefusedConstructor(accepted='False', reasonOfRefusal='Mission already stored!')
 
-        # if len(self.ongoingTasks) != 0:
-        #     rospy.logwarn('[TaskManager] [' + str(self.robotId) + '] Mission ' + str(missionId) + ' refused: Robot is currently busy with ' + str(len(self.ongoingTasks)) + ' tasks: ' + str([t.skillName for t in self.ongoingTasks]))
-        #     return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'False', reasonOfRefusal = 'Robot is currently busy with ' + str(len(self.ongoingTasks)) + ' tasks: ' + str([t.skillName for t in self.ongoingTasks]))
-
         if len(goals) == 0:
             rospy.logwarn('[TaskManager] [' + str(self.robotId) + '] Mission ' + str(missionId) + ' refused: Empty goals!')
             return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'False', reasonOfRefusal = 'Empty goals!')
 
+        missionSkills = []
+
         for goal in goals:
             try:
-                SkillFactory(goal, self.skills)
+                sf = SkillFactory(goal, self.skills)
+                missionSkills += [sf.skill]
             except Exception as e:
                 rospy.logwarn('[TaskManager] [' + str(self.robotId) + '] Mission ' + str(missionId) + ' refused: Badly formatted goal (' + str(goal) + '): ' + str(e))
                 return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'False', reasonOfRefusal = 'Badly formatted goal (' + str(goal) + '): ' + str(e))
 
+
+        self.missions.append({'missionId': missionId, 'taskId': '', 'statusCode':'', 'statusDescription': 'Mission Created'})
+
+        mission = {'missionId': missionId, 'missionSkills': missionSkills, 'executeMission': executeMission}
+        self.taskQueue.append(mission)
+
+        if self.ongoingTasks:
+            rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] Mission ' + str(missionId) + ' Accepted! Waiting for execution.')
+            return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'True', reasonOfRefusal = 'None')
         else:
-            self.missions.append({'missionId': missionId, 'taskId': '', 'statusCode':'', 'statusDescription': 'Mission Created'})
-            mission_to_pile = {'missionId': missionId, 'robotId': robotId, 'goals': goals, 'executeMission': executeMission}
-            self.missionExecutionPile.append(mission_to_pile)
-            if len(self.ongoingTasks) != 0:
-                rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] Mission ' + str(missionId) + ' Accepted! Waiting for execution.')
-                return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'True', reasonOfRefusal = 'None')
-            else:
-                rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] Mission ' + str(missionId) + ' Accepted! Starting Execution.')
-                self.pile_execution_handler()
-                return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'True', reasonOfRefusal = 'None')
+            rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] Mission ' + str(missionId) + ' Accepted! Starting Execution.')
+            self.queue_execution_handler()
+            return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'True', reasonOfRefusal = 'None')
 
 
-    def pile_execution_handler(self):
+    def queue_execution_handler(self):
 
-        if not self.missionExecutionPile:
+        if not self.taskQueue:
             rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] There are no more missions to execute.')
             return
 
-        missionId = self.missionExecutionPile[0]['missionId']
-        robotId = self.missionExecutionPile[0]['robotId']
-        goals = self.missionExecutionPile[0]['goals']
-        executeMission = self.missionExecutionPile[0]['executeMission']
+        self.ongoingTasks = self.taskQueue[0]['missionSkills']
 
-        tasksAux = []
-
-        for goal in goals:
-            sf = SkillFactory(goal, self.skills)
-            tasksAux += [sf.skill]
-        self.ongoingTasks = tasksAux
-
-        if executeMission:
+        if self.taskQueue[0]['executeMission']:
             # TODO: Make sure that this is the appropriate way of executing a thread in Python
             # IDEA: Maybe the Thread object attribute 'Name' can be used to pause / stop an ongoing thread execution
             # TODO: IMPORTANT! CRITICAL! Do not forget to handle mutex / semaphore for accessing self.ongoingTasks!!!
-            threading.Thread(target=self.execute_mission, args=(missionId,)).start()
+            threading.Thread(target=self.execute_mission, args=(self.taskQueue[0]['missionId'],)).start()
         return
 
     # TODO: Unit Test
@@ -158,7 +149,7 @@ class TaskManager(object):
 
         rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] Starting Mission ' + str(missionId) + ' with ' + str(len(self.ongoingTasks)) + ' Tasks... ')
 
-        while len(self.ongoingTasks) is not 0:
+        while self.ongoingTasks:
             task = self.ongoingTasks.pop(0) # TODO: Write a Unit Test for this!
 
             self.update_mission_status(missionId = missionId, taskId = task.skillName, statusCode = 1, statusDescription = 'Starting Task ' + str(task.skillName))
@@ -183,9 +174,10 @@ class TaskManager(object):
 
                 self.update_mission_status(missionId = missionId, taskId = task.skillName, statusCode = 4, statusDescription = 'Task ' + str(task.skillName) + ' Failed: ' + str(taskStatus))
                 self.update_mission_status(missionId = missionId, taskId = task.skillName, statusCode = 12, statusDescription = 'Mission Failed! Task ' + str(task.skillName) + ' Failed: ' + str(taskStatus))
-                self.missionExecutionPile = self.missionExecutionPile[1:]
+                del self.taskQueue[0]
+                self.queue_execution_handler()
                 return False
 
         self.update_mission_status(missionId = missionId, taskId = task.skillName, statusCode = 11, statusDescription = 'Mission Success!')
-        self.missionExecutionPile = self.missionExecutionPile[1:]
-        return self.pile_execution_handler()
+        del self.taskQueue[0]
+        return self.queue_execution_handler()
