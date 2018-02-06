@@ -17,7 +17,15 @@ class TaskManager(object):
 
     """docstring for TaskManager."""
 
-    def __init__(self, robotId = None, skills = None, assignMissionServiceName = None, provideTaskStatusServiceName = None, taskStatusTopic = None, waitForServerTimeOut = None, waitForActionClientTimeOut = None, missionQueueSize = 100): #TODO: what's the best value for the default missionQueueSize?
+    def __init__(self, robotId = None, skills = None,
+                 assignMissionServiceName = None,
+                 cancelMissionServiceName = None,
+                 provideTaskStatusServiceName = None,
+                 taskStatusTopic = None,
+                 waitForServerTimeOut = None,
+                 waitForActionClientTimeOut = None,
+                 missionQueueSize = 100): #TODO: what's the best value for the default missionQueueSize?
+
         self.robotId = robotId if robotId is not None else 'defaultRobotId'
         self.skills = skills if skills is not None else []
         self.ongoingTasks = []
@@ -31,6 +39,10 @@ class TaskManager(object):
         if assignMissionServiceName is not None:
             rospy.Service(assignMissionServiceName, AssignMission, self.assign_mission_request_parser)
             rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] Ready to Assign Missions at ' + str(assignMissionServiceName))
+
+        if cancelMissionServiceName is not None:
+            rospy.Service(cancelMissionServiceName, CancelMission, self.cancel_mission_request_parser)
+            rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] Ready to Cancel Missions at ' + str(assignMissionServiceName))
 
         if provideTaskStatusServiceName is not None:
             rospy.Service(provideTaskStatusServiceName, ProvideTaskStatus, self.provide_task_status_request_parser)
@@ -46,6 +58,9 @@ class TaskManager(object):
     ## NOTE: ROS specific
     def assign_mission_request_parser(self, req):
         return self.assign_mission_service_handler(missionId = req.missionId, robotId = req.robotId, goals = req.goals, executeMission = True)
+
+    def cancel_mission_request_parser(self, req):
+        return self.cancel_mission_service_handler(missionId = req.missionId, robotId = req.robotId)
 
     ## NOTE: ROS specific
     def provide_task_status_request_parser(self, req):
@@ -63,6 +78,27 @@ class TaskManager(object):
         # If mission not found
         taskStatus = MSGConstructor.TaskStatusConstructor(missionId = 'null', taskId = 'null', statusCode = 12, statusDescription = 'null', when = rospy.get_rostime())
         return taskStatus
+
+
+    def cancel_mission_service_handler(self, missionId = 'defaultMissionId', robotId = 'defaultRobotId'):
+
+        if robotId != self.robotId:
+            rospy.logwarn('[TaskManager] [' + str(self.robotId) + '] Mission \'' + str(missionId) + '\' not canceled: Different robotId!')
+            return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'False', reasonOfRefusal = 'Different robotId!')
+
+        for task in self.taskQueue:
+            if task['missionId'] == missionId:
+                if self.taskQueue.index(task) == 0:
+                    rospy.logwarn('[TaskManager] [' + str(self.robotId) + '] Mission \'' + str(missionId) + '\' not canceled: The mission is already executing!')
+                    return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'False', reasonOfRefusal = 'The mission is already executing!')
+                else:
+                    del self.taskQueue[self.taskQueue.index(task)]
+                    rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] Mission \'' + str(missionId) + '\' Canceled!')
+                    return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'True', reasonOfRefusal = 'None')
+
+        rospy.logwarn('[TaskManager] [' + str(self.robotId) + '] Mission \'' + str(missionId) + '\' not canceled: The mission is not in the queue!')
+        return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'False', reasonOfRefusal = 'The mission is not in the queue')
+
 
     ## NOTE: ROS specific
     def assign_mission_service_handler(self, missionId = 'defaultMissionId', robotId = 'defaultRobotId', goals = [], executeMission = False):

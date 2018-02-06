@@ -10,6 +10,7 @@
     <arg name="wait_for_server_timeout" default="10" />
     <arg name="wait_for_action_client_timeout" default="300" />
     <arg name="mission_queue_size" default="None" />
+    <arg name="cancel_mission_service_name" default="/task_manager/CancelMission" />
 
     <!-- Skills Loader -->
     <rosparam command="load" file="$(arg skills_path)/$(arg skills_file)" ns="task_manager"/>
@@ -23,5 +24,6 @@
       <param name='wait_for_server_timeout' value='$(arg wait_for_server_timeout)' />
       <param name='wait_for_action_client_timeout' value='$(arg wait_for_action_client_timeout)' />
       <param name='mission_queue_size' value='$(arg mission_queue_size)' />
+      <param name='cancel_mission_service_name' value='$(arg cancel_mission_service_name)' />
   </node>
 </launch>
