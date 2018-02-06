@@ -86,6 +86,11 @@ class TaskManager(object):
             rospy.logwarn('[TaskManager] [' + str(self.robotId) + '] Mission \'' + str(missionId) + '\' not canceled: Different robotId!')
             return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'False', reasonOfRefusal = 'Different robotId!')
 
+        if missionId == '':
+            self.taskQueue = self.taskQueue[:1]
+            rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] All Scheduled Missions Canceled!')
+            return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'True', reasonOfRefusal = 'None')
+
         for task in self.taskQueue:
             if task['missionId'] == missionId:
                 if self.taskQueue.index(task) == 0:
