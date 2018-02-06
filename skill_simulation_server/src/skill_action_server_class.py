@@ -24,7 +24,7 @@ class SkillActionBase(object):
     global robotId
 
     #TODO inputs: skillname, actionType, rate(fazer overload)
-    def __init__(self, skillName, actionType, rate = 100):
+    def __init__(self, skillName, actionType, rate = 30):
         #removes the '/' when the the skillName is input by launch file
         if skillName.startswith('/'):
             self._actionName = skillName[1:]

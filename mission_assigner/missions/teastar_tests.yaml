@@ -1,0 +1,13 @@
+tasks:
+#
+# - {skillName: dock, objectType: Elevator, mode: DOCK, frameId: map, px: 0, py: 0, pz: 0, qx: 0, qy: 0, qz: 0, qw: 1}
+# - {skillName: dock, objectType: Elevator, mode: DOCK, tractionMode: DIFFERENTIAL, frameId: map, px: 0, py: 0, pz: 0, qx: 0, qy: 0, qz: 0, qw: 1}
+# - {skillName: dock, objectType: Elevator, mode: DOCK, tractionMode: TRICYCLE, frameId: map, px: 0, py: 0, pz: 0, qx: 0, qy: 0, qz: 0, qw: 1}
+# - {skillName: dock, objectType: Elevator, mode: DOCK, tractionMode: OMNI, frameId: map, px: 0, py: 0, pz: 0, qx: 0, qy: 0, qz: 0, qw: 1}
+
+- {skillName: drive-vertex, tractionMode: DIFFERENTIAL, vertex: 43}
+- {skillName: drive-vertex, tractionMode: DIFFERENTIAL, vertex: 21}
+
+# - {skillName: drive-edges, tractionMode: DIFFERENTIAL, edges: [3,4]}
+# - {skillName: drive-edges, tractionMode: TRICYCLE, edges: [3,4], timeout: 1}
+# - {skillName: drive-edges, tractionMode: OMNI, edges: [3,4], timeout: 5}

@@ -1,6 +1,8 @@
 #goal definition
-string ObjectId
-geometry_msgs/PoseStamped Pose
+string mode #RECALCULATE or FORCE_EDGE
+string frameId
+int32 edgeId
+float32 percentage
 ---
 #result definition
 int32 percentage

@@ -1,7 +1,6 @@
 #goal definition
-string ObjectType
-string Mode # "DOCK" or "UNDOCK"
-geometry_msgs/PoseStamped Pose
+string mode # "IN" or "OUT"
+int32 floor
 ---
 #result definition
 int32 percentage
