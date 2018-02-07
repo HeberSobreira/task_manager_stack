@@ -1,6 +1,6 @@
 string   missionId
 string   robotId
 string[] goals
-string   priority #High, NORMAL or LOW
+string   priority #HIGH, NORMAL or LOW
 ---
 ActionAcceptedRefused actionAcceptedRefused

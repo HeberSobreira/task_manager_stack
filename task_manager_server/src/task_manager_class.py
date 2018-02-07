@@ -29,7 +29,6 @@ class TaskManager(object):
 
         self.robotId = robotId if robotId is not None else 'defaultRobotId'
         self.skills = skills if skills is not None else []
-        self.ongoingTasks = []
         self.missions = []
         self.taskQueue = []
         self.missionQueueSize = missionQueueSize
@@ -160,7 +159,7 @@ class TaskManager(object):
             self.taskQueue.append(mission)
 
 
-        if self.ongoingTasks:
+        if len(self.taskQueue) > 1:
             rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] Mission ' + str(missionId) + ' Accepted! Waiting for execution.')
             return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'True', reasonOfRefusal = 'None')
         else:
@@ -175,21 +174,19 @@ class TaskManager(object):
             rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] There are no more missions to execute.')
             return
 
-        self.ongoingTasks = self.taskQueue[0]['missionSkills']
-
         if self.taskQueue[0]['executeMission']:
             # TODO: Make sure that this is the appropriate way of executing a thread in Python
             # IDEA: Maybe the Thread object attribute 'Name' can be used to pause / stop an ongoing thread execution
             # TODO: IMPORTANT! CRITICAL! Do not forget to handle mutex / semaphore for accessing self.ongoingTasks!!!
-            threading.Thread(target=self.execute_mission, args=(self.taskQueue[0]['missionId'],)).start()
+            threading.Thread(target=self.execute_mission, args=(self.taskQueue[0]['missionId'], self.taskQueue[0]['missionSkills'])).start()
         return
 
     # TODO: Unit Test
     def update_mission_status(self, missionId, taskId, statusCode, statusDescription):
         if statusCode in [1, 3, 11]:
-            rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] ' + str(statusDescription))
+            rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] [' + str(missionId) + '] ' + str(statusDescription))
         elif statusCode in [4, 12]:
-            rospy.logerr('[TaskManager] [' + str(self.robotId) + '] ' + str(statusDescription))
+            rospy.logerr('[TaskManager] [' + str(self.robotId) + '] [' + str(missionId) + '] ' + str(statusDescription))
 
         if self.taskStatusPub is not None:
             taskStatus = MSGConstructor.TaskStatusConstructor(missionId = missionId, taskId = taskId, statusCode = statusCode, statusDescription = statusDescription, when = rospy.get_rostime())
@@ -203,42 +200,39 @@ class TaskManager(object):
                 mission['when'] = rospy.get_rostime()
 
     ## NOTE: ROS specific
-    def execute_mission(self, missionId):
+    def execute_mission(self, missionId, skills):
         #self.missions.append({'missionId': missionId, 'taskId': '', 'statusCode':'', 'statusDescription': 'Mission Created'})
 
         # global task
-        rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] Starting Mission ' + str(missionId) + ' with ' + str(len(self.ongoingTasks)) + ' Tasks... ')
+        rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] Starting Mission ' + str(missionId) + ' with ' + str(len(skills)) + ' Tasks... ')
 
-        while self.ongoingTasks:
-            task = self.ongoingTasks.pop(0) # TODO: Write a Unit Test for this!
 
-            self.update_mission_status(missionId = missionId, taskId = task.skillName, statusCode = 1, statusDescription = 'Starting Task ' + str(task.skillName))
+        while skills:
+            skill = skills.pop(0) # TODO: Write a Unit Test for this!
+
+            self.update_mission_status(missionId = missionId, taskId = skill.skillName, statusCode = 1, statusDescription = 'Starting Task ' + str(skill.skillName))
 
             try:
-                self.update_mission_status(missionId = missionId, taskId = task.skillName, statusCode = 2, statusDescription = 'Executing Task ' + str(task.skillName))
+                self.update_mission_status(missionId = missionId, taskId = skill.skillName, statusCode = 2, statusDescription = 'Executing Task ' + str(skill.skillName))
 
-                actionClientResponse = task.action_client(waitForServerTimeOut = self.waitForServerTimeOut, waitForActionClientTimeOut = self.waitForActionClientTimeOut)
+                actionClientResponse = skill.action_client(waitForServerTimeOut = self.waitForServerTimeOut, waitForActionClientTimeOut = self.waitForActionClientTimeOut)
 
-                taskCompletion = actionClientResponse.percentage
-                taskStatus = actionClientResponse.skillStatus
+                skillCompletion = actionClientResponse.percentage
+                skillStatus = actionClientResponse.skillStatus
             except Exception as e:
-                taskCompletion = 0
-                taskStatus = str(e)
+                skillCompletion = 0
+                skillStatus = str(e)
 
-            if int(taskCompletion) == 100:
-                self.update_mission_status(missionId = missionId, taskId = task.skillName, statusCode = 3, statusDescription = 'Task ' + str(task.skillName) + ' Succeeded!')
+            if int(skillCompletion) == 100:
+                self.update_mission_status(missionId = missionId, taskId = skill.skillName, statusCode = 3, statusDescription = 'Task ' + str(skill.skillName) + ' Succeeded!')
 
             else:
                 # In case of a Mission Failure, the robot should be free to take on new tasks
-                self.ongoingTasks = []
+                skills = []
 
-                self.update_mission_status(missionId = missionId, taskId = task.skillName, statusCode = 4, statusDescription = 'Task ' + str(task.skillName) + ' Failed: ' + str(taskStatus))
-                self.update_mission_status(missionId = missionId, taskId = task.skillName, statusCode = 12, statusDescription = 'Mission Failed! Task ' + str(task.skillName) + ' Failed: ' + str(taskStatus))
-                del self.taskQueue[0]
+                self.update_mission_status(missionId = missionId, taskId = skill.skillName, statusCode = 4, statusDescription = 'Task ' + str(skill.skillName) + ' Failed: ' + str(skillStatus))
+                self.update_mission_status(missionId = missionId, taskId = skill.skillName, statusCode = 12, statusDescription = 'Mission Failed! Task ' + str(skill.skillName) + ' Failed: ' + str(skillStatus))
 
-                self.queue_execution_handler()
-                return False
-
-        self.update_mission_status(missionId = missionId, taskId = task.skillName, statusCode = 11, statusDescription = 'Mission Success!')
+        self.update_mission_status(missionId = missionId, taskId = skill.skillName, statusCode = 11, statusDescription = 'Mission Success!')
         del self.taskQueue[0]
         return self.queue_execution_handler()
