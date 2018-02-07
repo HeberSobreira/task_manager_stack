@@ -13,6 +13,7 @@ from skill_class import Skill
 from skill_factory_class import SkillFactory
 from msg_constructor import MSGConstructor
 
+
 class TaskManager(object):
 
     """docstring for TaskManager."""
@@ -36,6 +37,8 @@ class TaskManager(object):
         self.waitForServerTimeOut = waitForServerTimeOut if waitForServerTimeOut is not None else 10
         self.waitForActionClientTimeOut = waitForActionClientTimeOut if waitForActionClientTimeOut is not None else 300
 
+        self.possiblePriorities = {'LOW': 0, 'NORMAL': 1, 'HIGH': 2}
+
         if assignMissionServiceName is not None:
             rospy.Service(assignMissionServiceName, AssignMission, self.assign_mission_request_parser)
             rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] Ready to Assign Missions at ' + str(assignMissionServiceName))
@@ -57,7 +60,7 @@ class TaskManager(object):
 
     ## NOTE: ROS specific
     def assign_mission_request_parser(self, req):
-        return self.assign_mission_service_handler(missionId = req.missionId, robotId = req.robotId, goals = req.goals, executeMission = True)
+        return self.assign_mission_service_handler(missionId = req.missionId, robotId = req.robotId, goals = req.goals, priority = req.priority, executeMission = True)
 
     def cancel_mission_request_parser(self, req):
         return self.cancel_mission_service_handler(missionId = req.missionId, robotId = req.robotId)
@@ -106,11 +109,12 @@ class TaskManager(object):
 
 
     ## NOTE: ROS specific
-    def assign_mission_service_handler(self, missionId = 'defaultMissionId', robotId = 'defaultRobotId', goals = [], executeMission = False):
+    def assign_mission_service_handler(self, missionId = 'defaultMissionId', robotId = 'defaultRobotId', goals = [], priority = 'NORMAL', executeMission = False):
 
         if robotId != self.robotId:
             rospy.logwarn('[TaskManager] [' + str(self.robotId) + '] Mission ' + str(missionId) + ' refused: Different robotId!')
             return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'False', reasonOfRefusal = 'Different robotId!')
+
 
         if self.missionQueueSize > 0:
             if len(self.taskQueue) >= self.missionQueueSize:
@@ -126,6 +130,10 @@ class TaskManager(object):
             rospy.logwarn('[TaskManager] [' + str(self.robotId) + '] Mission ' + str(missionId) + ' refused: Empty goals!')
             return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'False', reasonOfRefusal = 'Empty goals!')
 
+        if priority not in self.possiblePriorities:
+            rospy.logwarn('[TaskManager] [' + str(self.robotId) + '] Mission ' + str(missionId) + ' refused: Priority is not well defined!')
+            return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'False', reasonOfRefusal = 'Priority is not well defined!')
+
         missionSkills = []
 
         for goal in goals:
@@ -139,8 +147,18 @@ class TaskManager(object):
 
         self.missions.append({'missionId': missionId, 'taskId': '', 'statusCode':'', 'statusDescription': 'Mission Created'})
 
-        mission = {'missionId': missionId, 'missionSkills': missionSkills, 'executeMission': executeMission}
-        self.taskQueue.append(mission)
+        priorityNum = self.possiblePriorities[priority] #Transforms priority description (LOW, NORMAL or HIGH in a number 0,1,2)
+        mission = {'missionId': missionId, 'missionSkills': missionSkills, 'priority': priorityNum, 'executeMission': executeMission}
+
+
+        #this for loop apends missions in the queue deppendig on its priority
+        for task in self.taskQueue:
+            if task['priority'] < priorityNum:
+                self.taskQueue.insert(self.taskQueue.index(task), mission)
+                break
+        else:
+            self.taskQueue.append(mission)
+
 
         if self.ongoingTasks:
             rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] Mission ' + str(missionId) + ' Accepted! Waiting for execution.')
@@ -188,6 +206,7 @@ class TaskManager(object):
     def execute_mission(self, missionId):
         #self.missions.append({'missionId': missionId, 'taskId': '', 'statusCode':'', 'statusDescription': 'Mission Created'})
 
+        # global task
         rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] Starting Mission ' + str(missionId) + ' with ' + str(len(self.ongoingTasks)) + ' Tasks... ')
 
         while self.ongoingTasks:
@@ -216,6 +235,7 @@ class TaskManager(object):
                 self.update_mission_status(missionId = missionId, taskId = task.skillName, statusCode = 4, statusDescription = 'Task ' + str(task.skillName) + ' Failed: ' + str(taskStatus))
                 self.update_mission_status(missionId = missionId, taskId = task.skillName, statusCode = 12, statusDescription = 'Mission Failed! Task ' + str(task.skillName) + ' Failed: ' + str(taskStatus))
                 del self.taskQueue[0]
+
                 self.queue_execution_handler()
                 return False
 

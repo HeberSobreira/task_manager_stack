@@ -13,10 +13,11 @@ class MissionAssigner(object):
     """docstring for MissionAssigner."""
 
 
-    def __init__(self, robotId = None, missionId = None, tasks = None, skills = None):
+    def __init__(self, robotId = None, missionId = None, tasks = None, priority = None, skills = None):
         self.robotId = robotId if robotId is not None else 'defaultRobotId'
         self.missionId = missionId if missionId is not None else 'defaultMissionId'
         self.tasks = tasks
+        self.priority = priority
         self.skills = skills
 
     def goal_list_constructor(self, tasks, skills):
@@ -67,7 +68,7 @@ class MissionAssigner(object):
         rospy.loginfo("[MissionAssigner] [%s] [%s] Service Found! Sending Request...", str(self.robotId), str(self.missionId))
 
         AssignMissionServiceProxy = rospy.ServiceProxy(assignMissionServiceName, AssignMission)
-        AssignMissionServiceResponse = AssignMissionServiceProxy(self.missionId, self.robotId, goalsList)
+        AssignMissionServiceResponse = AssignMissionServiceProxy(self.missionId, self.robotId, goalsList, self.priority)
 
         rospy.loginfo(self.service_response_printer(AssignMissionServiceResponse.actionAcceptedRefused))
 

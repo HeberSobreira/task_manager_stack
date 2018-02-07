@@ -16,7 +16,7 @@ if __name__ == "__main__":
         robotId = ROSInterface.get_ROS_param('~robotId')
         missionId = ROSInterface.get_ROS_param('~missionId')
         skills = ROSInterface.get_ROS_param('~skills')
-        tasks = ROSInterface.get_ROS_param('~tasks')
+        task = ROSInterface.get_ROS_param('~task')
 
         ## Services
         assignMissionServiceName = ROSInterface.get_ROS_param('~assign_mission_service_name')
@@ -28,7 +28,9 @@ if __name__ == "__main__":
         quit()
 
     try:
-        ma = MissionAssigner(robotId, missionId, tasks, skills)
+        tasks = task['tasks']
+        priority = task['priority']
+        ma = MissionAssigner(robotId, missionId, tasks, priority, skills)
         ma.assign_mission(assignMissionServiceName)
 
     except Exception as e:
