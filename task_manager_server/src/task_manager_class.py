@@ -38,6 +38,8 @@ class TaskManager(object):
 
         self.possiblePriorities = {'LOW': 0, 'NORMAL': 1, 'HIGH': 2}
 
+        self.robotState = 'available'
+
         if assignMissionServiceName is not None:
             rospy.Service(assignMissionServiceName, AssignMission, self.assign_mission_request_parser)
             rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] Ready to Assign Missions at ' + str(assignMissionServiceName))
@@ -159,7 +161,7 @@ class TaskManager(object):
             self.taskQueue.append(mission)
 
 
-        if len(self.taskQueue) > 1:
+        if self.robotState == 'busy':
             rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] Mission ' + str(missionId) + ' Accepted! Waiting for execution.')
             return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'True', reasonOfRefusal = 'None')
         else:
@@ -179,6 +181,8 @@ class TaskManager(object):
             # IDEA: Maybe the Thread object attribute 'Name' can be used to pause / stop an ongoing thread execution
             # TODO: IMPORTANT! CRITICAL! Do not forget to handle mutex / semaphore for accessing self.ongoingTasks!!!
             threading.Thread(target=self.execute_mission, args=(self.taskQueue[0]['missionId'], self.taskQueue[0]['missionSkills'])).start()
+            del self.taskQueue[0]
+            self.robotState = 'busy'
         return
 
     # TODO: Unit Test
@@ -234,5 +238,5 @@ class TaskManager(object):
                 self.update_mission_status(missionId = missionId, taskId = skill.skillName, statusCode = 12, statusDescription = 'Mission Failed! Task ' + str(skill.skillName) + ' Failed: ' + str(skillStatus))
 
         self.update_mission_status(missionId = missionId, taskId = skill.skillName, statusCode = 11, statusDescription = 'Mission Success!')
-        del self.taskQueue[0]
+        self.robotState = 'available'
         return self.queue_execution_handler()
