@@ -13,9 +13,9 @@ skills:
 # DriveEdgesSkill
 - {skillName: drive-edges, skillType: DriveEdgesSkill, skillClass: DriveEdgesSkill, skillProperties: [tractionMode, edges, timeout]} ## NOTE: This cannot be of type Generic
 # GenericSkill
-- {skillName: actuate-arm, skillType: ActuateArmSkill, skillClass: GenericSkill, skillProperties: [direction]}
+- {skillName: actuate-arm, skillType: ActuateArmSkill, skillClass: GenericSkill, skillProperties: [Direction]}
 - {skillName: crob-wait, skillType: WaitSkill, skillClass: GenericSkill, skillProperties: [waitTime]}
-- {skillName: move-arm, skillType: MoveArmSkill, skillClass: GenericSkill, skillProperties: [angle]}
+- {skillName: move-arm, skillType: MoveArmSkill, skillClass: GenericSkill, skillProperties: [Angle]}
 - {skillName: example-skill, skillType: GenericSkill, skillClass: GenericSkill, skillProperties: [exampleSkillProperty0, exampleSkillProperty1]}
 - {skillName: elevator-interaction, skillType: ElevatorInteractionSkill, skillClass: GenericSkill, skillProperties: [mode, floor]}
 - {skillName: change-map, skillType: ChangeMapSkill, skillClass: GenericSkill, skillProperties: [NewMap]}
