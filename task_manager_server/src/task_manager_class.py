@@ -163,6 +163,7 @@ class TaskManager(object):
 
         if self.robotState == 'busy':
             rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] Mission ' + str(missionId) + ' Accepted! Waiting for execution.')
+            rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] Mission Queue' + str([task['missionId'] for task in self.taskQueue]))
             return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'True', reasonOfRefusal = 'None')
         else:
             rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] Mission ' + str(missionId) + ' Accepted! Starting Execution.')
@@ -209,7 +210,7 @@ class TaskManager(object):
 
         # global task
         rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] Starting Mission ' + str(missionId) + ' with ' + str(len(skills)) + ' Tasks... ')
-
+        rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] Mission Queue' + str([task['missionId'] for task in self.taskQueue]))
 
         while skills:
             skill = skills.pop(0) # TODO: Write a Unit Test for this!
