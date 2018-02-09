@@ -1,5 +1,5 @@
 #goal definition
-std_msgs/Empty  empty
+string  run
 ---
 #result definition
 int32 percentage

@@ -1,7 +1,9 @@
 tasks:
-- {skillName: symbolic-pose, mode: FORCE_EDGE, frameId: asds, edgeId: 4, percentage: 50}
-- {skillName: drive-edges, tractionMode: DIFFERENTIAL, edges: [3,4]}
-- {skillName: actuate-arm, direction: UP}
+
+- {skillName: charging-validation, run: run}
+# - {skillName: symbolic-pose, mode: FORCE_EDGE, frameId: asds, edgeId: 4, percentage: 50}
+# - {skillName: drive-edges, tractionMode: DIFFERENTIAL, edges: [3,4]}
+- {skillName: actuate-arm, Direction: UP}
 #- {skillName: dock-pose, frameId: map, px: 0, py: 0, pz: 0, qx: 0, qy: 0, qz: 0, qw: 1}
 - {skillName: crob-drive, toObjectId: 1234abcd, toObjectType: xpto}
 - {skillName: crob-locate, objectId: 1234abcd, objectType: xpto, containerObjectId: 5678efgh, containerObjectType: otpx}
@@ -10,6 +12,6 @@ tasks:
 - {skillName: crob-place, objectId: 1234abcd, objectType: xpto, containerObjectId: 5678efgh, containerObjectType: otpx}
 - {skillName: place-pose, frameId: map, px: 0, py: 0, pz: 0, qx: 0, qy: 0, qz: 0, qw: 1}
 - {skillName: crob-wait, waitTime: 3}
-- {skillName: move-arm, angle: 0}
+- {skillName: move-arm, Angle: 0}
 # - {skillName: symbolic-pose, mode: RECALCULATE}
 # - {skillName: symbolic-pose, mode: FORCE_EDGE, edgeId: 4, percentage: 50}

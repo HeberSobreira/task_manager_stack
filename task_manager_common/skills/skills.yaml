@@ -19,6 +19,7 @@ skills:
 - {skillName: example-skill, skillType: GenericSkill, skillClass: GenericSkill, skillProperties: [exampleSkillProperty0, exampleSkillProperty1]}
 - {skillName: elevator-interaction, skillType: ElevatorInteractionSkill, skillClass: GenericSkill, skillProperties: [mode, floor]}
 - {skillName: change-map, skillType: ChangeMapSkill, skillClass: GenericSkill, skillProperties: [NewMap]}
+- {skillName: charging-validation, skillType: ChargingValidationSkill, skillClass: GenericSkill, skillProperties: [run]}
 # PoseInteractionSkill
 - {skillName: pick-pose, skillType: PoseInteractionSkill, skillClass: PoseInteractionSkill, skillProperties: [frameId, px, py, pz, qx, qy, qz, qw]}
 - {skillName: place-pose, skillType: PoseInteractionSkill, skillClass: PoseInteractionSkill, skillProperties: [frameId, px, py, pz, qx, qy, qz, qw]}
