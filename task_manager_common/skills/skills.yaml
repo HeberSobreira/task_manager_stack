@@ -27,5 +27,5 @@ skills:
 
 #DockSkill
 # - {skillName: dock-pose, skillType: DockSkill, skillClass: DockSkill, skillProperties: [mode, frameId, px, py, pz, qx, qy, qz, qw]}
-- {skillName: dock, skillType: DockSkill, skillClass: DockSkill, skillProperties: [objectType, mode, tractionMode, frameId, px, py, pz, qx, qy, qz, qw]}
+- {skillName: dock, skillType: DockSkill, skillClass: DockSkill, skillProperties: [objectType, mode, tractionMode, beaconDistance, offsetDistance, frameId, px, py, pz, qx, qy, qz, qw]}
 - {skillName: symbolic-pose, skillType: SymbolicPoseInteractionSkill, skillClass: GenericSkill, skillProperties: [mode, frameId, edgeId, percentage]}

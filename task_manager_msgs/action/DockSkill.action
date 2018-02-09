@@ -1,6 +1,8 @@
 #goal definition
-string ObjectType
+string ObjectType #"Cart", "Elevator" or "Charger"
 string Mode # "DOCK" or "UNDOCK"
+float32 BeaconDistance
+float32 offsetDistance
 geometry_msgs/PoseStamped Pose
 ---
 #result definition
