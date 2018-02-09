@@ -20,6 +20,7 @@ skills:
 - {skillName: elevator-interaction, skillType: ElevatorInteractionSkill, skillClass: GenericSkill, skillProperties: [mode, floor]}
 - {skillName: change-map, skillType: ChangeMapSkill, skillClass: GenericSkill, skillProperties: [NewMap]}
 - {skillName: charging-validation, skillType: ChargingValidationSkill, skillClass: GenericSkill, skillProperties: [run]}
+- {skillName: teastar-reconfiguration, skillType: TeastarReconfigurationSkill, skillClass: GenericSkill, skillProperties: [mode]}
 # PoseInteractionSkill
 - {skillName: pick-pose, skillType: PoseInteractionSkill, skillClass: PoseInteractionSkill, skillProperties: [frameId, px, py, pz, qx, qy, qz, qw]}
 - {skillName: place-pose, skillType: PoseInteractionSkill, skillClass: PoseInteractionSkill, skillProperties: [frameId, px, py, pz, qx, qy, qz, qw]}

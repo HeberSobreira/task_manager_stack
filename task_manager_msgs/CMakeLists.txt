@@ -84,6 +84,7 @@ add_action_files(
   ChangeMapSkill.action
   SymbolicPoseInteractionSkill.action
   ChargingValidationSkill.action
+  TeastarReconfigurationSkill.action
 )
 
 ## Generate added messages and services with any dependencies listed here
