@@ -95,7 +95,7 @@ class Skill(object):
         # Return the result of executing the action
         rospy.logdebug('[' + str(self.skillClass) + '] Received result from ' + str(actionName) + ' Server!')
 
-        return self.client.get_result()
+        return self.client
 
     def action_feedback_cb(self, feedback):
         rospy.logdebug('[' + str(self.skillClass) + '] Received feedback from ' + str(self.skillType) + ' Server: ' + str(feedback.percentage) + '%')

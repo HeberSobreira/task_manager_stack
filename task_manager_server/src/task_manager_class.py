@@ -39,6 +39,9 @@ class TaskManager(object):
         self.possiblePriorities = {'LOW': 0, 'NORMAL': 1, 'HIGH': 2}
 
         self.robotState = 'available'
+        self.currentActionClient = None
+        self.ongoigSkills = []
+        self.ongoingMissionId = None
 
         if assignMissionServiceName is not None:
             rospy.Service(assignMissionServiceName, AssignMission, self.assign_mission_request_parser)
@@ -91,22 +94,27 @@ class TaskManager(object):
             return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'False', reasonOfRefusal = 'Different robotId!')
 
         if missionId == '':
-            self.taskQueue = self.taskQueue[:1]
-            rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] All Scheduled Missions Canceled!')
+            self.currentActionClient.cancel_all_goals()
+            self.ongoigSkills = []
+            self.taskQueue = self.taskQueue[:0]
+            rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] All Missions Canceled!')
             return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'True', reasonOfRefusal = 'None')
 
-        for task in self.taskQueue:
-            if task['missionId'] == missionId:
-                if self.taskQueue.index(task) == 0:
-                    rospy.logwarn('[TaskManager] [' + str(self.robotId) + '] Mission \'' + str(missionId) + '\' not canceled: The mission is already executing!')
-                    return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'False', reasonOfRefusal = 'The mission is already executing!')
-                else:
+        if missionId == self.ongoingMissionId:
+            self.currentActionClient.cancel_all_goals()
+            self.ongoigSkills = []
+            rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] Mission \'' + str(missionId) + '\' Canceled! It was Already Executing.')
+            return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'True', reasonOfRefusal = 'None')
+        else:
+            
+            for task in self.taskQueue:
+                if task['missionId'] == missionId:
                     del self.taskQueue[self.taskQueue.index(task)]
                     rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] Mission \'' + str(missionId) + '\' Canceled!')
                     return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'True', reasonOfRefusal = 'None')
 
-        rospy.logwarn('[TaskManager] [' + str(self.robotId) + '] Mission \'' + str(missionId) + '\' not canceled: The mission is not in the queue!')
-        return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'False', reasonOfRefusal = 'The mission is not in the queue')
+            rospy.logwarn('[TaskManager] [' + str(self.robotId) + '] Mission \'' + str(missionId) + '\' not canceled: The mission is not in the queue!')
+            return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'False', reasonOfRefusal = 'The mission is not in the queue')
 
 
     ## NOTE: ROS specific
@@ -212,15 +220,19 @@ class TaskManager(object):
         rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] Starting Mission ' + str(missionId) + ' with ' + str(len(skills)) + ' Tasks... ')
         rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] Mission Queue' + str([task['missionId'] for task in self.taskQueue]))
 
-        while skills:
-            skill = skills.pop(0) # TODO: Write a Unit Test for this!
+        self.ongoigSkills = skills
+        self.ongoingMissionId = missionId
+
+        while self.ongoigSkills:
+            skill = self.ongoigSkills.pop(0) # TODO: Write a Unit Test for this!
 
             self.update_mission_status(missionId = missionId, taskId = skill.skillName, statusCode = 1, statusDescription = 'Starting Task ' + str(skill.skillName))
 
             try:
                 self.update_mission_status(missionId = missionId, taskId = skill.skillName, statusCode = 2, statusDescription = 'Executing Task ' + str(skill.skillName))
 
-                actionClientResponse = skill.action_client(waitForServerTimeOut = self.waitForServerTimeOut, waitForActionClientTimeOut = self.waitForActionClientTimeOut)
+                self.currentActionClient = skill.action_client(waitForServerTimeOut = self.waitForServerTimeOut, waitForActionClientTimeOut = self.waitForActionClientTimeOut)
+                actionClientResponse = self.currentActionClient.get_result()
 
                 skillCompletion = actionClientResponse.percentage
                 skillStatus = actionClientResponse.skillStatus
@@ -233,7 +245,7 @@ class TaskManager(object):
 
             else:
                 # In case of a Mission Failure, the robot should be free to take on new tasks
-                skills = []
+                self.ongoigSkills = []
 
                 self.update_mission_status(missionId = missionId, taskId = skill.skillName, statusCode = 4, statusDescription = 'Task ' + str(skill.skillName) + ' Failed: ' + str(skillStatus))
                 self.update_mission_status(missionId = missionId, taskId = skill.skillName, statusCode = 12, statusDescription = 'Mission Failed! Task ' + str(skill.skillName) + ' Failed: ' + str(skillStatus))
