@@ -71,10 +71,11 @@ class TaskManager(object):
             return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'False', reasonOfRefusal = 'Different robotId!')
 
 
-        for mission in self.missions:
-            if missionId == mission['missionId']:
-                rospy.logwarn('[TaskManager] [' + str(self.robotId) + '] Mission ' + str(missionId) + ' refused: Mission already stored!')
-                return MSGConstructor.ActionAcceptedRefusedConstructor(accepted='False', reasonOfRefusal='Mission already stored!')
+        #this feature was comented by Ivo/Heber request. #TODO: it should be uncomented to refuse again in the future
+        # for mission in self.missions:
+        #     if missionId == mission['missionId']:
+        #         rospy.logwarn('[TaskManager] [' + str(self.robotId) + '] Mission ' + str(missionId) + ' refused: Mission already stored!')
+        #         # return MSGConstructor.ActionAcceptedRefusedConstructor(accepted='False', reasonOfRefusal='Mission already stored!')
 
 
         if len(self.ongoingTasks) != 0:

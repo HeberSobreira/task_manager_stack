@@ -13,12 +13,14 @@ skills:
 # DriveEdgesSkill
 - {skillName: drive-edges, skillType: DriveEdgesSkill, skillClass: DriveEdgesSkill, skillProperties: [tractionMode, edges, timeout]} ## NOTE: This cannot be of type Generic
 # GenericSkill
-- {skillName: actuate-arm, skillType: ActuateArmSkill, skillClass: GenericSkill, skillProperties: [direction]}
+- {skillName: actuate-arm, skillType: ActuateArmSkill, skillClass: GenericSkill, skillProperties: [Direction]}
 - {skillName: crob-wait, skillType: WaitSkill, skillClass: GenericSkill, skillProperties: [waitTime]}
-- {skillName: move-arm, skillType: MoveArmSkill, skillClass: GenericSkill, skillProperties: [angle]}
+- {skillName: move-arm, skillType: MoveArmSkill, skillClass: GenericSkill, skillProperties: [Angle]}
 - {skillName: example-skill, skillType: GenericSkill, skillClass: GenericSkill, skillProperties: [exampleSkillProperty0, exampleSkillProperty1]}
 - {skillName: elevator-interaction, skillType: ElevatorInteractionSkill, skillClass: GenericSkill, skillProperties: [mode, floor]}
 - {skillName: change-map, skillType: ChangeMapSkill, skillClass: GenericSkill, skillProperties: [NewMap]}
+- {skillName: charging-validation, skillType: ChargingValidationSkill, skillClass: GenericSkill, skillProperties: [run]}
+- {skillName: teastar-reconfiguration, skillType: TeastarReconfigurationSkill, skillClass: GenericSkill, skillProperties: [mode]}
 # PoseInteractionSkill
 - {skillName: pick-pose, skillType: PoseInteractionSkill, skillClass: PoseInteractionSkill, skillProperties: [frameId, px, py, pz, qx, qy, qz, qw]}
 - {skillName: place-pose, skillType: PoseInteractionSkill, skillClass: PoseInteractionSkill, skillProperties: [frameId, px, py, pz, qx, qy, qz, qw]}
@@ -26,5 +28,5 @@ skills:
 
 #DockSkill
 # - {skillName: dock-pose, skillType: DockSkill, skillClass: DockSkill, skillProperties: [mode, frameId, px, py, pz, qx, qy, qz, qw]}
-- {skillName: dock, skillType: DockSkill, skillClass: DockSkill, skillProperties: [objectType, mode, tractionMode, frameId, px, py, pz, qx, qy, qz, qw]}
+- {skillName: dock, skillType: DockSkill, skillClass: DockSkill, skillProperties: [objectType, mode, tractionMode, beaconDistance, offsetDistance, frameId, px, py, pz, qx, qy, qz, qw]}
 - {skillName: symbolic-pose, skillType: SymbolicPoseInteractionSkill, skillClass: GenericSkill, skillProperties: [mode, frameId, edgeId, percentage]}
