@@ -87,34 +87,48 @@ class TaskManager(object):
         return taskStatus
 
 
-    def cancel_mission_service_handler(self, missionId = 'defaultMissionId', robotId = 'defaultRobotId'):
+    def cancel_mission_service_handler(self, missionId = [], robotId = 'defaultRobotId'):
 
         if robotId != self.robotId:
             rospy.logwarn('[TaskManager] [' + str(self.robotId) + '] Mission \'' + str(missionId) + '\' not canceled: Different robotId!')
             return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'False', reasonOfRefusal = 'Different robotId!')
 
-        if missionId == '':
+        if missionId == []:
             self.currentActionClient.cancel_all_goals()
             self.ongoigSkills = []
             self.taskQueue = self.taskQueue[:0]
             rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] All Missions Canceled!')
             return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'True', reasonOfRefusal = 'None')
 
-        if missionId == self.ongoingMissionId:
-            self.currentActionClient.cancel_all_goals()
-            self.ongoigSkills = []
-            rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] Mission \'' + str(missionId) + '\' Canceled! It was Already Executing.')
-            return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'True', reasonOfRefusal = 'None')
-        else:
-            
-            for task in self.taskQueue:
-                if task['missionId'] == missionId:
-                    del self.taskQueue[self.taskQueue.index(task)]
-                    rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] Mission \'' + str(missionId) + '\' Canceled!')
-                    return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'True', reasonOfRefusal = 'None')
+        failedAttempts = 0
+        failedCancelMissions = []
 
-            rospy.logwarn('[TaskManager] [' + str(self.robotId) + '] Mission \'' + str(missionId) + '\' not canceled: The mission is not in the queue!')
-            return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'False', reasonOfRefusal = 'The mission is not in the queue')
+        for mission in missionId:
+
+            if mission == self.ongoingMissionId:
+                self.currentActionClient.cancel_all_goals()
+                self.ongoigSkills = []
+                rospy.loginfo('[TaskManager] [' + str(self.robotId) + '] Mission \'' + str(mission) + '\' Canceled! It was Already Executing.')
+            else:
+
+                for task in self.taskQueue:
+                    if task['missionId'] == mission:
+                        del self.taskQueue[self.taskQueue.index(task)]
+                        rospy.loginfo(
+                            '[TaskManager] [' + str(self.robotId) + '] Mission \'' + str(mission) + '\' Canceled!')
+                        break
+                else:
+                    rospy.logwarn('[TaskManager] [' + str(self.robotId) + '] Mission \'' + str(
+                        missionId) + '\' not canceled: The mission is not in the queue!')
+                    failedAttempts += 1
+                    failedCancelMissions.append(mission)
+
+        if failedAttempts == 0:
+            return MSGConstructor.ActionAcceptedRefusedConstructor(accepted='True', reasonOfRefusal='None')
+        else:
+            rospy.logwarn('[TaskManager] [' + str(self.robotId) + '] Missions '+ str(failedCancelMissions) + ' are not in the queue')
+            return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'False', reasonOfRefusal = 'Missions '+ str(failedCancelMissions) + ' are not in the queue')
+
 
 
     ## NOTE: ROS specific

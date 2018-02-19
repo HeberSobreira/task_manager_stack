@@ -1,4 +1,4 @@
-string missionId
+string[] missionId
 string   robotId
 ---
 ActionAcceptedRefused actionAcceptedRefused
