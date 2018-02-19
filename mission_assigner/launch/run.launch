@@ -6,7 +6,7 @@
     <arg name="mission_id" default="testMissionId"/>
     <arg name="skills_file" default="skills.yaml" />
     <arg name="skills_path" default="$(find task_manager_common)/skills"/>
-    <arg name="mission_file" default="test_queue_skill.yaml" />
+    <arg name="mission_file" default="test_generic_skill.yaml" />
     <arg name="mission_path" default="$(find mission_assigner)/missions"/>
     <arg name="assign_mission_service_name" default="task_manager/AssignMission" />
 

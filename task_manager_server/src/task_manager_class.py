@@ -231,8 +231,9 @@ class TaskManager(object):
             try:
                 self.update_mission_status(missionId = missionId, taskId = skill.skillName, statusCode = 2, statusDescription = 'Executing Task ' + str(skill.skillName))
 
-                self.currentActionClient = skill.action_client(waitForServerTimeOut = self.waitForServerTimeOut, waitForActionClientTimeOut = self.waitForActionClientTimeOut)
-                actionClientResponse = self.currentActionClient.get_result()
+                self.currentActionClient = skill.action_client_setup()
+
+                actionClientResponse = skill.action_client_run(waitForServerTimeOut=self.waitForServerTimeOut, waitForActionClientTimeOut=self.waitForActionClientTimeOut)
 
                 skillCompletion = actionClientResponse.percentage
                 skillStatus = actionClientResponse.skillStatus

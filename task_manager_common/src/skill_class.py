@@ -62,40 +62,45 @@ class Skill(object):
         raise NotImplementedError('Subclass ' + str(self.skillType) + ' must implement abstract method!')
 
     # ROS specific
-    def action_client(self, waitForServerTimeOut = 10, waitForActionClientTimeOut = 300, ActionName = None, ActionType = None, ActionGoal = None):
+    def action_client_setup(self, ActionName = None, ActionType = None, ):
 
-        actionName = ActionName if ActionName is not None else self.actionNameConstructor() ## TODO: Missing Unit Test
-        actionGoal = ActionGoal if ActionGoal is not None else self.actionGoalConstructor()
+        self.actionName = ActionName if ActionName is not None else self.actionNameConstructor() ## TODO: Missing Unit Test
         actionType = ActionType if ActionType is not None else self.actionTypeConstructor()
 
         # Creates a ROS Action Client, passing the type of the action to the constructor.
-        self.client = actionlib.SimpleActionClient(actionName, actionType)
+        self.client = actionlib.SimpleActionClient(self.actionName, actionType)
+        return self.client
+
+
+    def action_client_run(self, waitForServerTimeOut = 10, waitForActionClientTimeOut = 300, ActionGoal = None):
+
+        actionGoal = ActionGoal if ActionGoal is not None else self.actionGoalConstructor()
 
         ## IDEA: Maybe execute here some PRE-CONDITIONS defined within the Skill Subclass (Have a method that MUST/COULD be defined)
         ## BETTER IDEA: Encapsulate the 'action_client' method inside a 'skill_client()' method that performs such check
 
-        rospy.logdebug('[' + str(self.skillClass) + '] Waiting for ' + str(actionName) + ' Server...')
+        rospy.logdebug('[' + str(self.skillClass) + '] Waiting for ' + str(self.actionName) + ' Server...')
 
         # TODO: Try to find a better Exception Type to handle this
         if not self.client.wait_for_server(rospy.Duration(waitForServerTimeOut)):
-            raise Exception('Skill Action Client Error: Timed out (' + str(waitForServerTimeOut) + 's) while trying to find Action Server ' + str(actionName))
+            raise Exception('Skill Action Client Error: Timed out (' + str(waitForServerTimeOut) + 's) while trying to find Action Server ' + str(self.actionName))
 
         # Sends the goal to the action server.
-        rospy.logdebug('[' + str(self.skillClass) + '] Sending goal to ' + str(actionName) + ' Server...')
+        rospy.logdebug('[' + str(self.skillClass) + '] Sending goal to ' + str(self.actionName) + ' Server...')
         self.client.send_goal(actionGoal, feedback_cb=self.action_feedback_cb, done_cb=self.action_done_cb, active_cb=self.action_active_cb)
 
-        rospy.logdebug('[' + str(self.skillClass) + '] Waiting response from ' + str(actionName) + ' Server...')
+        rospy.logdebug('[' + str(self.skillClass) + '] Waiting response from ' + str(self.actionName) + ' Server...')
 
         if not self.client.wait_for_result(rospy.Duration(waitForActionClientTimeOut)):
-            raise Exception('Skill Action Client Error: Timed out (' + str(waitForActionClientTimeOut) + 's) while waiting for ' + str(actionName) + ' Action Server result')
+            raise Exception('Skill Action Client Error: Timed out (' + str(waitForActionClientTimeOut) + 's) while waiting for ' + str(self.actionName) + ' Action Server result')
 
         ## IDEA: Maybe execute here some POST-CONDITIONS defined within the Skill Subclass (Have a method that MUST/COULD be defined)
         ## BETTER IDEA: Encapsulate the 'action_client' method inside a 'skill_client()' method that performs such check
 
         # Return the result of executing the action
-        rospy.logdebug('[' + str(self.skillClass) + '] Received result from ' + str(actionName) + ' Server!')
+        rospy.logdebug('[' + str(self.skillClass) + '] Received result from ' + str(self.actionName) + ' Server!')
 
-        return self.client
+        return self.client.get_result()
 
     def action_feedback_cb(self, feedback):
         rospy.logdebug('[' + str(self.skillClass) + '] Received feedback from ' + str(self.skillType) + ' Server: ' + str(feedback.percentage) + '%')
