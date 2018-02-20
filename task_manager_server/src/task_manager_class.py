@@ -144,10 +144,11 @@ class TaskManager(object):
                 rospy.logwarn('[TaskManager] [' + str(self.robotId) + '] Mission ' + str(missionId) + ' refused: Mission queue is already fulfilled!')
                 return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'False', reasonOfRefusal = 'Mission queue is already fulfilled!')
 
-        for mission in self.missions:
-            if missionId == mission['missionId']:
-                rospy.logwarn('[TaskManager] [' + str(self.robotId) + '] Mission ' + str(missionId) + ' refused: Mission already stored!')
-                return MSGConstructor.ActionAcceptedRefusedConstructor(accepted='False', reasonOfRefusal='Mission already stored!')
+        #this feature was comented by Ivo/Heber request. #TODO: it should be uncomented to refuse again in the future
+        # for mission in self.missions:
+        #     if missionId == mission['missionId']:
+        #         rospy.logwarn('[TaskManager] [' + str(self.robotId) + '] Mission ' + str(missionId) + ' refused: Mission already stored!')
+        #         # return MSGConstructor.ActionAcceptedRefusedConstructor(accepted='False', reasonOfRefusal='Mission already stored!')
 
         if len(goals) == 0:
             rospy.logwarn('[TaskManager] [' + str(self.robotId) + '] Mission ' + str(missionId) + ' refused: Empty goals!')

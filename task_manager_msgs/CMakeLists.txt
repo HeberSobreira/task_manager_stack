@@ -84,6 +84,8 @@ add_action_files(
   ElevatorInteractionSkill.action
   ChangeMapSkill.action
   SymbolicPoseInteractionSkill.action
+  ChargingValidationSkill.action
+  TeastarReconfigurationSkill.action
   WaitSkill.action
 )
 
