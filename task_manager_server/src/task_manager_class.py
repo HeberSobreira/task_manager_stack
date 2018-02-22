@@ -265,6 +265,8 @@ class TaskManager(object):
 
                 self.update_mission_status(missionId = missionId, taskId = skill.skillName, statusCode = 4, statusDescription = 'Task ' + str(skill.skillName) + ' Failed: ' + str(skillStatus))
                 self.update_mission_status(missionId = missionId, taskId = skill.skillName, statusCode = 12, statusDescription = 'Mission Failed! Task ' + str(skill.skillName) + ' Failed: ' + str(skillStatus))
+                self.robotState = 'available'
+                return self.queue_execution_handler()
 
         self.update_mission_status(missionId = missionId, taskId = skill.skillName, statusCode = 11, statusDescription = 'Mission Success!')
         self.robotState = 'available'
