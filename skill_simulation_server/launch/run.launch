@@ -29,5 +29,6 @@
     <node name="DockSkillElevatorOmni" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="DockSkill"></node>
     <node name="ChargingValidationSkill" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="ChargingValidationSkill"></node>
     <node name="TeastarReconfigurationSkill" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="TeastarReconfigurationSkill"></node>
+    <node name="ResetTrihoSkill" pkg="skill_simulation_server" type="skill_action_server.py" output="screen" args="ResetTrihoSkill"></node>
 
 </launch>

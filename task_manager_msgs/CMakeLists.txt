@@ -87,6 +87,7 @@ add_action_files(
   ChargingValidationSkill.action
   TeastarReconfigurationSkill.action
   WaitSkill.action
+  ResetTrihoSkill.action
 )
 
 ## Generate added messages and services with any dependencies listed here
