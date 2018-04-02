@@ -94,6 +94,9 @@ class TaskManager(object):
             return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'False', reasonOfRefusal = 'Different robotId!')
 
         if missionId == []:
+            if self.currentActionClient is None and self.taskQueue == []:
+                rospy.logwarn('[TaskManager] [' + str(self.robotId) + '] No mission was canceled. There are no ongoing or scheduled missions')
+                return MSGConstructor.ActionAcceptedRefusedConstructor(accepted = 'False', reasonOfRefusal = 'There are no ongoing or scheduled missions')
             self.currentActionClient.cancel_all_goals()
             self.ongoigSkills = []
             self.taskQueue = self.taskQueue[:0]
