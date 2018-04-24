@@ -324,6 +324,8 @@ class DockSkill(Skill):
     def actionGoalConstructor(self):
 
         supportedDockingModes = ['DOCK', 'UNDOCK']
+        supportedPathSources = ['ONLINE', 'GRAPH']
+        supporttedDirections = ['FORWARD', 'BACKWARDS']
 
         try:
             mode = self.skillProperties['mode']
@@ -331,7 +333,28 @@ class DockSkill(Skill):
             raise KeyError('DockSkill missing property: ' + str(e))
 
         if mode not in supportedDockingModes:
-            raise AttributeError('Unsupported Docking mode :' + str(mode) + '. Supported Docking modes are: ' + str(supportedDockingModes))
+            raise AttributeError('Unsupported Docking mode:' + str(mode) + '. Supported Docking modes are: ' + str(supportedDockingModes))
+
+        try:
+            pathSource = self.skillProperties['pathSource']
+        except KeyError as e:
+            raise KeyError('DockSkill missing property: ' + str(e))
+
+        if pathSource not in supportedPathSources:
+            raise AttributeError('Unsupported Path Source:' + str(mode) + '. Supported Path Sources are: ' + str(supportedPathSources))
+
+        try:
+            direction = self.skillProperties['direction']
+        except KeyError as e:
+            raise KeyError('DockSkill missing property: ' + str(e))
+
+        if direction not in supporttedDirections:
+            raise AttributeError('Unsupported Direction:' + str(mode) + '. Supported Directions are: ' + str(supporttedDirections))
+
+        if self.skillProperties['edgesIDs']:
+            edgesIDs = self.skillProperties['edgesIDs']
+        else:
+            edgesIDs = []
 
         try:
             objectType = self.skillProperties['objectType']
@@ -348,5 +371,5 @@ class DockSkill(Skill):
 
         poseStamped = MSGConstructor.PoseStampedConstructor(frameId, px, py, pz, qx, qy, qz, qw)
 
-        arguments = 'ObjectType = objectType, Mode = mode, Pose = poseStamped'
+        arguments = 'ObjectType = objectType, Mode = mode, Pose = poseStamped, PathSource = pathSource, EdgesIDs = edgesIDs, Direction = direction'
         return eval('task_manager_msgs.msg.' + str(self.skillType) + 'Goal(' + arguments + ')')

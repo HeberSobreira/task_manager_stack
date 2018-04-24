@@ -1,6 +1,9 @@
 #goal definition
 string ObjectType #"Cart", "Elevator" or "Charger"
 string Mode # "DOCK" or "UNDOCK"
+string PathSource # "ONLINE" or "GRAPH"
+int32[] EdgesIDs
+string Direction # "FORWARD" or "BACKWARDS"
 float32 BeaconDistance
 float32 offsetDistance
 geometry_msgs/PoseStamped Pose
