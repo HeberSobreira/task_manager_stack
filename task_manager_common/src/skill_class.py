@@ -356,6 +356,11 @@ class DockSkill(Skill):
         else:
             edgesIDs = []
 
+        if self.skillProperties['minLineLenght']:
+            minLineLenght = self.skillProperties['minLineLenght']
+        else:
+            minLineLenght = 0  #TODO: verificar se 0 é o valor correcto na ausência deste parâmetro
+
         try:
             objectType = self.skillProperties['objectType']
             frameId = self.skillProperties['frameId']
@@ -371,5 +376,5 @@ class DockSkill(Skill):
 
         poseStamped = MSGConstructor.PoseStampedConstructor(frameId, px, py, pz, qx, qy, qz, qw)
 
-        arguments = 'ObjectType = objectType, Mode = mode, Pose = poseStamped, PathSource = pathSource, EdgesIDs = edgesIDs, Direction = direction'
+        arguments = 'ObjectType = objectType, Mode = mode, Pose = poseStamped, PathSource = pathSource, EdgesIDs = edgesIDs, Direction = direction, MinLineLenght = minLineLenght'
         return eval('task_manager_msgs.msg.' + str(self.skillType) + 'Goal(' + arguments + ')')

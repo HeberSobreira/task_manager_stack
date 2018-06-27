@@ -88,6 +88,7 @@ add_action_files(
   TeastarReconfigurationSkill.action
   WaitSkill.action
   ResetTrihoSkill.action
+  RobotRepositioningDockSkill.action
 )
 
 ## Generate added messages and services with any dependencies listed here

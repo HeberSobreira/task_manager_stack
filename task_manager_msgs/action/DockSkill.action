@@ -6,6 +6,7 @@ int32[] EdgesIDs
 string Direction # "FORWARD" or "BACKWARDS"
 float32 BeaconDistance
 float32 offsetDistance
+float32 MinLineLenght
 geometry_msgs/PoseStamped Pose
 ---
 #result definition

@@ -1,0 +1,10 @@
+#goal definition
+string Direction #FORWARD, BACKWARDS, RIGH, LEFT
+---
+#result definition
+int32 percentage
+string skillStatus
+---
+#feedback
+int32 percentage
+string skillStatus
