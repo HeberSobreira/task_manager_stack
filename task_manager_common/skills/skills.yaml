@@ -33,4 +33,4 @@ skills:
 - {skillName: dock, skillType: DockSkill, skillClass: DockSkill, skillProperties: [objectType, mode, pathSource, edgesIDs, direction, tractionMode, beaconDistance, offsetDistance, minLineLenght, frameId, px, py, pz, qx, qy, qz, qw]}
 - {skillName: symbolic-pose, skillType: SymbolicPoseInteractionSkill, skillClass: GenericSkill, skillProperties: [mode, frameId, edgeId, percentage]}
 
-- {skillName: robot-repositioning-dock, skillType: RobotRepositioningDockSkill, skillClass: GenericSkill, skillProperties: [Direction, Distance]}
+- {skillName: robot-repositioning-dock, skillType: RobotRepositioningDockSkill, skillClass: GenericSkill, skillProperties: [Direction, Distance, Start]}
