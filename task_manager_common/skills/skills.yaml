@@ -17,7 +17,7 @@ skills:
 - {skillName: crob-wait, skillType: WaitSkill, skillClass: GenericSkill, skillProperties: [waitTime]}
 - {skillName: move-arm, skillType: MoveArmSkill, skillClass: GenericSkill, skillProperties: [Angle]}
 - {skillName: example-skill, skillType: GenericSkill, skillClass: GenericSkill, skillProperties: [exampleSkillProperty0, exampleSkillProperty1]}
-- {skillName: elevator-interaction, skillType: ElevatorInteractionSkill, skillClass: GenericSkill, skillProperties: [mode, floor]}
+- {skillName: elevator-interaction, skillType: ElevatorInteractionSkill, skillClass: GenericSkill, skillProperties: [mode, floor, hold]}
 - {skillName: change-map, skillType: ChangeMapSkill, skillClass: GenericSkill, skillProperties: [NewMap]}
 - {skillName: charging-validation, skillType: ChargingValidationSkill, skillClass: GenericSkill, skillProperties: [run]}
 - {skillName: teastar-reconfiguration, skillType: TeastarReconfigurationSkill, skillClass: GenericSkill, skillProperties: [mode]}

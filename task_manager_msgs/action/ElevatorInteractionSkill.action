@@ -1,6 +1,7 @@
 #goal definition
 string mode # "IN" or "OUT"
-int32 floor
+int32  floor
+bool   hold
 ---
 #result definition
 int32 percentage
