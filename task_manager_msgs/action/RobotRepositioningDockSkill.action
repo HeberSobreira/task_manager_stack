@@ -1,7 +1,8 @@
 #goal definition
 string Direction #FORWARD, BACKWARDS, RIGHT, LEFT
 float32 Distance
-bool Start  
+bool Start
+bool End
 ---
 #result definition
 int32 percentage
