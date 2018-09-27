@@ -1,5 +1,5 @@
 #goal definition
-robis_nav_msgs/ParametricPathSet PathSet
+itrci_nav/ParametricPathSet PathSet
 ---
 #result definition
 int32 percentage
