@@ -7,8 +7,8 @@ import math
 from task_manager_msgs.srv import *
 
 # TODO: Move to MSGConstructor
-from robis_nav_msgs.msg import ParametricPathSet
-from robis_nav_msgs.msg import ParametricPath
+from itrci_nav.msg import ParametricPathSet
+from itrci_nav.msg import ParametricPath
 
 
 class PathAssigner(object):
